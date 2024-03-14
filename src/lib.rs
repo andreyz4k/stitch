@@ -1,32 +1,9 @@
-
 pub mod compression;
-pub mod rewriting;
 pub mod egraphs;
-pub mod util;
 pub mod formats;
+pub mod rewriting;
+pub mod util;
 
-pub use {
-    compression::*,
-    rewriting::*,
-    egraphs::*,
-    util::*,
-    formats::*,
-    lambdas::*,
-};
+pub use {compression::*, egraphs::*, formats::*, lambdas::*, rewriting::*, util::*};
 
-pub use colorful::{Color,Colorful,RGB};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+pub use colorful::{Color, Colorful, RGB};

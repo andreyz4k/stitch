@@ -1,7 +1,7 @@
-use stitch_core::*;
 use clap::Parser;
 use serde::Serialize;
 use std::path::PathBuf;
+use stitch_core::*;
 
 /// Stitch
 #[derive(Parser, Debug, Serialize)]
@@ -23,11 +23,10 @@ pub struct Args {
 
     /// saves the rewritten frontiers in an input-readable format in a separate json from the normal output json
     #[clap(long)]
-    pub save_rewritten: Option<PathBuf>,    
+    pub save_rewritten: Option<PathBuf>,
 
     #[clap(flatten)]
     pub multistep: MultistepCompressionConfig,
-
 }
 
 fn main() {
@@ -35,7 +34,14 @@ fn main() {
 
     let input = args.fmt.load_programs_and_tasks(&args.file).unwrap();
 
-    let (step_results, json_res) = multistep_compression(&input.train_programs, input.tasks, None, input.name_mapping, None, &args.multistep);
+    let (step_results, json_res) = multistep_compression(
+        &input.train_programs,
+        input.tasks,
+        None,
+        input.name_mapping,
+        None,
+        &args.multistep,
+    );
 
     let out_path = &args.out;
     if let Some(out_path_dir) = out_path.parent() {
@@ -45,14 +51,27 @@ fn main() {
     }
 
     std::fs::write(out_path, serde_json::to_string_pretty(&json_res).unwrap()).unwrap();
-    if !args.multistep.silent{ println!("Wrote to {out_path:?}") };
+    if !args.multistep.silent {
+        println!("Wrote to {out_path:?}")
+    };
     if let Some(out_path) = args.save_rewritten {
-        if !args.multistep.silent{ println!("Wrote rewritten things to {out_path:?}") };
-        std::fs::write(&out_path, serde_json::to_string_pretty(&step_results.iter().last().unwrap().rewritten.iter().map(|p| p.to_string()).collect::<Vec<String>>()).unwrap()).unwrap();
+        if !args.multistep.silent {
+            println!("Wrote rewritten things to {out_path:?}")
+        };
+        std::fs::write(
+            &out_path,
+            serde_json::to_string_pretty(
+                &step_results
+                    .iter()
+                    .last()
+                    .unwrap()
+                    .rewritten
+                    .iter()
+                    .map(|p| p.to_string())
+                    .collect::<Vec<String>>(),
+            )
+            .unwrap(),
+        )
+        .unwrap();
     }
-
 }
-
-
-
-

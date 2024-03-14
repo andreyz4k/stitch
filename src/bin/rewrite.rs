@@ -15,18 +15,23 @@ use clap::Parser;
 use serde::Serialize;
 use serde_json::de::from_reader;
 use serde_json::json;
+use serde_json::Value;
 use std::collections::HashMap;
 use std::fs::File;
 use std::path::PathBuf;
 use stitch_core::*;
-use serde_json::Value;
 
 // Args for rewrite.rs, which calls `rewrite_with_inventions`.
 #[derive(Parser, Debug, Serialize)]
 #[clap(name = "Rewrite")]
 pub struct RewriteArgs {
     /// json file to read compression programs from.
-    #[clap(short, long, parse(from_os_str), default_value = "data/logo/test_111.json")]
+    #[clap(
+        short,
+        long,
+        parse(from_os_str),
+        default_value = "data/logo/test_111.json"
+    )]
     pub program_file: PathBuf,
 
     /// Compression output to read the inventions from. Can use the compres
@@ -34,7 +39,12 @@ pub struct RewriteArgs {
     pub inventions_file: PathBuf,
 
     /// json output file
-    #[clap(short, long, parse(from_os_str), default_value = "out/extraction_out.json")]
+    #[clap(
+        short,
+        long,
+        parse(from_os_str),
+        default_value = "out/extraction_out.json"
+    )]
     pub out: PathBuf,
 
     /// the format of the input file, e.g. 'programs-list' for a simple JSON array of programs
@@ -78,9 +88,13 @@ fn main() {
             .expect("json deserializing error");
     let inventions = inventions_data["abstractions"].as_array().unwrap();
 
-
     let mut name_mapping = input.name_mapping.clone().unwrap_or_default();
-    name_mapping.extend(inventions.iter().map(|invention| (invention["name"].as_str().unwrap().to_string(),invention["dreamcoder"].as_str().unwrap().to_string())));
+    name_mapping.extend(inventions.iter().map(|invention| {
+        (
+            invention["name"].as_str().unwrap().to_string(),
+            invention["dreamcoder"].as_str().unwrap().to_string(),
+        )
+    }));
     name_mapping.sort_by_key(|(_, dc_name)| dc_name.len());
 
     let inventions: Vec<Invention> = inventions
@@ -88,26 +102,31 @@ fn main() {
         .map(|invention| Invention {
             body: {
                 let mut set = ExprSet::empty(Order::ChildFirst, false, false);
-                let idx = set.parse_extend(invention["body"].as_str().unwrap()).unwrap();
+                let idx = set
+                    .parse_extend(invention["body"].as_str().unwrap())
+                    .unwrap();
                 ExprOwned::new(set, idx)
             },
             arity: invention["arity"].as_u64().unwrap() as usize,
             name: invention["name"].as_str().unwrap().parse().unwrap(),
         })
         .collect();
-     println!("Number of inventions: {}", inventions.len());
+    println!("Number of inventions: {}", inventions.len());
 
     let mut rewritten_frontiers: HashMap<String, Vec<String>> = HashMap::new();
 
-    
-    let rewritten: Vec<String> = rewrite_with_inventions(&input.train_programs, &inventions[..], &args.cost).0;
+    let rewritten: Vec<String> =
+        rewrite_with_inventions(&input.train_programs, &inventions[..], &args.cost).0;
 
     match args.fmt {
         InputFormat::Dreamcoder => {
-
             // Rewrite back the lambda and optionally rewrite back the DC invention format.
             for (i, pretty_program) in rewritten.iter().enumerate() {
-                let task_name = input.tasks.clone().map(|tasks| tasks[i].clone()).unwrap_or_else(||i.to_string());
+                let task_name = input
+                    .tasks
+                    .clone()
+                    .map(|tasks| tasks[i].clone())
+                    .unwrap_or_else(|| i.to_string());
                 let mut pretty_program = pretty_program.to_string();
                 if args.dreamcoder_output {
                     for (name, dc_translation) in name_mapping.iter().rev() {
@@ -118,11 +137,7 @@ fn main() {
                 rewritten_frontiers
                     .entry(task_name)
                     .or_default()
-                    .push(
-                        pretty_program
-                            .replace("(lam ", "(lambda ")
-                            .clone(),
-                    );
+                    .push(pretty_program.replace("(lam ", "(lambda ").clone());
             }
             fn rewritten_to_dc_fmt_frontiers(
                 task_name: &str,
@@ -134,7 +149,7 @@ fn main() {
                         program: p.to_string(),
                     })
                     .collect();
-                
+
                 DcFrontier {
                     task: task_name.to_string(),
                     programs,
@@ -147,7 +162,7 @@ fn main() {
 
             let json: Value = json!({ "frontiers": dc_fmt_frontiers });
             std::fs::write(&args.out, serde_json::to_string_pretty(&json).unwrap()).unwrap();
-        },
+        }
         InputFormat::ProgramsList => {
             let json: Value = json!({ "rewritten": rewritten.iter().map(|p| p.to_string()).collect::<Vec<String>>() });
             std::fs::write(&args.out, serde_json::to_string_pretty(&json).unwrap()).unwrap();
