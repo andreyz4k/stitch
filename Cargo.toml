@@ -1,33 +1,30 @@
 [package]
-name = "stitch_core"
-version = "0.1.0"
 authors = ["Matthew Bowers <mlbowers@mit.edu>", "Theo X. Olausson <theoxo@mit.edu>"]
+description = "A scalable abstraction learning library"
 edition = "2018"
 license = "MIT"
-description = "A scalable abstraction learning library"
+name = "stitch_core"
 repository = "https://github.com/mlb2251/stitch"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 chrono = "0.4"
-serde_json = {version = "1.0", features = ["preserve_order"]}
-clap = { version = "3.1.0", features = ["derive"]}
-serde = "1"
-itertools = "0.10.3"
-rand = "0.8.4"
-parking_lot = "0.12.0"
+clap = {version = "3.1.0", features = ["derive"]}
 colorful = "0.2.1"
+itertools = "0.10.3"
+parking_lot = "0.12.0"
+rand = "0.8.4"
 rustc-hash = "1.1.0"
+serde = "1"
+serde_json = {version = "1.0", features = ["preserve_order"]}
 # lambdas = "0.2.0"
-lambdas = { git = "https://github.com/mlb2251/lambdas", rev = "b8d4868"}
-
+lambdas = {git = "https://github.com/andreyz4k/lambdas", branch = "main"}
+# lambdas = {path = "../lambdas"}
 
 # [patch.crates-io]
-# lambdas = { path = "../lambdas"}
-
 
 # enable for flamegraphs
 # [profile.release]
 # debug = true
-

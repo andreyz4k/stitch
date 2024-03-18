@@ -1,0 +1,3 @@
+# This is useful to skip reformatting revisions in git blame
+# to enable it run `git config --add blame.ignoreRevsFile .git-blame-ignore-revs`
+8bfa3ab57e640e275a8c4c236597c7430f27bf41
