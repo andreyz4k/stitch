@@ -1247,9 +1247,8 @@ fn stitch_search(shared: Arc<SharedData>) {
                 }
 
                 // Can't have named variables in the body of a pattern
-                match expands_to {
-                    ExpandsTo::NVar => continue 'expansion,
-                    _ => {}
+                if expands_to == ExpandsTo::NVar {
+                    continue 'expansion;
                 }
 
                 // Pruning (SINGLE USE): prune inventions that only match at a single unique (structurally hashed) subtree. This only applies if we
@@ -1738,6 +1737,7 @@ fn get_zippers(
 
         // clone to appease the borrow checker
         let node = set.get(idx).node().clone();
+        // let node_str = format!("{:?}", node);
 
         match node {
             Node::Let { .. } | Node::RevLet { .. } => {
@@ -1758,6 +1758,7 @@ fn get_zippers(
                 expands_to: expands_to_of_node(&node),
             },
         );
+        // let expands_str = format!("{}", expands_to_of_node(&node));
 
         match node {
             Node::IVar(_) => {
@@ -2218,7 +2219,7 @@ fn get_utility_of_loc_once(pattern: &Pattern, shared: &SharedData) -> Vec<i32> {
         .iter()
         .map(|loc| {
             //  if there are any free ivars in the arg at this location then we can't apply this invention here so *total* util should be 0
-            for (_ivar, zid) in pattern.first_zid_of_ivar.iter().enumerate() {
+            for zid in pattern.first_zid_of_ivar.iter() {
                 let shifted_arg = shared.arg_of_zid_node[*zid][loc].shifted_id;
                 if !shared.analyzed_ivars[shifted_arg].is_empty() {
                     return 0; // set whole util to 0 for this loc, causing an autoreject
@@ -2699,6 +2700,11 @@ pub fn compression_step(
         .map(|e| e.immut().copy_rec(&mut set))
         .collect();
     let corpus_span: Span = 0..set.len();
+
+    // println!("Merged set");
+    // for (i, node) in set.nodes.iter().enumerate() {
+    //     println!("{} {:?}", i, node);
+    // }
 
     let mut analyzed_cost = AnalyzedExpr::new(cost_fn.clone());
     analyzed_cost.analyze(&set);
@@ -3243,6 +3249,13 @@ pub fn multistep_compression(
             ExprOwned::new(set, idx)
         })
         .collect();
+
+    // for (p, pr) in zip(programs.iter(), train_programs.iter()) {
+    //     println!("{}", p);
+    //     for (i, node) in pr.set.nodes.iter().enumerate() {
+    //         println!("{} {:?}", i, node);
+    //     }
+    // }
 
     let cost_fn = cfg.step.cost.expr_cost();
 
