@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::*;
 use compression::*;
 use lambdas::*;
@@ -22,6 +24,7 @@ pub fn rewrite_fast(
     #[allow(clippy::too_many_arguments)]
     fn helper(
         owned_set: &mut ExprSet,
+        new_vars_mapping: &mut HashMap<Symbol, Idx>,
         pattern: &FinishedPattern,
         shared: &SharedData,
         unshifted_id: Idx,
@@ -56,6 +59,7 @@ pub fn rewrite_fast(
                 // recurse with the shift added (subtracted since it's negative) to the depth
                 let mut rewritten_arg = helper(
                     owned_set,
+                    new_vars_mapping,
                     pattern,
                     shared,
                     arg.unshifted_id,
@@ -138,6 +142,7 @@ pub fn rewrite_fast(
             Node::App(unshifted_f, unshifted_x) => {
                 let f = helper(
                     owned_set,
+                    new_vars_mapping,
                     pattern,
                     shared,
                     *unshifted_f,
@@ -147,6 +152,7 @@ pub fn rewrite_fast(
                 );
                 let x = helper(
                     owned_set,
+                    new_vars_mapping,
                     pattern,
                     shared,
                     *unshifted_x,
@@ -159,6 +165,7 @@ pub fn rewrite_fast(
             Node::Lam(unshifted_b, tag) => {
                 let b = helper(
                     owned_set,
+                    new_vars_mapping,
                     pattern,
                     shared,
                     *unshifted_b,
@@ -171,6 +178,82 @@ pub fn rewrite_fast(
             Node::IVar(_) => {
                 unreachable!()
             }
+            Node::NVar(name, other_link) => {
+                if let Some(&other_link) = new_vars_mapping.get(name) {
+                    // let link = helper(e.get(*link), other_set, new_vars_mapping);
+                    owned_set.add(Node::NVar(name.clone(), other_link))
+                } else {
+                    owned_set.add(Node::NVar(name.clone(), *other_link))
+                }
+            }
+            Node::Let {
+                var,
+                type_str,
+                def: unshifted_def,
+                body: unshifted_body,
+            } => {
+                let def = helper(
+                    owned_set,
+                    new_vars_mapping,
+                    pattern,
+                    shared,
+                    *unshifted_def,
+                    total_depth,
+                    shift_rules,
+                    inv_name,
+                );
+                new_vars_mapping.insert(var.clone(), def);
+                let body = helper(
+                    owned_set,
+                    new_vars_mapping,
+                    pattern,
+                    shared,
+                    *unshifted_body,
+                    total_depth,
+                    shift_rules,
+                    inv_name,
+                );
+                owned_set.add(Node::Let {
+                    var: var.clone(),
+                    type_str: type_str.clone(),
+                    def,
+                    body,
+                })
+            }
+            Node::RevLet {
+                inp_var,
+                def_vars,
+                def: unshifted_def,
+                body: unshifted_body,
+            } => {
+                let body = helper(
+                    owned_set,
+                    new_vars_mapping,
+                    pattern,
+                    shared,
+                    *unshifted_body,
+                    total_depth,
+                    shift_rules,
+                    inv_name,
+                );
+                new_vars_mapping.insert(inp_var.clone(), body);
+                let def = helper(
+                    owned_set,
+                    new_vars_mapping,
+                    pattern,
+                    shared,
+                    *unshifted_def,
+                    total_depth,
+                    shift_rules,
+                    inv_name,
+                );
+                owned_set.add(Node::RevLet {
+                    inp_var: inp_var.clone(),
+                    def_vars: def_vars.clone(),
+                    def,
+                    body,
+                })
+            }
         }
     }
 
@@ -181,8 +264,10 @@ pub fn rewrite_fast(
         .map(|root| {
             // println!("ROOT");
             let mut owned_set = ExprSet::empty(Order::ChildFirst, false, false); // need struct hash off for cost_span later
+            let mut new_vars_mapping: HashMap<Symbol, Idx> = HashMap::new();
             let idx = helper(
                 &mut owned_set,
+                &mut new_vars_mapping,
                 pattern,
                 shared,
                 *root,

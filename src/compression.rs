@@ -12,6 +12,7 @@ use std::collections::BinaryHeap;
 use std::convert::TryInto;
 use std::fmt::{self, Display, Formatter};
 use std::hash::Hash;
+use std::iter::zip;
 use std::ops::DerefMut;
 use std::sync::Arc;
 use std::thread;
@@ -364,6 +365,18 @@ pub struct CostConfig {
     /// Sets cost for primitives like `+` and `*`
     #[clap(long, default_value = "100")]
     pub cost_prim_default: usize,
+
+    /// Sets cost for named variables like `$v1` and `$inp0`
+    #[clap(long, default_value = "100")]
+    pub cost_nvar: usize,
+
+    /// Sets cost for let expressions
+    #[clap(long, default_value = "1")]
+    pub cost_let: usize,
+
+    /// Sets cost for reverse let expressions
+    #[clap(long, default_value = "1")]
+    pub cost_revlet: usize,
 }
 
 impl CostConfig {
@@ -375,6 +388,9 @@ impl CostConfig {
             cost_ivar: self.cost_ivar.try_into().unwrap(),
             cost_prim_default: self.cost_prim_default.try_into().unwrap(),
             cost_prim: Default::default(),
+            cost_nvar: self.cost_nvar.try_into().unwrap(),
+            cost_let: self.cost_let.try_into().unwrap(),
+            cost_revlet: self.cost_revlet.try_into().unwrap(),
         }
     }
 }
@@ -383,7 +399,7 @@ impl Pattern {
     /// create a single hole pattern `??`
     //#[inline(never)]
     fn single_hole(
-        corpus_span: &Span,
+        mut match_locations: Vec<Idx>,
         cost_of_node_all: &[i32],
         num_paths_to_node: &[i32],
         set: &ExprSet,
@@ -391,13 +407,13 @@ impl Pattern {
         cfg: &CompressionStepConfig,
     ) -> Self {
         let body_utility = 0;
-        let mut match_locations: Vec<Idx> = corpus_span.clone().collect();
+        // let mut match_locations: Vec<Idx> = corpus_span.clone().collect();
         match_locations.sort(); // we assume match_locations is always sorted
 
         let match_locations_before = match_locations.clone();
 
         if cfg.no_curried_bodies {
-            for node in corpus_span.clone() {
+            for node in match_locations.clone() {
                 if let Node::App(f, _) = &set[node] {
                     // similar to eta_long, no appzipper bodies are allowed to be rooted to the left of an App
                     match_locations.retain(|node| node != f);
@@ -414,8 +430,8 @@ impl Pattern {
                 "eta long form requires utility_by_rewrite or no_mismatch_check"
             );
 
-            for node in corpus_span.clone() {
-                if let Node::App(f, _) = &set[node] {
+            for node in match_locations_before.iter() {
+                if let Node::App(f, _) = &set[*node] {
                     // this for eta long form / dreamcoder compatability: no appzipper bodies can be rooted to the left of an App
                     // because that means the body is a function type, which isnt allowed. For example an arity 2 invention with a
                     // function type body would be effectively arity 3 and dreamcoder doesnt support this sort of thing.
@@ -582,6 +598,7 @@ pub enum ExpandsTo {
     Var(i32, Tag),
     Prim(Symbol),
     IVar(i32),
+    NVar,
 }
 
 impl ExpandsTo {
@@ -595,6 +612,7 @@ impl ExpandsTo {
             ExpandsTo::Var(_, _) => false,
             ExpandsTo::Prim(_) => false,
             ExpandsTo::IVar(_) => false,
+            ExpandsTo::NVar => false,
         }
     }
     #[inline]
@@ -624,6 +642,7 @@ impl std::fmt::Display for ExpandsTo {
             }
             ExpandsTo::Prim(p) => write!(f, "{p}"),
             ExpandsTo::IVar(v) => write!(f, "#{v}"),
+            ExpandsTo::NVar => write!(f, "$NVar"),
         }
     }
 }
@@ -648,6 +667,9 @@ fn expands_to_of_node(node: &Node) -> ExpandsTo {
         Node::Lam(_, tag) => ExpandsTo::Lam(*tag),
         Node::App(_, _) => ExpandsTo::App,
         Node::IVar(i) => ExpandsTo::IVar(*i),
+        Node::NVar(n, _) => ExpandsTo::NVar,
+        Node::Let { .. } => unreachable!(),
+        Node::RevLet { .. } => unreachable!(),
     }
 }
 
@@ -1221,6 +1243,12 @@ fn stitch_search(shared: Arc<SharedData>) {
                     continue 'expansion;
                 }
 
+                // Can't have named variables in the body of a pattern
+                match expands_to {
+                    ExpandsTo::NVar => continue 'expansion,
+                    _ => {}
+                }
+
                 // Pruning (SINGLE USE): prune inventions that only match at a single unique (structurally hashed) subtree. This only applies if we
                 // also are priming with arity 0 inventions. Basically if something only matches at one subtree then the best you can
                 // do is the arity zero invention which is the whole subtree, and since we already primed with arity 0 inventions we can
@@ -1301,6 +1329,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                             .get(p)
                             .unwrap_or(&shared.cost_fn.cost_prim_default),
                         ExpandsTo::IVar(_) => 0,
+                        ExpandsTo::NVar => shared.cost_fn.cost_nvar,
                     };
 
                 // update the upper bound
@@ -1367,7 +1396,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                 // because subsetting of match_locations can turn previously useful abstractions into useless ones. In the paper this is referred to as "argument capture"
                 if !shared.cfg.no_opt_useless_abstract {
                     // note I believe it'd be save to iterate over first_zid_of_ivar instead
-                    for argchoice in original_pattern.arg_choices.iter() {
+                    for argchoice in arg_choices.iter() {
                         // if its the same arg in every place, and doesnt have any free vars (ie it's safe to inline)
                         if locs
                             .iter()
@@ -1704,12 +1733,18 @@ fn get_zippers(
     for idx in corpus_span.clone() {
         // if !shared.cfg.quiet { println!("processing Idx={}: {}", treenode, extract(*treenode, egraph) ) }
 
-        // any node can become the identity function (the empty zipper with itself as the arg)
-        let mut zids: Vec<ZId> = vec![EMPTY_ZID];
-
         // clone to appease the borrow checker
         let node = set.get(idx).node().clone();
 
+        match node {
+            Node::Let { .. } | Node::RevLet { .. } => {
+                continue;
+            }
+            _ => {}
+        };
+
+        // any node can become the identity function (the empty zipper with itself as the arg)
+        let mut zids: Vec<ZId> = vec![EMPTY_ZID];
         arg_of_zid_node[EMPTY_ZID].insert(
             idx,
             Arg {
@@ -1725,7 +1760,7 @@ fn get_zippers(
             Node::IVar(_) => {
                 unreachable!()
             }
-            Node::Var(_, _) | Node::Prim(_) => {}
+            Node::Var(_, _) | Node::Prim(_) | Node::NVar(_, _) => {}
             Node::App(f, x) => {
                 // bubble from `f`
                 for f_zid in zids_of_node[&f].iter() {
@@ -1809,6 +1844,8 @@ fn get_zippers(
                     arg_of_zid_node[*zid].insert(idx, arg);
                 }
             }
+            Node::Let { .. } => unreachable!(),
+            Node::RevLet { .. } => unreachable!(),
         }
         zids_of_node.insert(idx, zids);
     }
@@ -2221,8 +2258,11 @@ fn bottom_up_utility_correction(
         let utility_without_rewrite: i32 = match &shared.set[node] {
             Node::Lam(b, _) => cumulative_utility_of_node[*b],
             Node::App(f, x) => cumulative_utility_of_node[*f] + cumulative_utility_of_node[*x],
-            Node::Prim(_) | Node::Var(_, _) => 0,
+            Node::Prim(_) | Node::Var(_, _) | Node::NVar(_, _) => 0,
             Node::IVar(_) => unreachable!(),
+            Node::Let { def, body, .. } | Node::RevLet { def, body, .. } => {
+                cumulative_utility_of_node[*def] + cumulative_utility_of_node[*body]
+            }
         };
 
         assert!(utility_without_rewrite >= 0);
@@ -2801,8 +2841,10 @@ pub fn compression_step(
     // define all the important data structures for compression
     let mut donelist: Vec<FinishedPattern> = Default::default(); // completed inventions will go here
 
+    let single_node_locations: Vec<Idx> = arg_of_zid_node[0].keys().cloned().collect();
+
     let single_hole = Pattern::single_hole(
-        &corpus_span,
+        single_node_locations,
         &cost_of_node_all,
         &num_paths_to_node,
         &set,
