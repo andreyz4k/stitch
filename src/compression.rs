@@ -12,7 +12,6 @@ use std::collections::BinaryHeap;
 use std::convert::TryInto;
 use std::fmt::{self, Display, Formatter};
 use std::hash::Hash;
-use std::iter::zip;
 use std::ops::DerefMut;
 use std::sync::Arc;
 use std::thread;
@@ -331,6 +330,9 @@ fn zids_of_ivar_of_expr(
                 helper(expr.get(*x), curr_zip, zids_of_ivar, zid_of_zip)?;
                 curr_zip.pop();
             }
+            Node::NVar(_, _) => unreachable!(),
+            Node::Let { .. } => unreachable!(),
+            Node::RevLet { .. } => unreachable!(),
         }
         Ok(())
     }

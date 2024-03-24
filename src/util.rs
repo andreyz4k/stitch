@@ -71,6 +71,9 @@ pub fn ivar_to_dc(e: &mut ExprMut, depth: i32, arity: i32) {
         Node::Lam(b, _) => {
             ivar_to_dc(&mut e.get(b), depth + 1, arity);
         }
+        Node::NVar(_, _) => unreachable!(),
+        Node::Let { .. } => unreachable!(),
+        Node::RevLet { .. } => unreachable!(),
     }
 }
 
