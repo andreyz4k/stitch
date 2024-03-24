@@ -667,7 +667,7 @@ fn expands_to_of_node(node: &Node) -> ExpandsTo {
         Node::Lam(_, tag) => ExpandsTo::Lam(*tag),
         Node::App(_, _) => ExpandsTo::App,
         Node::IVar(i) => ExpandsTo::IVar(*i),
-        Node::NVar(n, _) => ExpandsTo::NVar,
+        Node::NVar(_, _) => ExpandsTo::NVar,
         Node::Let { .. } => unreachable!(),
         Node::RevLet { .. } => unreachable!(),
     }
@@ -899,6 +899,7 @@ pub struct Stats {
     upper_bound_fired: usize,
     // conflict_upper_bound_fired: usize,
     free_vars_fired: usize,
+    named_vars_fired: usize,
     single_use_fired: usize,
     single_task_fired: usize,
     useless_abstract_fired: usize,
@@ -2777,6 +2778,7 @@ pub fn compression_step(
         .collect();
 
     let mut analyzed_free_vars = AnalyzedExpr::new(FreeVarAnalysis);
+    let mut analyzed_named_vars = AnalyzedExpr::new(NVarAnalysis);
 
     if !cfg.quiet {
         println!("cost_of_node structs: {:?}ms", tstart.elapsed().as_millis())
@@ -2828,6 +2830,7 @@ pub fn compression_step(
 
     let mut analyzed_ivars = AnalyzedExpr::new(IVarAnalysis);
     analyzed_free_vars.analyze(&set);
+    analyzed_named_vars.analyze(&set);
     analyzed_cost.analyze(&set);
     analyzed_ivars.analyze(&set);
 
@@ -2863,6 +2866,15 @@ pub fn compression_step(
             if !analyzed_free_vars[node].is_empty() {
                 if !cfg.no_stats {
                     stats.free_vars_fired += 1;
+                };
+                continue;
+            }
+
+            // Pruning (NAMED VARS): inventions with named vars in the body are not well-defined functions
+            // and should thus be discarded
+            if !analyzed_named_vars[node].is_empty() {
+                if !cfg.no_stats {
+                    stats.named_vars_fired += 1;
                 };
                 continue;
             }

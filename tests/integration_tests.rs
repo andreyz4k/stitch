@@ -403,6 +403,16 @@ fn origami_2_a3_i10() {
 }
 
 #[test]
+fn list_with_revs_1() {
+    compare_out_jsons(
+        "data/dc/list_with_revs.json",
+        "data/expected_outputs/list_with_revs_1-a3-i10.json",
+        "-i10 -a3 --rewrite-check",
+        InputFormat::Dreamcoder,
+    );
+}
+
+#[test]
 fn neurosym_match_at_tag() {
     compare_out_jsons(
         "data/neurosym/match_at_tag.json",
