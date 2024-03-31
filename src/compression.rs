@@ -551,6 +551,13 @@ impl Pattern {
                     curr_zip.pop();
                     set.add(Node::App(f_idx, x_idx))
                 }
+                Node::NVar(_, l) => {
+                    if *l != Idx::MAX {
+                        helper(set, *l, curr_zip, zips, shared)
+                    } else {
+                        unreachable!()
+                    }
+                }
                 _ => unreachable!(),
             }
         }
@@ -656,6 +663,7 @@ const EMPTY_ZID: ZId = 0;
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Arg {
     pub shifted_id: Idx, // post-shifting node - this tells you what the actual argument is
+    pub fill_id: Idx,    // this node will be used when calculating uses of the abstraction
     pub unshifted_id: Idx, // tells you which node in the original corpus this was before it was possibly shifted
     pub shift: i32,        // how much was it shifted?
     pub cost: i32,
@@ -1752,9 +1760,10 @@ fn get_zippers(
             idx,
             Arg {
                 shifted_id: idx,
+                fill_id: idx,
                 unshifted_id: idx,
                 shift: 0,
-                cost: analyzed_cost[idx],
+                cost: analyzed_cost[idx].0,
                 expands_to: expands_to_of_node(&node),
             },
         );
@@ -1764,7 +1773,23 @@ fn get_zippers(
             Node::IVar(_) => {
                 unreachable!()
             }
-            Node::Var(_, _) | Node::Prim(_) | Node::NVar(_, _) => {}
+            Node::Var(_, _) | Node::Prim(_) => {}
+            Node::NVar(_, link) => {
+                if zids_of_node.contains_key(&link) {
+                    for l_zid in zids_of_node[&link].iter() {
+                        // give it the same arg
+                        let mut arg = arg_of_zid_node[*l_zid][&link].clone();
+                        if *l_zid != EMPTY_ZID {
+                            zids.push(*l_zid);
+                        } else {
+                            arg.unshifted_id = idx;
+                            arg.fill_id = idx;
+                            arg.cost = analyzed_cost[idx].0;
+                        }
+                        arg_of_zid_node[*l_zid].insert(idx, arg);
+                    }
+                }
+            }
             Node::App(f, x) => {
                 // bubble from `f`
                 for f_zid in zids_of_node[&f].iter() {
@@ -1843,6 +1868,7 @@ fn get_zippers(
                         }
                         arg.shifted_id =
                             set.get_mut(arg.shifted_id).shift(-1, 0, analyzed_free_vars);
+                        arg.fill_id = arg.shifted_id;
                         arg.shift -= 1;
                     }
                     arg_of_zid_node[*zid].insert(idx, arg);
@@ -1951,7 +1977,7 @@ impl CompressionStepResult {
                 done.pattern
                     .first_zid_of_ivar
                     .iter()
-                    .map(|zid| shared.arg_of_zid_node[*zid][node].shifted_id)
+                    .map(|zid| shared.arg_of_zid_node[*zid][node].fill_id)
                     .collect()
             })
             .collect();
@@ -2257,6 +2283,8 @@ fn bottom_up_utility_correction(
 ) -> (Vec<i32>, FxHashMap<Idx, bool>) {
     let mut cumulative_utility_of_node: Vec<i32> = vec![0; shared.corpus_span.len()];
     let mut corrected_utils: FxHashMap<Idx, bool> = Default::default();
+    let mut var_uses: Vec<FxHashMap<Symbol, i32>> =
+        vec![Default::default(); shared.corpus_span.len()];
 
     for node in shared.corpus_span.clone() {
         let utility_without_rewrite: i32 = match &shared.set[node] {
@@ -2264,12 +2292,70 @@ fn bottom_up_utility_correction(
             Node::App(f, x) => cumulative_utility_of_node[*f] + cumulative_utility_of_node[*x],
             Node::Prim(_) | Node::Var(_, _) | Node::NVar(_, _) => 0,
             Node::IVar(_) => unreachable!(),
-            Node::Let { def, body, .. } | Node::RevLet { def, body, .. } => {
+            Node::Let { var, def, body, .. } => {
+                if var_uses[*body].contains_key(var) {
+                    cumulative_utility_of_node[*def] + cumulative_utility_of_node[*body]
+                        - (shared.analyzed_cost[*body].1[var] - var_uses[*body][var])
+                            * shared.analyzed_cost[*body].2[var]
+                } else {
+                    cumulative_utility_of_node[*body]
+                        - (shared.analyzed_cost[*body].1[var] - 1)
+                            * shared.analyzed_cost[*body].2[var]
+                        + shared.cost_fn.cost_let
+                }
+            }
+            Node::RevLet { def, body, .. } => {
                 cumulative_utility_of_node[*def] + cumulative_utility_of_node[*body]
             }
         };
 
         assert!(utility_without_rewrite >= 0);
+
+        var_uses[node] = match &shared.set[node] {
+            Node::IVar(_) => unreachable!(),
+            Node::Var(_, _) | Node::Prim(_) => FxHashMap::default(),
+            Node::NVar(name, _) => {
+                let mut res = FxHashMap::default();
+                res.insert(name.clone(), 1);
+                res
+            }
+            Node::Lam(b, _) => var_uses[*b].clone(),
+            Node::App(f, x) => {
+                let mut res = var_uses[*f].clone();
+                var_uses[*x].iter().for_each(|(k, v)| {
+                    res.entry(k.clone()).and_modify(|v2| *v2 += v).or_insert(*v);
+                });
+                res
+            }
+            Node::Let { var, def, body, .. } => {
+                if var_uses[*body].contains_key(var) {
+                    let mut res = var_uses[*body].clone();
+                    var_uses[*def].iter().for_each(|(k, v)| {
+                        res.entry(k.clone()).and_modify(|v2| *v2 += v).or_insert(*v);
+                    });
+                    res.remove(var);
+                    res
+                } else {
+                    var_uses[*body].clone()
+                }
+            }
+            Node::RevLet {
+                inp_var,
+                def_vars,
+                body,
+                ..
+            } => {
+                // TODO: make a proper replacement check
+                let mut res = var_uses[*body].clone();
+                for var in def_vars {
+                    res.remove(var);
+                }
+                res.entry(inp_var.clone())
+                    .and_modify(|v| *v += 1)
+                    .or_insert(1);
+                res
+            }
+        };
 
         if let Ok(idx) = pattern.match_locations.binary_search(&node) {
             // this node is a potential rewrite location
@@ -2281,13 +2367,41 @@ fn bottom_up_utility_correction(
                     cumulative_utility_of_node[shared.arg_of_zid_node[*zid][&node].unshifted_id]
                 })
                 .sum();
-            let utility_with_rewrite = utility_of_args + utility_of_loc_once[idx];
+            let mut var_uses_with_rewrite = FxHashMap::default();
+            for zid in pattern.first_zid_of_ivar.iter() {
+                var_uses[shared.arg_of_zid_node[*zid][&node].unshifted_id]
+                    .iter()
+                    .for_each(|(k, v)| {
+                        var_uses_with_rewrite
+                            .entry(k.clone())
+                            .and_modify(|v2| *v2 += v)
+                            .or_insert(*v);
+                    });
+            }
+
+            let inserted_vars_count: i32 = var_uses[node]
+                .iter()
+                .map(|(k, v)| {
+                    if var_uses_with_rewrite.contains_key(&k) {
+                        0
+                    } else {
+                        *v
+                    }
+                })
+                .sum();
+
+            let utility_with_rewrite = utility_of_args
+                + inserted_vars_count * shared.cost_fn.cost_nvar
+                + utility_of_loc_once[idx];
 
             let chose_to_rewrite = utility_with_rewrite > utility_without_rewrite;
 
             cumulative_utility_of_node[node] =
                 std::cmp::max(utility_with_rewrite, utility_without_rewrite);
 
+            if chose_to_rewrite {
+                var_uses[node] = var_uses_with_rewrite;
+            }
             corrected_utils.insert(node, chose_to_rewrite);
         } else if utility_without_rewrite != 0 {
             cumulative_utility_of_node[node] = utility_without_rewrite;
@@ -2737,7 +2851,7 @@ pub fn compression_step(
     let tasks_of_node: Vec<FxHashSet<usize>> =
         associate_tasks(&roots, &set, &corpus_span, &task_of_root_idx);
 
-    let init_cost_by_root_idx: Vec<i32> = roots.iter().map(|idx| analyzed_cost[*idx]).collect();
+    let init_cost_by_root_idx: Vec<i32> = roots.iter().map(|idx| analyzed_cost[*idx].0).collect();
     let init_cost_by_root_idx_weighted: Vec<f32> = init_cost_by_root_idx
         .iter()
         .zip(weights.iter())
@@ -2763,7 +2877,7 @@ pub fn compression_step(
                 .unwrap()
         })
         .sum();
-    let first_train_cost = roots.iter().map(|idx| analyzed_cost[*idx]).sum(); // This is used for --verbose-print
+    let first_train_cost = roots.iter().map(|idx| analyzed_cost[*idx].0).sum(); // This is used for --verbose-print
 
     if !cfg.quiet {
         println!(
@@ -2782,7 +2896,7 @@ pub fn compression_step(
     // cost of a single usage times number of paths to node
     let cost_of_node_all: Vec<i32> = corpus_span
         .clone()
-        .map(|node| analyzed_cost[node] * num_paths_to_node[node])
+        .map(|node| analyzed_cost[node].0 * num_paths_to_node[node])
         .collect();
 
     let mut analyzed_free_vars = AnalyzedExpr::new(FreeVarAnalysis);
@@ -2900,7 +3014,7 @@ pub fn compression_step(
             // be useful at that node
 
             let match_locations = vec![node];
-            let body_utility = analyzed_cost[node];
+            let body_utility = analyzed_cost[node].0;
 
             // compressive_utility for arity-0 is cost_of_node_all[node] minus the penalty of using the new prim
             let compressive_utility: i32 = init_cost_weighted
@@ -2913,7 +3027,7 @@ pub fn compression_step(
                                 (init_cost_by_root_idx_weighted[*idx]
                                     - weights[*idx]
                                         * (num_paths_to_node_by_root_idx[*idx][node]
-                                            * (analyzed_cost[node] - cost_fn.cost_prim_default))
+                                            * (analyzed_cost[node].0 - cost_fn.cost_prim_default))
                                             as f32)
                                     .round() as i32
                             })

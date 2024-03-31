@@ -1,8 +1,7 @@
-use std::collections::HashMap;
-
 use crate::*;
 use compression::*;
 use lambdas::*;
+use rustc_hash::{FxHashMap, FxHashSet};
 
 /// a rule for determining when to shift and by how much.
 /// if anything points above the `depth_cutoff` (absolute depth
@@ -24,7 +23,9 @@ pub fn rewrite_fast(
     #[allow(clippy::too_many_arguments)]
     fn helper(
         owned_set: &mut ExprSet,
-        new_vars_mapping: &mut HashMap<Symbol, Idx>,
+        new_vars_mapping: &mut FxHashMap<Symbol, Idx>,
+        used_vars: &mut FxHashSet<Symbol>,
+        unused_vars: &mut FxHashSet<Symbol>,
         pattern: &FinishedPattern,
         shared: &SharedData,
         unshifted_id: Idx,
@@ -43,7 +44,7 @@ pub fn rewrite_fast(
         //         shared.egraph[shared.arg_of_zid_node[*zid][&unshifted_id].Idx].data.free_vars.iter().any(|var| *var < 0))
         {
             //  if !shared.cfg.quiet { println!("inv applies at unshifted={} with shift={}", extract(unshifted_id,&shared.egraph), shift) }
-            let mut expr = owned_set.add(inv_name.clone());
+            let mut expr = (*owned_set).add(inv_name.clone());
             // wrap the prim in all the Apps to args
             for zid in pattern.pattern.first_zid_of_ivar.iter() {
                 let arg: &Arg = &shared.arg_of_zid_node[*zid][&unshifted_id];
@@ -60,6 +61,8 @@ pub fn rewrite_fast(
                 let mut rewritten_arg = helper(
                     owned_set,
                     new_vars_mapping,
+                    used_vars,
+                    unused_vars,
                     pattern,
                     shared,
                     arg.unshifted_id,
@@ -143,6 +146,8 @@ pub fn rewrite_fast(
                 let f = helper(
                     owned_set,
                     new_vars_mapping,
+                    used_vars,
+                    unused_vars,
                     pattern,
                     shared,
                     *unshifted_f,
@@ -153,6 +158,8 @@ pub fn rewrite_fast(
                 let x = helper(
                     owned_set,
                     new_vars_mapping,
+                    used_vars,
+                    unused_vars,
                     pattern,
                     shared,
                     *unshifted_x,
@@ -166,6 +173,8 @@ pub fn rewrite_fast(
                 let b = helper(
                     owned_set,
                     new_vars_mapping,
+                    used_vars,
+                    unused_vars,
                     pattern,
                     shared,
                     *unshifted_b,
@@ -178,13 +187,10 @@ pub fn rewrite_fast(
             Node::IVar(_) => {
                 unreachable!()
             }
-            Node::NVar(name, other_link) => {
-                if let Some(&other_link) = new_vars_mapping.get(name) {
-                    // let link = helper(e.get(*link), other_set, new_vars_mapping);
-                    owned_set.add(Node::NVar(name.clone(), other_link))
-                } else {
-                    owned_set.add(Node::NVar(name.clone(), *other_link))
-                }
+            Node::NVar(name, link) => {
+                used_vars.insert(name.clone());
+                let new_link = new_vars_mapping.get(name).unwrap_or(link);
+                owned_set.add(Node::NVar(name.clone(), *new_link))
             }
             Node::Let {
                 var,
@@ -192,33 +198,55 @@ pub fn rewrite_fast(
                 def: unshifted_def,
                 body: unshifted_body,
             } => {
-                let def = helper(
-                    owned_set,
-                    new_vars_mapping,
-                    pattern,
-                    shared,
-                    *unshifted_def,
-                    total_depth,
-                    shift_rules,
-                    inv_name,
-                );
-                new_vars_mapping.insert(var.clone(), def);
-                let body = helper(
-                    owned_set,
-                    new_vars_mapping,
-                    pattern,
-                    shared,
-                    *unshifted_body,
-                    total_depth,
-                    shift_rules,
-                    inv_name,
-                );
-                owned_set.add(Node::Let {
-                    var: var.clone(),
-                    type_str: type_str.clone(),
-                    def,
-                    body,
-                })
+                if unused_vars.contains(var) {
+                    helper(
+                        owned_set,
+                        new_vars_mapping,
+                        used_vars,
+                        unused_vars,
+                        pattern,
+                        shared,
+                        *unshifted_body,
+                        total_depth,
+                        shift_rules,
+                        inv_name,
+                    )
+                } else {
+                    let def = helper(
+                        owned_set,
+                        new_vars_mapping,
+                        used_vars,
+                        unused_vars,
+                        pattern,
+                        shared,
+                        *unshifted_def,
+                        total_depth,
+                        shift_rules,
+                        inv_name,
+                    );
+                    new_vars_mapping.insert(var.clone(), def);
+                    let body = helper(
+                        owned_set,
+                        new_vars_mapping,
+                        used_vars,
+                        unused_vars,
+                        pattern,
+                        shared,
+                        *unshifted_body,
+                        total_depth,
+                        shift_rules,
+                        inv_name,
+                    );
+                    if !used_vars.contains(var) {
+                        unused_vars.insert(var.clone());
+                    }
+                    owned_set.add(Node::Let {
+                        var: var.clone(),
+                        type_str: type_str.clone(),
+                        def,
+                        body,
+                    })
+                }
             }
             Node::RevLet {
                 inp_var,
@@ -226,9 +254,12 @@ pub fn rewrite_fast(
                 def: unshifted_def,
                 body: unshifted_body,
             } => {
+                // TODO: make a proper replacement check
                 let body = helper(
                     owned_set,
                     new_vars_mapping,
+                    used_vars,
+                    unused_vars,
                     pattern,
                     shared,
                     *unshifted_body,
@@ -240,6 +271,8 @@ pub fn rewrite_fast(
                 let def = helper(
                     owned_set,
                     new_vars_mapping,
+                    used_vars,
+                    unused_vars,
                     pattern,
                     shared,
                     *unshifted_def,
@@ -264,10 +297,15 @@ pub fn rewrite_fast(
         .map(|root| {
             // println!("ROOT");
             let mut owned_set = ExprSet::empty(Order::ChildFirst, false, false); // need struct hash off for cost_span later
-            let mut new_vars_mapping: HashMap<Symbol, Idx> = HashMap::new();
-            let idx = helper(
+            let mut new_vars_mapping: FxHashMap<Symbol, Idx> = FxHashMap::default();
+            let mut used_vars: FxHashSet<Symbol> = FxHashSet::default();
+            let mut unused_vars: FxHashSet<Symbol> = FxHashSet::default();
+            let mut unused_count = 0;
+            let mut idx = helper(
                 &mut owned_set,
                 &mut new_vars_mapping,
+                &mut used_vars,
+                &mut unused_vars,
                 pattern,
                 shared,
                 *root,
@@ -275,6 +313,24 @@ pub fn rewrite_fast(
                 shift_rules,
                 inv_name,
             );
+            while unused_vars.len() != unused_count {
+                unused_count = unused_vars.len();
+                owned_set = ExprSet::empty(Order::ChildFirst, false, false);
+                used_vars = FxHashSet::default();
+                new_vars_mapping = FxHashMap::default();
+                idx = helper(
+                    &mut owned_set,
+                    &mut new_vars_mapping,
+                    &mut used_vars,
+                    &mut unused_vars,
+                    pattern,
+                    shared,
+                    *root,
+                    0,
+                    shift_rules,
+                    inv_name,
+                );
+            }
             ExprOwned {
                 set: owned_set,
                 idx,

@@ -1,0 +1,39 @@
+{
+  "original_cost": 1008,
+  "final_cost": 402,
+  "compression_ratio": 2.5074626865671643,
+  "num_abstractions": 1,
+  "original": [
+    "let $v1::int = 1 in (a $v1 $v1 $v1)",
+    "let $v2::int = 1 in (b $v2 $v2 $v2)"
+  ],
+  "rewritten": [
+    "(fn_0 a)",
+    "(fn_0 b)"
+  ],
+  "rewritten_dreamcoder": null,
+  "abstractions": [
+    {
+      "body": "(#0 1 1 1)",
+      "dreamcoder": "#(lambda ($0 1 1 1))",
+      "arity": 1,
+      "name": "fn_0",
+      "utility": 303,
+      "final_cost": 402,
+      "compression_ratio": 2.5074626865671643,
+      "cumulative_compression_ratio": 2.5074626865671643,
+      "num_uses": 2,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_0 a": "(a $v1 $v1 $v1)"
+        },
+        {
+          "fn_0 b": "(b $v2 $v2 $v2)"
+        }
+      ],
+      "dc_comparison_millis": null
+    }
+  ]
+}

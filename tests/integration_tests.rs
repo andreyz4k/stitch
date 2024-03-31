@@ -285,6 +285,16 @@ fn simple7_a2_i1() {
 }
 
 #[test]
+fn simple8_a1_i1() {
+    compare_out_jsons(
+        "data/basic/simple8.json",
+        "data/expected_outputs/simple8-a1-i1.json",
+        "-i1 -a1 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
 fn nuts_bolts_a3_i10() {
     compare_out_jsons(
         "data/cogsci/nuts-bolts.json",
