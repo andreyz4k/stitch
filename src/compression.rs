@@ -1880,6 +1880,15 @@ fn get_zippers(
         zids_of_node.insert(idx, zids);
     }
 
+    for idx in corpus_span.clone() {
+        match set.get(idx).node() {
+            Node::NVar(_, _) => {
+                arg_of_zid_node[EMPTY_ZID].remove(&idx);
+            }
+            _ => {}
+        }
+    }
+
     let extensions_of_zid = zip_of_zid
         .iter()
         .map(|zip| {
