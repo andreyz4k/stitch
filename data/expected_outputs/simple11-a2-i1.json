@@ -1,0 +1,36 @@
+{
+  "original_cost": 1412,
+  "final_cost": 1008,
+  "compression_ratio": 1.4007936507936507,
+  "num_abstractions": 1,
+  "original": [
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3 = rev($v2 = (reverse $v3)) in (cons $v1 $v3)",
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3 = rev($v2 = (reverse $v3)) in $v3"
+  ],
+  "rewritten": [
+    "let $v1, $v3 = rev($inp0 = (fn_0 $v3 $v1)) in (cons $v1 $v3)",
+    "let $v1, $v3 = rev($inp0 = (fn_0 $v3 $v1)) in $v3"
+  ],
+  "rewritten_dreamcoder": null,
+  "abstractions": [
+    {
+      "body": "(cons #1 (reverse #0))",
+      "dreamcoder": "#(lambda (lambda (cons $0 (reverse $1))))",
+      "arity": 2,
+      "name": "fn_0",
+      "utility": 201,
+      "final_cost": 1008,
+      "compression_ratio": 1.4007936507936507,
+      "cumulative_compression_ratio": 1.4007936507936507,
+      "num_uses": 2,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_0 $v3 $v1": "(cons $v1 $v2)"
+        }
+      ],
+      "dc_comparison_millis": null
+    }
+  ]
+}

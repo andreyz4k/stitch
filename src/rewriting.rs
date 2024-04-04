@@ -254,38 +254,61 @@ pub fn rewrite_fast(
                 def: unshifted_def,
                 body: unshifted_body,
             } => {
-                // TODO: make a proper replacement check
-                let body = helper(
-                    owned_set,
-                    new_vars_mapping,
-                    used_vars,
-                    unused_vars,
-                    pattern,
-                    shared,
-                    *unshifted_body,
-                    total_depth,
-                    shift_rules,
-                    inv_name,
-                );
-                new_vars_mapping.insert(inp_var.clone(), body);
-                let def = helper(
-                    owned_set,
-                    new_vars_mapping,
-                    used_vars,
-                    unused_vars,
-                    pattern,
-                    shared,
-                    *unshifted_def,
-                    total_depth,
-                    shift_rules,
-                    inv_name,
-                );
-                owned_set.add(Node::RevLet {
-                    inp_var: inp_var.clone(),
-                    def_vars: def_vars.clone(),
-                    def,
-                    body,
-                })
+                if unused_vars.contains(inp_var) {
+                    helper(
+                        owned_set,
+                        new_vars_mapping,
+                        used_vars,
+                        unused_vars,
+                        pattern,
+                        shared,
+                        *unshifted_body,
+                        total_depth,
+                        shift_rules,
+                        inv_name,
+                    )
+                } else {
+                    let body = helper(
+                        owned_set,
+                        new_vars_mapping,
+                        used_vars,
+                        unused_vars,
+                        pattern,
+                        shared,
+                        *unshifted_body,
+                        total_depth,
+                        shift_rules,
+                        inv_name,
+                    );
+                    let mut def_used_vars: FxHashSet<Symbol> = FxHashSet::default();
+                    let def = helper(
+                        owned_set,
+                        new_vars_mapping,
+                        &mut def_used_vars,
+                        unused_vars,
+                        pattern,
+                        shared,
+                        *unshifted_def,
+                        total_depth,
+                        shift_rules,
+                        inv_name,
+                    );
+                    for var in def_vars.iter() {
+                        if !def_used_vars.contains(var) {
+                            unused_vars.insert(var.clone());
+                        }
+                    }
+                    let mut new_def_vars: Vec<Symbol> = def_used_vars.iter().cloned().collect();
+                    new_def_vars.reverse();
+                    used_vars.insert(inp_var.clone());
+                    new_vars_mapping.insert(inp_var.clone(), def);
+                    owned_set.add(Node::RevLet {
+                        inp_var: inp_var.clone(),
+                        def_vars: new_def_vars,
+                        def,
+                        body,
+                    })
+                }
             }
         }
     }

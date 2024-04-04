@@ -1269,6 +1269,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                     && !shared.cfg.no_opt_arity_zero
                     && locs.len() == 1
                     && shared.analyzed_free_vars[locs[0]].is_empty()
+                    && shared.analyzed_cost[locs[0]].1.is_empty()
                 {
                     if !shared.cfg.no_stats {
                         shared.stats.lock().deref_mut().single_use_fired += 1;
@@ -1414,6 +1415,10 @@ fn stitch_search(shared: Arc<SharedData>) {
                             .all_equal()
                             && shared.analyzed_free_vars
                                 [shared.arg_of_zid_node[argchoice.zid][&locs[0]].shifted_id]
+                                .is_empty()
+                            && shared.analyzed_cost
+                                [shared.arg_of_zid_node[argchoice.zid][&locs[0]].shifted_id]
+                                .1
                                 .is_empty()
                         {
                             if !shared.cfg.no_stats {
@@ -2314,7 +2319,16 @@ fn bottom_up_utility_correction(
                 }
             }
             Node::RevLet { def, body, .. } => {
-                cumulative_utility_of_node[*def] + cumulative_utility_of_node[*body]
+                let mut skipped_vars = 0;
+                for var in shared.analyzed_cost[*def].1.keys() {
+                    // TODO: how to calculate nested skipped vars?
+                    if !var_uses[*def].contains_key(var) {
+                        skipped_vars += 1;
+                    }
+                }
+                cumulative_utility_of_node[*def]
+                    + cumulative_utility_of_node[*body]
+                    + skipped_vars * shared.cost_fn.cost_revlet
             }
         };
 
@@ -2909,7 +2923,6 @@ pub fn compression_step(
         .collect();
 
     let mut analyzed_free_vars = AnalyzedExpr::new(FreeVarAnalysis);
-    let mut analyzed_named_vars = AnalyzedExpr::new(NVarAnalysis);
 
     if !cfg.quiet {
         println!("cost_of_node structs: {:?}ms", tstart.elapsed().as_millis())
@@ -2961,7 +2974,6 @@ pub fn compression_step(
 
     let mut analyzed_ivars = AnalyzedExpr::new(IVarAnalysis);
     analyzed_free_vars.analyze(&set);
-    analyzed_named_vars.analyze(&set);
     analyzed_cost.analyze(&set);
     analyzed_ivars.analyze(&set);
 
@@ -3003,7 +3015,7 @@ pub fn compression_step(
 
             // Pruning (NAMED VARS): inventions with named vars in the body are not well-defined functions
             // and should thus be discarded
-            if !analyzed_named_vars[node].is_empty() {
+            if !analyzed_cost[node].1.is_empty() {
                 if !cfg.no_stats {
                     stats.named_vars_fired += 1;
                 };
