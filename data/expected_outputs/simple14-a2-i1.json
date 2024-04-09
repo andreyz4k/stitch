@@ -1,0 +1,39 @@
+{
+  "original_cost": 3028,
+  "final_cost": 2220,
+  "compression_ratio": 1.363963963963964,
+  "num_abstractions": 1,
+  "original": [
+    "let $v1::int = Const(int, 1) in let $v2::int = 1 in let $v3::int = (+ $v1 $v2) in let $v4::int = Const(int, -1) in let $v5::int = (+ $v3 $v4) in let $v6::list(int) = (repeat $v5 $v1) in (concat $inp0 $v6)",
+    "let $v1::int = Const(int, 3) in let $v2::int = Const(int, 1) in let $v3::int = 1 in let $v4::int = (+ $v2 $v3) in let $v5::int = (- $v1 $v4) in let $v6::list(int) = (repeat $v5 $v2) in (concat $inp0 $v6)"
+  ],
+  "rewritten": [
+    "let $v1::int = Const(int, 1) in let $v4::int = Const(int, -1) in let $v5::int = (fn_0 + $v4) in let $v6::list(int) = (repeat $v5 $v1) in (concat $inp0 $v6)",
+    "let $v1::int = Const(int, 3) in let $v2::int = Const(int, 1) in let $v5::int = (fn_0 (- $v1)) in let $v6::list(int) = (repeat $v5 $v2) in (concat $inp0 $v6)"
+  ],
+  "rewritten_dreamcoder": null,
+  "abstractions": [
+    {
+      "body": "(#0 (+ Const(int, 1) 1))",
+      "dreamcoder": "#(lambda ($0 (+ Const(int, 1) 1)))",
+      "arity": 1,
+      "name": "fn_0",
+      "utility": 505,
+      "final_cost": 2220,
+      "compression_ratio": 1.363963963963964,
+      "cumulative_compression_ratio": 1.363963963963964,
+      "num_uses": 2,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_0 +": "(+ $v3)"
+        },
+        {
+          "fn_0 (- $v1)": "(- $v1 $v4)"
+        }
+      ],
+      "dc_comparison_millis": null
+    }
+  ]
+}

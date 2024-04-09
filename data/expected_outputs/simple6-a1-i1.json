@@ -1,15 +1,15 @@
 {
-  "original_cost": 1008,
-  "final_cost": 1008,
+  "original_cost": 1412,
+  "final_cost": 1412,
   "compression_ratio": 1.0,
   "num_abstractions": 0,
   "original": [
-    "let $v1::int = 1 in (a $v1 $v1 $v1)",
-    "let $v1::int = 0 in (b $v1 $v1 $v1)"
+    "let $v1::int = (+ 1 0) in (a $v1 $v1 $v1)",
+    "let $v1::int = (+ 0 1) in (b $v1 $v1 $v1)"
   ],
   "rewritten": [
-    "let $v1::int = 1 in (a $v1 $v1 $v1)",
-    "let $v1::int = 0 in (b $v1 $v1 $v1)"
+    "let $v1::int = (+ 1 0) in (a $v1 $v1 $v1)",
+    "let $v1::int = (+ 0 1) in (b $v1 $v1 $v1)"
   ],
   "rewritten_dreamcoder": null,
   "abstractions": []

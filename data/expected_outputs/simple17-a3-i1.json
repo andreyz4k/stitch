@@ -1,0 +1,36 @@
+{
+  "original_cost": 6260,
+  "final_cost": 4240,
+  "compression_ratio": 1.4764150943396226,
+  "num_abstractions": 1,
+  "original": [
+    "let $v2, $v1 = rev($inp0 = (cons $v1 $v2)) in let $v16, $v15, $v9, $v3, $v5 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in let $v7::int = (- $v5 $v1) in let $v8::int = (+ $v7 $v1) in let $v11::int = (- $v5 $v9) in let $v12::int = (- $v8 $v11) in let $v13::int = (+ $v12 $v1) in let $v14::int = (- $v13 $v1) in let $v17::list(int) = Const(list(int), Any[]) in let $v19::list(int) = (fn_0 $v17 $v15 $v14) in (cons $v8 $v19)",
+    "let $v2, $v1 = rev($inp0 = (cons $v1 $v2)) in let $v16, $v15, $v9, $v3, $v5 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in let $v7::int = (- $v5 $v1) in let $v8::int = (+ $v7 $v1) in let $v11::int = (- $v5 $v9) in let $v12::int = (- $v8 $v11) in let $v13::int = (+ $v12 $v1) in (- $v13 $v1)"
+  ],
+  "rewritten": [
+    "let $v2, $v1 = rev($inp0 = (cons $v1 $v2)) in let $v16, $v15, $v9, $v3, $v5 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in let $v7::int = (- $v5 $v1) in let $v8::int = (+ $v7 $v1) in let $v14::int = (fn_0 $v1 $v9 (- $v5)) in let $v17::list(int) = Const(list(int), Any[]) in let $v19::list(int) = (fn_0 $v17 $v15 $v14) in (cons $v8 $v19)",
+    "let $v2, $v1 = rev($inp0 = (cons $v1 $v2)) in let $v16, $v15, $v9, $v3, $v5 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in (fn_0 $v1 $v9 (- $v5))"
+  ],
+  "rewritten_dreamcoder": null,
+  "abstractions": [
+    {
+      "body": "(- (+ (- (+ (#2 #0) #0) (#2 #1)) #0) #0)",
+      "dreamcoder": "#(lambda (lambda (lambda (- (+ (- (+ ($0 $2) $2) ($0 $1)) $2) $2))))",
+      "arity": 3,
+      "name": "fn_0",
+      "utility": 1610,
+      "final_cost": 4240,
+      "compression_ratio": 1.4764150943396226,
+      "cumulative_compression_ratio": 1.4764150943396226,
+      "num_uses": 2,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_0 $v1 $v9 (- $v5)": "(- $v13 $v1)"
+        }
+      ],
+      "dc_comparison_millis": null
+    }
+  ]
+}

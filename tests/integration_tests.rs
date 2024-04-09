@@ -335,6 +335,66 @@ fn simple11_a2_i1() {
 }
 
 #[test]
+fn simple12_a2_i1() {
+    compare_out_jsons(
+        "data/basic/simple12.json",
+        "data/expected_outputs/simple12-a2-i1.json",
+        "-i1 -a2 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple13_a2_i1() {
+    compare_out_jsons(
+        "data/basic/simple13.json",
+        "data/expected_outputs/simple13-a2-i1.json",
+        "-i1 -a2 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple14_a2_i1() {
+    compare_out_jsons(
+        "data/basic/simple14.json",
+        "data/expected_outputs/simple14-a2-i1.json",
+        "-i1 -a2 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple15_a2_i1() {
+    compare_out_jsons(
+        "data/basic/simple15.json",
+        "data/expected_outputs/simple15-a2-i1.json",
+        "-i1 -a2 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple16_a3_i1() {
+    compare_out_jsons(
+        "data/basic/simple16.json",
+        "data/expected_outputs/simple16-a3-i1.json",
+        "-i1 -a3 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple17_a2_i1() {
+    compare_out_jsons(
+        "data/basic/simple17.json",
+        "data/expected_outputs/simple17-a3-i1.json",
+        "-i1 -a3 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
 fn nuts_bolts_a3_i10() {
     compare_out_jsons(
         "data/cogsci/nuts-bolts.json",

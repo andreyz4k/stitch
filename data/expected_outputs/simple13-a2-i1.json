@@ -1,0 +1,36 @@
+{
+  "original_cost": 3028,
+  "final_cost": 402,
+  "compression_ratio": 7.532338308457711,
+  "num_abstractions": 1,
+  "original": [
+    "let $v1::int = Const(int, 1) in let $v2::int = 1 in let $v3::int = (+ $v1 $v2) in let $v4::int = Const(int, -1) in let $v5::int = (+ $v3 $v4) in let $v6::list(int) = (repeat $v5 $v1) in (concat $inp0 $v6)",
+    "let $v1::int = Const(int, 1) in let $v2::int = 1 in let $v3::int = (+ $v1 $v2) in let $v4::int = Const(int, -1) in let $v5::int = (+ $v3 $v4) in let $v6::list(int) = (repeat $v5 $v1) in (concat $inp0 $v6)"
+  ],
+  "rewritten": [
+    "(fn_0 $inp0)",
+    "(fn_0 $inp0)"
+  ],
+  "rewritten_dreamcoder": null,
+  "abstractions": [
+    {
+      "body": "(concat #0 (repeat (+ (+ Const(int, 1) 1) Const(int, -1)) Const(int, 1)))",
+      "dreamcoder": "#(lambda (concat $0 (repeat (+ (+ Const(int, 1) 1) Const(int, -1)) Const(int, 1))))",
+      "arity": 1,
+      "name": "fn_0",
+      "utility": 1818,
+      "final_cost": 402,
+      "compression_ratio": 7.532338308457711,
+      "cumulative_compression_ratio": 7.532338308457711,
+      "num_uses": 2,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_0 $inp0": "(concat $inp0 $v6)"
+        }
+      ],
+      "dc_comparison_millis": null
+    }
+  ]
+}

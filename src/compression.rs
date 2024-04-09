@@ -281,7 +281,7 @@ pub struct Pattern {
     pub holes: Vec<ZId>, // zipper to hole in order of when theyre added NOT left to right
     arg_choices: Vec<LabelledZId>, // a hole gets moved into here when it becomes an abstraction argument, again these are in order of when they were added
     pub first_zid_of_ivar: Vec<ZId>, //first_zid_of_ivar[i] gives the index zipper to the ith argument (#i), i.e. this is zipper is also somewhere in arg_choices
-    pub match_locations: Vec<Idx>,   // places where it applies
+    pub match_locations: Vec<(Idx, i32)>, // places where it applies
     pub utility_upper_bound: i32,
     pub body_utility: i32, // the size (in `cost`) of a single use of the pattern body so far
     pub tracked: bool,     // for debugging
@@ -481,6 +481,8 @@ impl Pattern {
                 .retain(|node| !matches!(expands_to_of_node(&set[*node]), ExpandsTo::Lam(_)));
         }
 
+        let match_locations: Vec<(Idx, i32)> =
+            match_locations.into_iter().map(|v| (v, 0)).collect();
         let utility_upper_bound = utility_upper_bound(
             &match_locations,
             body_utility,
@@ -564,7 +566,7 @@ impl Pattern {
         // we can pick any match location
         let idx = helper(
             &mut set,
-            self.match_locations[0],
+            self.match_locations[0].0,
             &mut curr_zip,
             &zips,
             shared,
@@ -593,7 +595,7 @@ impl Pattern {
             self.match_locations.len(),
             self.match_locations
                 .iter()
-                .map(|loc| shared.num_paths_to_node[*loc])
+                .map(|loc| shared.num_paths_to_node[(*loc).0])
                 .sum::<i32>()
         )
     }
@@ -667,6 +669,7 @@ pub struct Arg {
     pub unshifted_id: Idx, // tells you which node in the original corpus this was before it was possibly shifted
     pub shift: i32,        // how much was it shifted?
     pub cost: i32,
+    pub is_var_replacement: bool,
     pub expands_to: ExpandsTo,
 }
 
@@ -957,7 +960,7 @@ impl HoleChoice {
                                 .match_locations
                                 .iter()
                                 .filter(|loc| {
-                                    shared.arg_of_zid_node[*hole_zid][loc].expands_to
+                                    shared.arg_of_zid_node[*hole_zid][&loc.0].expands_to
                                         == ExpandsTo::App
                                 })
                                 .count(),
@@ -978,7 +981,7 @@ impl HoleChoice {
                             pattern
                                 .match_locations
                                 .iter()
-                                .map(|loc| shared.arg_of_zid_node[*hole_zid][loc].cost)
+                                .map(|loc| shared.arg_of_zid_node[*hole_zid][&loc.0].cost)
                                 .sum::<i32>(),
                         )
                     })
@@ -997,7 +1000,7 @@ impl HoleChoice {
                             pattern
                                 .match_locations
                                 .iter()
-                                .map(|loc| shared.arg_of_zid_node[*hole_zid][loc].cost)
+                                .map(|loc| shared.arg_of_zid_node[*hole_zid][&loc.0].cost)
                                 .sum::<i32>(),
                         )
                     })
@@ -1019,7 +1022,7 @@ impl HoleChoice {
                                 .match_locations
                                 .iter()
                                 .map(|loc| {
-                                    shared.arg_of_zid_node[*hole_zid][loc].expands_to.clone()
+                                    shared.arg_of_zid_node[*hole_zid][&loc.0].expands_to.clone()
                                 })
                                 .counts()
                                 .values()
@@ -1192,7 +1195,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                     original_pattern
                         .match_locations
                         .iter()
-                        .map(|loc| shared.num_paths_to_node[*loc])
+                        .map(|loc| shared.num_paths_to_node[(*loc).0])
                         .sum::<i32>(),
                     original_pattern.to_expr(&shared)
                 )
@@ -1205,7 +1208,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                     original_pattern
                         .match_locations
                         .iter()
-                        .map(|loc| shared.num_paths_to_node[*loc])
+                        .map(|loc| shared.num_paths_to_node[(*loc).0])
                         .sum::<i32>(),
                     original_pattern.to_expr(&shared)
                 )
@@ -1229,7 +1232,7 @@ fn stitch_search(shared: Arc<SharedData>) {
             // node type in order to iterate over all the different expansions
             // We also sort secondarily by `loc` to ensure each groupby subsequence has the locations in sorted order
             let mut match_locations = original_pattern.match_locations.clone();
-            match_locations.sort_by_cached_key(|loc| (&arg_of_loc[loc].expands_to, *loc));
+            match_locations.sort_by_cached_key(|loc| (&arg_of_loc[&loc.0].expands_to, (*loc).0));
 
             let ivars_expansions =
                 get_ivars_expansions(&original_pattern, arg_of_loc, hole_zid, &shared);
@@ -1237,11 +1240,11 @@ fn stitch_search(shared: Arc<SharedData>) {
             let mut found_tracked = false;
             // for each way of expanding the hole...
 
-            'expansion: for (expands_to, locs) in match_locations
+            'expansion: for (expands_to, mut locs) in match_locations
                 .into_iter()
-                .group_by(|loc| &arg_of_loc[loc].expands_to)
+                .group_by(|loc| &arg_of_loc[&loc.0].expands_to)
                 .into_iter()
-                .map(|(expands_to, locs)| (expands_to.clone(), locs.collect::<Vec<Idx>>()))
+                .map(|(expands_to, locs)| (expands_to.clone(), locs.collect::<Vec<(Idx, i32)>>()))
                 .chain(ivars_expansions.into_iter())
             {
                 // for debugging
@@ -1268,8 +1271,8 @@ fn stitch_search(shared: Arc<SharedData>) {
                 if !shared.cfg.no_opt_single_use
                     && !shared.cfg.no_opt_arity_zero
                     && locs.len() == 1
-                    && shared.analyzed_free_vars[locs[0]].is_empty()
-                    && shared.analyzed_cost[locs[0]].1.is_empty()
+                    && shared.analyzed_free_vars[locs[0].0].is_empty()
+                    && shared.analyzed_cost[locs[0].0].1.is_empty()
                 {
                     if !shared.cfg.no_stats {
                         shared.stats.lock().deref_mut().single_use_fired += 1;
@@ -1281,10 +1284,10 @@ fn stitch_search(shared: Arc<SharedData>) {
                 if !shared.cfg.allow_single_task
                     && locs
                         .iter()
-                        .all(|node| shared.tasks_of_node[*node].len() == 1)
+                        .all(|node| shared.tasks_of_node[(*node).0].len() == 1)
                     && locs.iter().all(|node| {
-                        shared.tasks_of_node[locs[0]].iter().next()
-                            == shared.tasks_of_node[*node].iter().next()
+                        shared.tasks_of_node[locs[0].0].iter().next()
+                            == shared.tasks_of_node[(*node).0].iter().next()
                     })
                 {
                     if !shared.cfg.no_stats {
@@ -1396,12 +1399,23 @@ fn stitch_search(shared: Arc<SharedData>) {
                 // update arg_choices and possibly first_zid_of_ivar if a new ivar was added
                 let mut arg_choices = original_pattern.arg_choices.clone();
                 let mut first_zid_of_ivar = original_pattern.first_zid_of_ivar.clone();
-                if let ExpandsTo::IVar(i) = expands_to {
+                locs = if let ExpandsTo::IVar(i) = expands_to {
                     arg_choices.push(LabelledZId::new(hole_zid, i as usize));
                     if i as usize == original_pattern.first_zid_of_ivar.len() {
                         first_zid_of_ivar.push(hole_zid);
                     }
-                }
+                    locs
+                } else {
+                    locs.iter()
+                        .map(|(loc, r)| {
+                            if arg_of_loc[loc].is_var_replacement {
+                                (*loc, r + 1)
+                            } else {
+                                (*loc, *r)
+                            }
+                        })
+                        .collect()
+                };
 
                 // Pruning (ARGUMENT CAPTURE): check for useless abstractions (ie ones that take the same arg everywhere). We check for this all the time, not just when adding a new variables,
                 // because subsetting of match_locations can turn previously useful abstractions into useless ones. In the paper this is referred to as "argument capture"
@@ -1411,13 +1425,13 @@ fn stitch_search(shared: Arc<SharedData>) {
                         // if its the same arg in every place, and doesnt have any free vars (ie it's safe to inline)
                         if locs
                             .iter()
-                            .map(|loc| shared.arg_of_zid_node[argchoice.zid][loc].shifted_id)
+                            .map(|loc| shared.arg_of_zid_node[argchoice.zid][&loc.0].shifted_id)
                             .all_equal()
                             && shared.analyzed_free_vars
-                                [shared.arg_of_zid_node[argchoice.zid][&locs[0]].shifted_id]
+                                [shared.arg_of_zid_node[argchoice.zid][&locs[0].0].shifted_id]
                                 .is_empty()
                             && shared.analyzed_cost
-                                [shared.arg_of_zid_node[argchoice.zid][&locs[0]].shifted_id]
+                                [shared.arg_of_zid_node[argchoice.zid][&locs[0].0].shifted_id]
                                 .1
                                 .is_empty()
                         {
@@ -1440,7 +1454,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                         for ivar_zid_2 in first_zid_of_ivar.iter().skip(i + 1) {
                             let arg_of_loc_2 = &shared.arg_of_zid_node[*ivar_zid_2];
                             if locs.iter().all(|loc| {
-                                arg_of_loc_1[loc].shifted_id == arg_of_loc_2[loc].shifted_id
+                                arg_of_loc_1[&loc.0].shifted_id == arg_of_loc_2[&loc.0].shifted_id
                             }) {
                                 if !shared.cfg.no_stats {
                                     shared.stats.lock().deref_mut().force_multiuse_fired += 1;
@@ -1593,7 +1607,7 @@ fn get_ivars_expansions(
     arg_of_loc: &FxHashMap<Idx, Arg>,
     hole_zid: ZId,
     shared: &Arc<SharedData>,
-) -> Vec<(ExpandsTo, Vec<Idx>)> {
+) -> Vec<(ExpandsTo, Vec<(Idx, i32)>)> {
     let mut ivars_expansions = vec![];
 
     if shared.cfg.no_curried_metavars {
@@ -1606,12 +1620,12 @@ fn get_ivars_expansions(
     // consider all ivars used previously
     for ivar in 0..original_pattern.first_zid_of_ivar.len() {
         let arg_of_loc_ivar = &shared.arg_of_zid_node[original_pattern.first_zid_of_ivar[ivar]];
-        let locs: Vec<Idx> = original_pattern
+        let locs: Vec<(Idx, i32)> = original_pattern
             .match_locations
             .iter()
-            .filter(|loc: &&Idx| {
-                arg_of_loc[loc].shifted_id == arg_of_loc_ivar[loc].shifted_id
-                    && !invalid_metavar_location(shared, arg_of_loc[loc].shifted_id)
+            .filter(|loc| {
+                arg_of_loc[&loc.0].shifted_id == arg_of_loc_ivar[&loc.0].shifted_id
+                    && !invalid_metavar_location(shared, arg_of_loc[&loc.0].shifted_id)
             })
             .cloned()
             .collect();
@@ -1624,7 +1638,7 @@ fn get_ivars_expansions(
     if original_pattern.first_zid_of_ivar.len() < shared.cfg.max_arity {
         let ivar = original_pattern.first_zid_of_ivar.len();
         let mut locs = original_pattern.match_locations.clone();
-        locs.retain(|loc| !invalid_metavar_location(shared, arg_of_loc[loc].shifted_id));
+        locs.retain(|loc| !invalid_metavar_location(shared, arg_of_loc[&loc.0].shifted_id));
         ivars_expansions.push((ExpandsTo::IVar(ivar as i32), locs));
     }
     ivars_expansions
@@ -1648,7 +1662,7 @@ impl FinishedPattern {
         let usages = pattern
             .match_locations
             .iter()
-            .map(|loc| shared.num_paths_to_node[*loc])
+            .map(|loc| shared.num_paths_to_node[(*loc).0])
             .sum();
         let compressive_utility = compressive_utility(&pattern, shared);
         let noncompressive_utility = noncompressive_utility(pattern.body_utility, &shared.cfg);
@@ -1769,6 +1783,7 @@ fn get_zippers(
                 unshifted_id: idx,
                 shift: 0,
                 cost: analyzed_cost[idx].0,
+                is_var_replacement: false,
                 expands_to: expands_to_of_node(&node),
             },
         );
@@ -1790,6 +1805,7 @@ fn get_zippers(
                             arg.unshifted_id = idx;
                             arg.fill_id = idx;
                             arg.cost = analyzed_cost[idx].0;
+                            arg.is_var_replacement = true;
                         }
                         arg_of_zid_node[*l_zid].insert(idx, arg);
                     }
@@ -1982,7 +1998,13 @@ impl CompressionStepResult {
         let multiplier = shared.init_cost_weighted as f64 / final_cost as f64;
         let multiplier_wrt_orig = very_first_cost as f64 / final_cost as f64;
         let uses = done.usages;
-        let use_exprs: Vec<Idx> = done.pattern.match_locations.clone();
+        let use_exprs: Vec<Idx> = done
+            .pattern
+            .match_locations
+            .iter()
+            .map(|(v, _)| v)
+            .cloned()
+            .collect();
         let use_args: Vec<Vec<Idx>> = done
             .pattern
             .match_locations
@@ -1991,7 +2013,7 @@ impl CompressionStepResult {
                 done.pattern
                     .first_zid_of_ivar
                     .iter()
-                    .map(|zid| shared.arg_of_zid_node[*zid][node].fill_id)
+                    .map(|zid| shared.arg_of_zid_node[*zid][&node.0].fill_id)
                     .collect()
             })
             .collect();
@@ -2128,7 +2150,7 @@ impl fmt::Display for CompressionStepResult {
 /// calculates the total upper bound on compressive + noncompressive utility
 //#[inline(never)]
 fn utility_upper_bound(
-    match_locations: &[Idx],
+    match_locations: &[(Idx, i32)],
     body_utility_lower_bound: i32,
     cost_of_node_all: &[i32],
     num_paths_to_node: &[i32],
@@ -2161,14 +2183,16 @@ fn noncompressive_utility(body_utility: i32, cfg: &CompressionStepConfig) -> i32
 /// compressive_utility() that any completed offspring of this partial invention could have.
 //#[inline(never)]
 fn compressive_utility_upper_bound(
-    match_locations: &[Idx],
+    match_locations: &[(Idx, i32)],
     cost_of_node_all: &[i32],
     num_paths_to_node: &[i32],
     cost_fn: &ExprCost,
 ) -> i32 {
     match_locations
         .iter()
-        .map(|node| cost_of_node_all[*node] - num_paths_to_node[*node] * cost_fn.cost_prim_default)
+        .map(|node| {
+            cost_of_node_all[(*node).0] - num_paths_to_node[(*node).0] * cost_fn.cost_prim_default
+        })
         .sum::<i32>()
 
     // shared.init_cost - shared.root_idxs_of_task.iter().map(|root_idxs|
@@ -2201,7 +2225,7 @@ fn compressive_utility(pattern: &Pattern, shared: &SharedData) -> UtilityCalcula
 
     let utility_of_loc_once: Vec<i32> = get_utility_of_loc_once(pattern, shared);
 
-    let (cumulative_utility_of_node, corrected_utils) =
+    let (cumulative_utility_of_node, corrected_utils, skip_rewrite_nested) =
         bottom_up_utility_correction(pattern, shared, &utility_of_loc_once);
 
     let compressive_utility: i32 = shared.init_cost_weighted
@@ -2213,7 +2237,8 @@ fn compressive_utility(pattern: &Pattern, shared: &SharedData) -> UtilityCalcula
                     .iter()
                     .map(|idx| {
                         (shared.init_cost_by_root_idx_weighted[*idx]
-                            - (cumulative_utility_of_node[shared.roots[*idx]] as f32
+                            - (std::cmp::max(cumulative_utility_of_node[shared.roots[*idx]], 0)
+                                as f32
                                 * shared.weight_by_root_idx[*idx]))
                             .round() as i32
                     })
@@ -2227,6 +2252,7 @@ fn compressive_utility(pattern: &Pattern, shared: &SharedData) -> UtilityCalcula
     UtilityCalculation {
         util: compressive_utility,
         corrected_utils,
+        skip_rewrite_nested,
     }
 }
 
@@ -2260,7 +2286,7 @@ fn get_utility_of_loc_once(pattern: &Pattern, shared: &SharedData) -> Vec<i32> {
         .map(|loc| {
             //  if there are any free ivars in the arg at this location then we can't apply this invention here so *total* util should be 0
             for zid in pattern.first_zid_of_ivar.iter() {
-                let shifted_arg = shared.arg_of_zid_node[*zid][loc].shifted_id;
+                let shifted_arg = shared.arg_of_zid_node[*zid][&loc.0].shifted_id;
                 if !shared.analyzed_ivars[shifted_arg].is_empty() {
                     return 0; // set whole util to 0 for this loc, causing an autoreject
                 }
@@ -2277,7 +2303,7 @@ fn get_utility_of_loc_once(pattern: &Pattern, shared: &SharedData) -> Vec<i32> {
             let multiuse_utility = ivar_multiuses
                 .iter()
                 .map(|(ivar, count)| {
-                    count * shared.arg_of_zid_node[pattern.first_zid_of_ivar[*ivar]][loc].cost
+                    count * shared.arg_of_zid_node[pattern.first_zid_of_ivar[*ivar]][&loc.0].cost
                 })
                 .sum::<i32>();
             // if !shared.cfg.quiet { println!("multiuse {}", multiuse_utility) }
@@ -2294,93 +2320,174 @@ fn bottom_up_utility_correction(
     pattern: &Pattern,
     shared: &SharedData,
     utility_of_loc_once: &[i32],
-) -> (Vec<i32>, FxHashMap<Idx, bool>) {
+) -> (Vec<i32>, FxHashMap<Idx, bool>, FxHashSet<Idx>) {
     let mut cumulative_utility_of_node: Vec<i32> = vec![0; shared.corpus_span.len()];
     let mut corrected_utils: FxHashMap<Idx, bool> = Default::default();
+    let mut skip_rewrite_nested: FxHashSet<Idx> = Default::default();
     let mut var_uses: Vec<FxHashMap<Symbol, i32>> =
+        vec![Default::default(); shared.corpus_span.len()];
+    let mut used_var_utilities: Vec<FxHashMap<Symbol, i32>> =
         vec![Default::default(); shared.corpus_span.len()];
 
     for node in shared.corpus_span.clone() {
         let utility_without_rewrite: i32 = match &shared.set[node] {
-            Node::Lam(b, _) => cumulative_utility_of_node[*b],
-            Node::App(f, x) => cumulative_utility_of_node[*f] + cumulative_utility_of_node[*x],
-            Node::Prim(_) | Node::Var(_, _) | Node::NVar(_, _) => 0,
-            Node::IVar(_) => unreachable!(),
-            Node::Let { var, def, body, .. } => {
-                if var_uses[*body].contains_key(var) {
-                    cumulative_utility_of_node[*def] + cumulative_utility_of_node[*body]
-                        - (shared.analyzed_cost[*body].1[var] - var_uses[*body][var])
-                            * shared.analyzed_cost[*body].2[var]
-                } else {
-                    cumulative_utility_of_node[*body]
-                        - (shared.analyzed_cost[*body].1[var] - 1)
-                            * shared.analyzed_cost[*body].2[var]
-                        + shared.cost_fn.cost_let
-                }
+            Node::Lam(b, _) => {
+                var_uses[node] = var_uses[*b].clone();
+                used_var_utilities[node] = used_var_utilities[*b].clone();
+                cumulative_utility_of_node[*b]
             }
-            Node::RevLet { def, body, .. } => {
-                let mut skipped_vars = 0;
-                for var in shared.analyzed_cost[*def].1.keys() {
-                    // TODO: how to calculate nested skipped vars?
-                    if !var_uses[*def].contains_key(var) {
-                        skipped_vars += 1;
-                    }
-                }
-                cumulative_utility_of_node[*def]
-                    + cumulative_utility_of_node[*body]
-                    + skipped_vars * shared.cost_fn.cost_revlet
-            }
-        };
-
-        assert!(utility_without_rewrite >= 0);
-
-        var_uses[node] = match &shared.set[node] {
-            Node::IVar(_) => unreachable!(),
-            Node::Var(_, _) | Node::Prim(_) => FxHashMap::default(),
-            Node::NVar(name, _) => {
-                let mut res = FxHashMap::default();
-                res.insert(name.clone(), 1);
-                res
-            }
-            Node::Lam(b, _) => var_uses[*b].clone(),
             Node::App(f, x) => {
-                let mut res = var_uses[*f].clone();
+                let mut uses = var_uses[*f].clone();
                 var_uses[*x].iter().for_each(|(k, v)| {
-                    res.entry(k.clone()).and_modify(|v2| *v2 += v).or_insert(*v);
+                    uses.entry(k.clone())
+                        .and_modify(|v2| *v2 += v)
+                        .or_insert(*v);
                 });
-                res
+                var_uses[node] = uses;
+
+                let mut utilities = used_var_utilities[*f].clone();
+                used_var_utilities[*x].iter().for_each(|(k, v)| {
+                    utilities.entry(k.clone()).or_insert(*v);
+                });
+                used_var_utilities[node] = utilities;
+
+                cumulative_utility_of_node[*f] + cumulative_utility_of_node[*x]
+            }
+            Node::Prim(_) | Node::Var(_, _) => 0,
+            Node::IVar(_) => unreachable!(),
+            Node::NVar(name, link) => {
+                var_uses[node].insert(name.clone(), 1);
+                if *link != Idx::MAX {
+                    used_var_utilities[node]
+                        .insert(name.clone(), cumulative_utility_of_node[*link]);
+                    cumulative_utility_of_node[*link]
+                } else {
+                    used_var_utilities[node].insert(name.clone(), 0);
+                    0
+                }
             }
             Node::Let { var, def, body, .. } => {
-                if var_uses[*body].contains_key(var) {
-                    let mut res = var_uses[*body].clone();
+                let full_utility = if var_uses[*body].contains_key(var) {
+                    let mut uses = var_uses[*body].clone();
                     var_uses[*def].iter().for_each(|(k, v)| {
-                        res.entry(k.clone()).and_modify(|v2| *v2 += v).or_insert(*v);
+                        uses.entry(k.clone())
+                            .and_modify(|v2| *v2 += v)
+                            .or_insert(*v);
                     });
-                    res.remove(var);
-                    res
+                    uses.remove(var);
+                    var_uses[node] = uses;
+                    let mut utilities = used_var_utilities[*body].clone();
+                    used_var_utilities[*def].iter().for_each(|(k, v)| {
+                        utilities.entry(k.clone()).or_insert(*v);
+                    });
+                    utilities.remove(var);
+                    used_var_utilities[node] = utilities;
+
+                    let base_utility =
+                        cumulative_utility_of_node[*def] + cumulative_utility_of_node[*body];
+                    let full_utility = base_utility
+                        - (shared.analyzed_cost[*body].1[var] - var_uses[*body][var])
+                            * shared.analyzed_cost[*def].0
+                        - var_uses[*body][var] * cumulative_utility_of_node[*def];
+                    if base_utility > 0 && full_utility < 0 {
+                        // println!("node {} has negative utility {}", node, full_utility);
+                        skip_rewrite_nested.insert(node);
+                    }
+                    full_utility
                 } else {
-                    var_uses[*body].clone()
+                    var_uses[node] = var_uses[*body].clone();
+                    used_var_utilities[node] = used_var_utilities[*body].clone();
+
+                    cumulative_utility_of_node[*body]
+                        - (shared.analyzed_cost[*body].1[var] - 1) * shared.analyzed_cost[*def].0
+                        + shared.cost_fn.cost_let
+                };
+                if skip_rewrite_nested.contains(body) {
+                    skip_rewrite_nested.insert(node);
+                    std::cmp::min(full_utility, 0)
+                } else {
+                    full_utility
                 }
             }
             Node::RevLet {
                 inp_var,
-                def_vars,
+                def,
                 body,
-                ..
+                def_vars,
             } => {
-                // TODO: make a proper replacement check
-                let mut res = var_uses[*body].clone();
+                var_uses[node] = var_uses[*body].clone();
+                used_var_utilities[node] = used_var_utilities[*body].clone();
                 for var in def_vars {
-                    res.remove(var);
+                    var_uses[node].remove(var);
+                    used_var_utilities[node].remove(var);
                 }
-                res.entry(inp_var.clone())
+                var_uses[node]
+                    .entry(inp_var.clone())
                     .and_modify(|v| *v += 1)
                     .or_insert(1);
-                res
+                used_var_utilities[node]
+                    .entry(inp_var.clone())
+                    .or_insert(cumulative_utility_of_node[*def]);
+
+                let mut skipped_vars: FxHashSet<Symbol> = Default::default();
+                let mut utility = cumulative_utility_of_node[*def];
+                for var in def_vars {
+                    if !var_uses[*def].contains_key(var) {
+                        skipped_vars.insert(var.clone());
+                    } else {
+                        utility -= used_var_utilities[*def][var];
+                    }
+                }
+                let mut base_node = *body;
+                while !skipped_vars.is_empty() {
+                    match &shared.set[base_node] {
+                        Node::RevLet {
+                            inp_var,
+                            def_vars,
+                            body,
+                            def: inner_def,
+                        } => {
+                            if skipped_vars.contains(inp_var) {
+                                skipped_vars.remove(inp_var);
+                                utility += shared.cost_fn.cost_revlet;
+                                for var in def_vars {
+                                    if !var_uses[*def].contains_key(var) {
+                                        skipped_vars.insert(var.clone());
+                                    } else {
+                                        utility -= used_var_utilities[*inner_def][var];
+                                    }
+                                }
+                            } else {
+                                utility += cumulative_utility_of_node[base_node]
+                                    - cumulative_utility_of_node[*body];
+                            }
+                            base_node = *body;
+                        }
+                        Node::Let { body, .. } => {
+                            utility += cumulative_utility_of_node[base_node]
+                                - cumulative_utility_of_node[*body];
+                            base_node = *body;
+                        }
+                        _ => unreachable!(),
+                    }
+                }
+
+                let full_utility = utility + cumulative_utility_of_node[base_node];
+                if skip_rewrite_nested.contains(body) {
+                    skip_rewrite_nested.insert(node);
+                    std::cmp::min(full_utility, 0)
+                } else {
+                    full_utility
+                }
             }
         };
 
-        if let Ok(idx) = pattern.match_locations.binary_search(&node) {
+        // assert!(utility_without_rewrite >= 0);
+
+        if let Ok(idx) = pattern
+            .match_locations
+            .binary_search_by(|(n, _)| n.cmp(&node))
+        {
             // this node is a potential rewrite location
 
             let utility_of_args: i32 = pattern
@@ -2390,7 +2497,9 @@ fn bottom_up_utility_correction(
                     cumulative_utility_of_node[shared.arg_of_zid_node[*zid][&node].unshifted_id]
                 })
                 .sum();
+
             let mut var_uses_with_rewrite = FxHashMap::default();
+            let mut var_utilities_with_rewrite = FxHashMap::default();
             for zid in pattern.first_zid_of_ivar.iter() {
                 var_uses[shared.arg_of_zid_node[*zid][&node].unshifted_id]
                     .iter()
@@ -2400,43 +2509,44 @@ fn bottom_up_utility_correction(
                             .and_modify(|v2| *v2 += v)
                             .or_insert(*v);
                     });
+                used_var_utilities[shared.arg_of_zid_node[*zid][&node].unshifted_id]
+                    .iter()
+                    .for_each(|(k, v)| {
+                        var_utilities_with_rewrite.entry(k.clone()).or_insert(*v);
+                    });
             }
 
-            let inserted_vars_count: i32 = var_uses[node]
-                .iter()
-                .map(|(k, v)| {
-                    if var_uses_with_rewrite.contains_key(&k) {
-                        0
-                    } else {
-                        *v
-                    }
-                })
-                .sum();
-
-            let utility_with_rewrite = utility_of_args
-                + inserted_vars_count * shared.cost_fn.cost_nvar
-                + utility_of_loc_once[idx];
+            let utility_with_rewrite = utility_of_args + utility_of_loc_once[idx];
 
             let chose_to_rewrite = utility_with_rewrite > utility_without_rewrite;
 
-            cumulative_utility_of_node[node] =
-                std::cmp::max(utility_with_rewrite, utility_without_rewrite);
+            cumulative_utility_of_node[node] = utility_without_rewrite;
 
             if chose_to_rewrite {
+                let new_inserted_vars_count = pattern.match_locations[idx].1;
+                cumulative_utility_of_node[node] =
+                    utility_with_rewrite + new_inserted_vars_count * shared.cost_fn.cost_nvar;
+
                 var_uses[node] = var_uses_with_rewrite;
+                used_var_utilities[node] = var_utilities_with_rewrite;
             }
             corrected_utils.insert(node, chose_to_rewrite);
         } else if utility_without_rewrite != 0 {
             cumulative_utility_of_node[node] = utility_without_rewrite;
         }
     }
-    (cumulative_utility_of_node, corrected_utils)
+    (
+        cumulative_utility_of_node,
+        corrected_utils,
+        skip_rewrite_nested,
+    )
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UtilityCalculation {
     pub util: i32,
     pub corrected_utils: FxHashMap<Idx, bool>, // whether to accept
+    pub skip_rewrite_nested: FxHashSet<Idx>,   // whether to skip rewriting nested nodes
 }
 
 // (not used in popl code - experimental)
@@ -2650,8 +2760,8 @@ fn use_counts(
     }
     // we can pick any match location
     helper(
-        pattern.match_locations[0],
-        pattern.match_locations[0],
+        pattern.match_locations[0].0,
+        pattern.match_locations[0].0,
         &mut curr_zip,
         curr_zid,
         &zips,
@@ -3003,7 +3113,7 @@ pub fn compression_step(
     // arity 0 inventions
     if !cfg.no_opt_arity_zero {
         // we use single hole match locations in case they were pruned down from corpus_span by single_hole()
-        for node in single_hole.match_locations.clone() {
+        for (node, _) in single_hole.match_locations.clone() {
             // Pruning (FREE VARS): inventions with free vars in the body are not well-defined functions
             // and should thus be discarded
             if !analyzed_free_vars[node].is_empty() {
@@ -3034,7 +3144,7 @@ pub fn compression_step(
             // since any invention specific to a node will by definition only
             // be useful at that node
 
-            let match_locations = vec![node];
+            let match_locations = vec![(node, 0)];
             let body_utility = analyzed_cost[node].0;
 
             // compressive_utility for arity-0 is cost_of_node_all[node] minus the penalty of using the new prim
@@ -3090,6 +3200,7 @@ pub fn compression_step(
                 util_calc: UtilityCalculation {
                     util: compressive_utility,
                     corrected_utils: Default::default(),
+                    skip_rewrite_nested: Default::default(),
                 },
                 arity: 0,
                 usages: num_paths_to_node[node],

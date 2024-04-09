@@ -32,11 +32,12 @@ pub fn rewrite_fast(
         total_depth: i32, // depth from the very root of the program down
         shift_rules: &mut Vec<ShiftRule>,
         inv_name: &Node,
+        should_skip: bool,
     ) -> Idx {
         // println!("next @ {}: {}", total_depth, shared.set.get(unshifted_id));
 
         // we search using the the *unshifted* one since its an original program tree node
-        if pattern.pattern.match_locations.binary_search(&unshifted_id).is_ok() // if the pattern matches here
+        if !should_skip && pattern.pattern.match_locations.binary_search_by(|(n, _)| n.cmp(&unshifted_id)).is_ok() // if the pattern matches here
            && (!pattern.util_calc.corrected_utils.contains_key(&unshifted_id) // and either we have no conflict (ie corrected_utils doesnt have an entry)
              || pattern.util_calc.corrected_utils[&unshifted_id])
         // or we have a conflict but we choose to accept it (which is contextless in this top down approach so its the right move)
@@ -69,6 +70,7 @@ pub fn rewrite_fast(
                     total_depth - arg.shift,
                     shift_rules,
                     inv_name,
+                    should_skip,
                 );
                 if arg.shift != 0 {
                     // println!("popping shift rule");
@@ -154,6 +156,7 @@ pub fn rewrite_fast(
                     total_depth,
                     shift_rules,
                     inv_name,
+                    should_skip,
                 );
                 let x = helper(
                     owned_set,
@@ -166,6 +169,7 @@ pub fn rewrite_fast(
                     total_depth,
                     shift_rules,
                     inv_name,
+                    should_skip,
                 );
                 owned_set.add(Node::App(f, x))
             }
@@ -181,6 +185,7 @@ pub fn rewrite_fast(
                     total_depth + 1,
                     shift_rules,
                     inv_name,
+                    should_skip,
                 );
                 owned_set.add(Node::Lam(b, *tag))
             }
@@ -189,7 +194,11 @@ pub fn rewrite_fast(
             }
             Node::NVar(name, link) => {
                 used_vars.insert(name.clone());
-                let new_link = new_vars_mapping.get(name).unwrap_or(link);
+                let new_link = if *link == Idx::MAX {
+                    link
+                } else {
+                    new_vars_mapping.get(name).unwrap()
+                };
                 owned_set.add(Node::NVar(name.clone(), *new_link))
             }
             Node::Let {
@@ -198,6 +207,11 @@ pub fn rewrite_fast(
                 def: unshifted_def,
                 body: unshifted_body,
             } => {
+                let should_skip = should_skip
+                    || pattern
+                        .util_calc
+                        .skip_rewrite_nested
+                        .contains(&unshifted_id);
                 if unused_vars.contains(var) {
                     helper(
                         owned_set,
@@ -210,6 +224,7 @@ pub fn rewrite_fast(
                         total_depth,
                         shift_rules,
                         inv_name,
+                        should_skip,
                     )
                 } else {
                     let def = helper(
@@ -223,6 +238,7 @@ pub fn rewrite_fast(
                         total_depth,
                         shift_rules,
                         inv_name,
+                        should_skip,
                     );
                     new_vars_mapping.insert(var.clone(), def);
                     let body = helper(
@@ -236,6 +252,7 @@ pub fn rewrite_fast(
                         total_depth,
                         shift_rules,
                         inv_name,
+                        should_skip,
                     );
                     if !used_vars.contains(var) {
                         unused_vars.insert(var.clone());
@@ -266,6 +283,7 @@ pub fn rewrite_fast(
                         total_depth,
                         shift_rules,
                         inv_name,
+                        should_skip,
                     )
                 } else {
                     let body = helper(
@@ -279,6 +297,7 @@ pub fn rewrite_fast(
                         total_depth,
                         shift_rules,
                         inv_name,
+                        should_skip,
                     );
                     let mut def_used_vars: FxHashSet<Symbol> = FxHashSet::default();
                     let def = helper(
@@ -292,10 +311,17 @@ pub fn rewrite_fast(
                         total_depth,
                         shift_rules,
                         inv_name,
+                        should_skip,
                     );
                     for var in def_vars.iter() {
                         if !def_used_vars.contains(var) {
                             unused_vars.insert(var.clone());
+                        }
+                    }
+                    for var in def_used_vars.iter() {
+                        if unused_vars.contains(var) {
+                            // We need this in case when two revlets are rewritten by overlapping patterns
+                            unused_vars.remove(var);
                         }
                     }
                     let mut new_def_vars: Vec<Symbol> = def_used_vars.iter().cloned().collect();
@@ -335,6 +361,7 @@ pub fn rewrite_fast(
                 0,
                 shift_rules,
                 inv_name,
+                false,
             );
             while unused_vars.len() != unused_count {
                 unused_count = unused_vars.len();
@@ -352,6 +379,7 @@ pub fn rewrite_fast(
                     0,
                     shift_rules,
                     inv_name,
+                    false,
                 );
             }
             ExprOwned {
