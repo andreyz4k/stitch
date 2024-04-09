@@ -595,7 +595,7 @@ impl Pattern {
             self.match_locations.len(),
             self.match_locations
                 .iter()
-                .map(|loc| shared.num_paths_to_node[(*loc).0])
+                .map(|loc| shared.num_paths_to_node[loc.0])
                 .sum::<i32>()
         )
     }
@@ -1195,7 +1195,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                     original_pattern
                         .match_locations
                         .iter()
-                        .map(|loc| shared.num_paths_to_node[(*loc).0])
+                        .map(|loc| shared.num_paths_to_node[loc.0])
                         .sum::<i32>(),
                     original_pattern.to_expr(&shared)
                 )
@@ -1208,7 +1208,7 @@ fn stitch_search(shared: Arc<SharedData>) {
                     original_pattern
                         .match_locations
                         .iter()
-                        .map(|loc| shared.num_paths_to_node[(*loc).0])
+                        .map(|loc| shared.num_paths_to_node[loc.0])
                         .sum::<i32>(),
                     original_pattern.to_expr(&shared)
                 )
@@ -1232,7 +1232,7 @@ fn stitch_search(shared: Arc<SharedData>) {
             // node type in order to iterate over all the different expansions
             // We also sort secondarily by `loc` to ensure each groupby subsequence has the locations in sorted order
             let mut match_locations = original_pattern.match_locations.clone();
-            match_locations.sort_by_cached_key(|loc| (&arg_of_loc[&loc.0].expands_to, (*loc).0));
+            match_locations.sort_by_cached_key(|loc| (&arg_of_loc[&loc.0].expands_to, loc.0));
 
             let ivars_expansions =
                 get_ivars_expansions(&original_pattern, arg_of_loc, hole_zid, &shared);
@@ -1284,10 +1284,10 @@ fn stitch_search(shared: Arc<SharedData>) {
                 if !shared.cfg.allow_single_task
                     && locs
                         .iter()
-                        .all(|node| shared.tasks_of_node[(*node).0].len() == 1)
+                        .all(|node| shared.tasks_of_node[node.0].len() == 1)
                     && locs.iter().all(|node| {
                         shared.tasks_of_node[locs[0].0].iter().next()
-                            == shared.tasks_of_node[(*node).0].iter().next()
+                            == shared.tasks_of_node[node.0].iter().next()
                     })
                 {
                     if !shared.cfg.no_stats {
@@ -1662,7 +1662,7 @@ impl FinishedPattern {
         let usages = pattern
             .match_locations
             .iter()
-            .map(|loc| shared.num_paths_to_node[(*loc).0])
+            .map(|loc| shared.num_paths_to_node[loc.0])
             .sum();
         let compressive_utility = compressive_utility(&pattern, shared);
         let noncompressive_utility = noncompressive_utility(pattern.body_utility, &shared.cfg);
@@ -1902,11 +1902,8 @@ fn get_zippers(
     }
 
     for idx in corpus_span.clone() {
-        match set.get(idx).node() {
-            Node::NVar(_, _) => {
-                arg_of_zid_node[EMPTY_ZID].remove(&idx);
-            }
-            _ => {}
+        if let Node::NVar(_, _) = set.get(idx).node() {
+            arg_of_zid_node[EMPTY_ZID].remove(&idx);
         }
     }
 
@@ -2191,7 +2188,7 @@ fn compressive_utility_upper_bound(
     match_locations
         .iter()
         .map(|node| {
-            cost_of_node_all[(*node).0] - num_paths_to_node[(*node).0] * cost_fn.cost_prim_default
+            cost_of_node_all[node.0] - num_paths_to_node[node.0] * cost_fn.cost_prim_default
         })
         .sum::<i32>()
 
@@ -2248,6 +2245,21 @@ fn compressive_utility(pattern: &Pattern, shared: &SharedData) -> UtilityCalcula
             .sum::<i32>();
 
     // pattern.match_locations.
+
+    // for (i, root_idxs) in shared.root_idxs_of_task.iter().enumerate() {
+    //     for idx in root_idxs {
+    //         let root = shared.roots[*idx];
+    //         let adjusted_util = cumulative_utility_of_node[root];
+    //         let adjusted_util_weighted =
+    //             (adjusted_util as f32 * shared.weight_by_root_idx[*idx]).round() as i32;
+    //         if adjusted_util_weighted > 0 {
+    //             println!(
+    //                 "task {} root {} has adjusted_util_weighted {}",
+    //                 i, root, adjusted_util_weighted
+    //             );
+    //         }
+    //     }
+    // }
 
     UtilityCalculation {
         util: compressive_utility,

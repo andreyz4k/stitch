@@ -339,6 +339,11 @@ pub fn rewrite_fast(
         }
     }
 
+    // println!(
+    //     "skip rewrite nested: {:?}",
+    //     pattern.util_calc.skip_rewrite_nested
+    // );
+
     let shift_rules = &mut vec![];
     let rewritten_exprs: Vec<ExprOwned> = shared
         .roots
@@ -390,6 +395,22 @@ pub fn rewrite_fast(
         .collect();
 
     if !shared.cfg.no_mismatch_check && !shared.cfg.utility_by_rewrite {
+        // for (i, root_idxs) in shared.root_idxs_of_task.iter().enumerate() {
+        //     for idx in root_idxs {
+        //         let init_cost = shared.init_cost_by_root_idx_weighted[*idx] as i32;
+        //         let new_cost = (rewritten_exprs[*idx].cost(cost_fn) as f32
+        //             * shared.weight_by_root_idx[*idx])
+        //             .round() as i32;
+        //         let diff = init_cost - new_cost;
+
+        //         if diff > 0 {
+        //             println!(
+        //                 "task {} root {} was rewritten with cost diff {}",
+        //                 i, shared.roots[*idx], diff
+        //             );
+        //         }
+        //     }
+        // }
         assert_eq!(
             shared
                 .root_idxs_of_task
