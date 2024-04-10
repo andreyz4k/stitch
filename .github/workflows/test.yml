@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 
-env: 
+env:
   CARGO_TERM_COLOR: always
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: rustup update stable && rustup default stable
       - name: build
         run: |
@@ -25,4 +25,3 @@ jobs:
          cargo build --release --verbose
       - name: test
         run: make test
-
