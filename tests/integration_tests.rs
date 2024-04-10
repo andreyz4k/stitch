@@ -523,6 +523,15 @@ fn list_with_revs_1() {
 }
 
 #[test]
+fn list_with_revs_2() {
+    compare_out_jsons(
+        "data/dc/list_with_revs.json",
+        "data/expected_outputs/list_with_revs_2-a3-i10.json",
+        "-i10 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::Dreamcoder,
+    );
+}
+#[test]
 fn neurosym_match_at_tag() {
     compare_out_jsons(
         "data/neurosym/match_at_tag.json",

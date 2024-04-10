@@ -400,10 +400,13 @@ impl CostConfig {
 impl Pattern {
     /// create a single hole pattern `??`
     //#[inline(never)]
+    #[allow(clippy::too_many_arguments)]
     fn single_hole(
         mut match_locations: Vec<Idx>,
         cost_of_node_all: &[i32],
         num_paths_to_node: &[i32],
+        analyzed_free_vars: &mut AnalyzedExpr<FreeVarAnalysis>,
+        analyzed_cost: &mut AnalyzedExpr<ExprCost>,
         set: &ExprSet,
         cost_fn: &ExprCost,
         cfg: &CompressionStepConfig,
@@ -449,20 +452,14 @@ impl Pattern {
             for node in match_locations_before {
                 match &set[node] {
                     Node::App(_, x) => {
-                        if !AnalyzedExpr::new(FreeVarAnalysis)
-                            .analyze_get(set.get(*x))
-                            .is_empty()
-                        {
+                        if !analyzed_free_vars[*x].is_empty() || !analyzed_cost[*x].1.is_empty() {
                             // continue if there are free vars in the expression - eg $0 can validly appear to either the left or right of an app
                             continue;
                         }
                         assert!(match_locations.contains(x), "corpus was not in eta long form (?). This appeared both to the left and right of an app: {}; for example it is to the right in: {}", set.get(*x), set.get(node));
                     }
                     Node::Lam(b, _) => {
-                        if !AnalyzedExpr::new(FreeVarAnalysis)
-                            .analyze_get(set.get(*b))
-                            .is_empty()
-                        {
+                        if !analyzed_free_vars[*b].is_empty() || !analyzed_cost[*b].1.is_empty() {
                             continue;
                         }
                         assert!(
@@ -3115,6 +3112,8 @@ pub fn compression_step(
         single_node_locations,
         &cost_of_node_all,
         &num_paths_to_node,
+        &mut analyzed_free_vars,
+        &mut analyzed_cost,
         &set,
         cost_fn,
         cfg,
