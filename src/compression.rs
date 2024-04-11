@@ -2820,7 +2820,8 @@ pub fn multistep_compression_internal(
 
     let mut name_mapping = name_mapping.unwrap_or_default();
 
-    for i in 0..cfg.iterations {
+    let mut i = 0;
+    while (i < cfg.iterations) || cfg.iterations == 0 {
         if !cfg.step.quiet {
             println!("{}", format!("\n=======Iteration {i}=======").blue().bold())
         }
@@ -2866,6 +2867,7 @@ pub fn multistep_compression_internal(
             }
             break;
         }
+        i += 1;
     }
 
     if cfg.step.show_rewritten {

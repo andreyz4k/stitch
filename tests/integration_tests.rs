@@ -531,6 +531,17 @@ fn list_with_revs_2() {
         InputFormat::Dreamcoder,
     );
 }
+
+#[test]
+fn list_with_revs_3() {
+    compare_out_jsons(
+        "data/dc/list_with_revs.json",
+        "data/expected_outputs/list_with_revs_3-a3-i0.json",
+        "-i0 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::Dreamcoder,
+    );
+}
+
 #[test]
 fn neurosym_match_at_tag() {
     compare_out_jsons(
