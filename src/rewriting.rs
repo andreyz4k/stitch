@@ -192,14 +192,14 @@ pub fn rewrite_fast(
             Node::IVar(_) => {
                 unreachable!()
             }
-            Node::NVar(name, link) => {
+            Node::NVar(name) => {
                 used_vars.insert(name.clone());
-                let new_link = if *link == Idx::MAX {
-                    link
-                } else {
-                    new_vars_mapping.get(name).unwrap()
-                };
-                owned_set.add(Node::NVar(name.clone(), *new_link))
+                owned_set.add(Node::NVar(name.clone()))
+            }
+            Node::NLinkVar(name, _link) => {
+                used_vars.insert(name.clone());
+                let new_link = new_vars_mapping.get(name).unwrap();
+                owned_set.add(Node::NLinkVar(name.clone(), *new_link))
             }
             Node::Let {
                 var,

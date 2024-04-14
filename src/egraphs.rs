@@ -89,7 +89,7 @@ pub fn insert_arg_ivars(
             let b = insert_arg_ivars(&mut e.get(b), set_to, init_depth + 1, analyzed_free_vars);
             e.set.add(Node::Lam(b, tag))
         }
-        Node::NVar(_, _) => unimplemented!(),
+        Node::NVar(_) | Node::NLinkVar(_, _) => unimplemented!(),
         Node::Let { .. } => unreachable!(),
         Node::RevLet { .. } => unreachable!(),
     }

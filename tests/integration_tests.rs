@@ -385,11 +385,21 @@ fn simple16_a3_i1() {
 }
 
 #[test]
-fn simple17_a2_i1() {
+fn simple17_a3_i1() {
     compare_out_jsons(
         "data/basic/simple17.json",
         "data/expected_outputs/simple17-a3-i1.json",
         "-i1 -a3 --rewrite-check",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple18_a3_i1() {
+    compare_out_jsons(
+        "data/basic/simple18.json",
+        "data/expected_outputs/simple18-a3-i1.json",
+        "-i1 -a3 --rewrite-check --utility-by-rewrite",
         InputFormat::ProgramsList,
     );
 }

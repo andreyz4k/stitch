@@ -330,7 +330,7 @@ fn zids_of_ivar_of_expr(
                 helper(expr.get(*x), curr_zip, zids_of_ivar, zid_of_zip)?;
                 curr_zip.pop();
             }
-            Node::NVar(_, _) => unreachable!(),
+            Node::NVar(_) | Node::NLinkVar(_, _) => unreachable!(),
             Node::Let { .. } => unreachable!(),
             Node::RevLet { .. } => unreachable!(),
         }
@@ -550,13 +550,8 @@ impl Pattern {
                     curr_zip.pop();
                     set.add(Node::App(f_idx, x_idx))
                 }
-                Node::NVar(_, l) => {
-                    if *l != Idx::MAX {
-                        helper(set, *l, curr_zip, zips, shared)
-                    } else {
-                        unreachable!()
-                    }
-                }
+                Node::NVar(_) => unreachable!(),
+                Node::NLinkVar(_, l) => helper(set, *l, curr_zip, zips, shared),
                 _ => unreachable!(),
             }
         }
@@ -677,7 +672,8 @@ fn expands_to_of_node(node: &Node) -> ExpandsTo {
         Node::Lam(_, tag) => ExpandsTo::Lam(*tag),
         Node::App(_, _) => ExpandsTo::App,
         Node::IVar(i) => ExpandsTo::IVar(*i),
-        Node::NVar(_, _) => ExpandsTo::NVar,
+        Node::NVar(_) => ExpandsTo::NVar,
+        Node::NLinkVar(_, _) => ExpandsTo::NVar, //TODO: should we expand to a linked var?
         Node::Let { .. } => unreachable!(),
         Node::RevLet { .. } => unreachable!(),
     }
@@ -1791,7 +1787,8 @@ fn get_zippers(
                 unreachable!()
             }
             Node::Var(_, _) | Node::Prim(_) => {}
-            Node::NVar(_, link) => {
+            Node::NVar(_) => {}
+            Node::NLinkVar(_, link) => {
                 if zids_of_node.contains_key(&link) {
                     for l_zid in zids_of_node[&link].iter() {
                         // give it the same arg
@@ -1899,8 +1896,11 @@ fn get_zippers(
     }
 
     for idx in corpus_span.clone() {
-        if let Node::NVar(_, _) = set.get(idx).node() {
-            arg_of_zid_node[EMPTY_ZID].remove(&idx);
+        match set.get(idx).node() {
+            Node::NLinkVar(_, _) | Node::NVar(_) => {
+                arg_of_zid_node[EMPTY_ZID].remove(&idx);
+            }
+            _ => {}
         }
     }
 
@@ -2364,16 +2364,15 @@ fn bottom_up_utility_correction(
             }
             Node::Prim(_) | Node::Var(_, _) => 0,
             Node::IVar(_) => unreachable!(),
-            Node::NVar(name, link) => {
+            Node::NVar(name) => {
                 var_uses[node].insert(name.clone(), 1);
-                if *link != Idx::MAX {
-                    used_var_utilities[node]
-                        .insert(name.clone(), cumulative_utility_of_node[*link]);
-                    cumulative_utility_of_node[*link]
-                } else {
-                    used_var_utilities[node].insert(name.clone(), 0);
-                    0
-                }
+                used_var_utilities[node].insert(name.clone(), 0);
+                0
+            }
+            Node::NLinkVar(name, link) => {
+                var_uses[node].insert(name.clone(), 1);
+                used_var_utilities[node].insert(name.clone(), cumulative_utility_of_node[*link]);
+                cumulative_utility_of_node[*link]
             }
             Node::Let { var, def, body, .. } => {
                 let full_utility = if var_uses[*body].contains_key(var) {
