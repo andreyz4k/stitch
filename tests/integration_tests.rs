@@ -399,7 +399,7 @@ fn simple18_a3_i1() {
     compare_out_jsons(
         "data/basic/simple18.json",
         "data/expected_outputs/simple18-a3-i1.json",
-        "-i1 -a3 --rewrite-check --utility-by-rewrite",
+        "-i1 -a3 --rewrite-check",
         InputFormat::ProgramsList,
     );
 }
@@ -547,6 +547,16 @@ fn list_with_revs_3() {
     compare_out_jsons(
         "data/dc/list_with_revs.json",
         "data/expected_outputs/list_with_revs_3-a3-i0.json",
+        "-i0 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::Dreamcoder,
+    );
+}
+
+#[test]
+fn arc_1() {
+    compare_out_jsons(
+        "data/dc/arc_1.json",
+        "data/expected_outputs/arc_1-a3-i0.json",
         "-i0 -a3 --rewrite-check --eta-long --utility-by-rewrite",
         InputFormat::Dreamcoder,
     );

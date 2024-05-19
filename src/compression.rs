@@ -442,8 +442,25 @@ impl Pattern {
                     // function type body would be effectively arity 3 and dreamcoder doesnt support this sort of thing.
                     match_locations.retain(|node| node != f);
 
-                    if let Node::Lam(_, _) = &set[*f] {
-                        panic!("corpus was not in beta-normal form")
+                    if let Node::Lam(mut b, _) = &set[*f] {
+                        loop {
+                            match &set[b] {
+                                Node::Lam(b2, _) => {
+                                    b = *b2;
+                                }
+                                Node::App(b2, _) => {
+                                    b = *b2;
+                                }
+                                _ => break,
+                            }
+                        }
+                        if let Node::Prim(n) = &set[b] {
+                            if *n != Symbol::from("rev_fix_param") {
+                                panic!("corpus was not in beta-normal form")
+                            }
+                        } else {
+                            panic!("corpus was not in beta-normal form")
+                        }
                     }
                 }
             }

@@ -1,0 +1,991 @@
+{
+  "original_cost": 45376,
+  "final_cost": 37801,
+  "compression_ratio": 1.2003915240337557,
+  "num_abstractions": 11,
+  "original": [
+    "let $v1, $v2, $v3 = rev($inp0 = (rev_fix_param (rev_select_grid (lam (eq? $0 $v1)) $v2 $v3) $v1 (lam Const(color, 0)))) in let $v4, $v5, $v6 = rev($v2 = (repeat_grid $v4 $v5 $v6)) in let $v7, $v8, $v9 = rev($v3 = (rev_grid_elements $v7 $v8 $v9)) in let $v10 = rev($v7 = (rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $1 $0))) empty_set $v10)) in let $v11 = rev($v10 = (map_set (lam (map_set (lam (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) $v11)) in let $v12 = rev($v11 = (map_set (lam (tuple2 ((lam ((lam (rev_fix_param (map_set (lam (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lam (tuple2 (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_first $0)) (collect $0)) max_int) (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_second $0)) (collect $0)) max_int))))) (tuple2_first (tuple2_first $1)))) (tuple2_second (tuple2_first $0))) (tuple2_second $0))) $v12)) in let $v13, $v14, $v15 = rev($v12 = (rev_fix_param (rev_select_set (lam (eq? (tuple2_second (tuple2_first $0)) $v13)) $v14 $v15) $v13 (lam Const(set(tuple2(int, int)), Set([(0, 0), (0, 2), (2, 0), (1, 1), (0, 1), (2, 2), (2, 1)]))))) in let $v16::int = Const(int, 1) in let $v17::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (map_set (lam (tuple2 (tuple2 (tuple2 (+ (tuple2_first (tuple2_first (tuple2_first $0))) $v16) (tuple2_second (tuple2_first (tuple2_first $0)))) (tuple2_second (tuple2_first $0))) (tuple2_second $0))) $v14) in let $v18::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (rev_select_set (lam (eq? (tuple2_second (tuple2_first $0)) $v13)) $v17 $v15) in let $v19::set(tuple2(set(tuple2(int, int)), color)) = (map_set (lam (tuple2 ((lam ((lam (rev_fix_param (map_set (lam (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lam (tuple2 (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_first $0)) (collect $0)) max_int) (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_second $0)) (collect $0)) max_int))))) (tuple2_first (tuple2_first $1)))) (tuple2_second (tuple2_first $0))) (tuple2_second $0))) $v18) in let $v20::set(set(tuple2(tuple2(int, int), color))) = (map_set (lam (map_set (lam (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) $v19) in let $v21::set(tuple2(tuple2(int, int), color)) = (rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $1 $0))) empty_set $v20) in let $v22::grid(color) = (rev_grid_elements $v21 $v8 $v9) in let $v23::grid(color) = (repeat_grid $v4 $v5 $v6) in (rev_select_grid (lam (eq? $0 $v1)) $v23 $v22)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3, $v4 = rev($v2 = (cons $v3 $v4)) in let $v5, $v6 = rev($v4 = (cons $v5 $v6)) in let $v7::list(list(color)) = Const(list(list(color)), Any[]) in let $v8::list(list(color)) = (cons $v5 $v7) in let $v9::list(list(color)) = (cons $v3 $v8) in let $v10::list(list(color)) = (cons $v1 $v9) in (rows_to_grid $v10)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4, $v5 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7::tuple2(list(list(color)), t0) = (tuple2 $v6 $v4) in let $v8::list(list(color)) = (tuple2_first $v7) in let $v9::list(list(color)) = (cons $v1 $v8) in (rows_to_grid $v9)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4, $v5 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($v2 = (columns $v7)) in let $v8 = rev($v7 = (tuple2_first $v8)) in let $v9::tuple2(list(list(color)), t0) = (tuple2 $v6 $v8) in let $v10::list(list(color)) = (tuple2_first $v9) in let $v11::list(list(color)) = (cons $v1 $v10) in (rows_to_grid $v11)",
+    "let $v1::int = Const(int, 3) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::color = (index2 $v1 $v1 $v3) in let $v5::list(color) = Const(list(color), Any[0, 0]) in let $v6::list(color) = (cons $v4 $v5) in let $v7, $v8 = rev($v2 = (cons $v7 $v8)) in let $v9, $v10 = rev($v8 = (cons $v9 $v10)) in let $v11::list(list(color)) = Const(list(list(color)), Any[]) in let $v12::list(list(color)) = (cons $v9 $v11) in let $v13::list(list(color)) = (cons $v7 $v12) in let $v14::list(list(color)) = (cons $v6 $v13) in (rows_to_grid $v14)",
+    "let $v1::int = Const(int, 3) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (rows $v3)) in let $v4::color = (index2 $v1 $v1 $v3) in let $v5::list(color) = Const(list(color), Any[0, 0]) in let $v6::list(color) = (cons $v4 $v5) in let $v7, $v8 = rev($v2 = (cons $v7 $v8)) in let $v9, $v10 = rev($v8 = (cons $v9 $v10)) in let $v11::list(list(color)) = Const(list(list(color)), Any[]) in let $v12::list(list(color)) = (cons $v9 $v11) in let $v13::list(list(color)) = (cons $v7 $v12) in let $v14::list(list(color)) = (cons $v6 $v13) in (rows_to_grid $v14)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4, $v5 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($inp0 = (tuple2_second $v7)) in let $v8 = rev($v7 = (tuple2_first $v8)) in let $v9, $v10 = rev($v8 = (tuple2 $v9 $v10)) in let $v11::tuple2(list(list(color)), t0) = (tuple2 $v6 $v9) in let $v12::list(list(color)) = (tuple2_first $v11) in let $v13::list(list(color)) = (cons $v1 $v12) in (rows_to_grid $v13)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4, $v5 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($inp0 = (columns_to_grid $v7)) in let $v8 = rev($v7 = (columns $v8)) in let $v9 = rev($v8 = (tuple2_first $v9)) in let $v10::tuple2(list(list(color)), t0) = (tuple2 $v6 $v9) in let $v11::list(list(color)) = (tuple2_first $v10) in let $v12::list(list(color)) = (cons $v1 $v11) in (rows_to_grid $v12)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4, $v5 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($inp0 = (columns_to_grid $v7)) in let $v8 = rev($v7 = (columns $v8)) in let $v9 = rev($v8 = (rows_to_grid $v9)) in let $v10::tuple2(list(list(color)), t0) = (tuple2 $v6 $v9) in let $v11::list(list(color)) = (tuple2_first $v10) in let $v12::list(list(color)) = (cons $v1 $v11) in (rows_to_grid $v12)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4, $v5 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($inp0 = (columns_to_grid $v7)) in let $v8 = rev($v7 = (reverse $v8)) in let $v9, $v10 = rev($v8 = (cons $v9 $v10)) in let $v11::tuple2(list(list(color)), t0) = (tuple2 $v6 $v9) in let $v12::list(list(color)) = (tuple2_first $v11) in let $v13::list(list(color)) = (cons $v1 $v12) in (rows_to_grid $v13)",
+    "let $v1::color = Const(color, 0) in let $v2::list(color) = empty in let $v3::list(color) = (cons $v1 $v2) in let $v4::color = (car $v3) in let $v5::list(color) = Const(list(color), Any[0, 0]) in let $v6::list(color) = (cons $v4 $v5) in let $v7 = rev($inp0 = (rows_to_grid $v7)) in let $v8, $v9 = rev($v7 = (cons $v8 $v9)) in let $v10, $v11 = rev($v9 = (cons $v10 $v11)) in let $v12::list(list(color)) = Const(list(list(color)), Any[]) in let $v13::list(list(color)) = (cons $v10 $v12) in let $v14::list(list(color)) = (cons $v8 $v13) in let $v15::list(list(color)) = (cons $v6 $v14) in (rows_to_grid $v15)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in (rows_to_grid $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in (rows_to_grid $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in (rows_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v3::list(list(color)) = (tuple2_second $v2) in let $v4::list(list(color)) = (reverse $v3) in (rows_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (columns $v3) in (rows_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3::grid(color) = (rows_to_grid $v2) in let $v4::list(list(color)) = (columns $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5::list(list(color)) = (reverse $v3) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (rows_to_grid $v2) in let $v4 = rev($v1 = (tuple2_second $v4)) in let $v5::tuple2(grid(color), t0) = (tuple2 $v3 $v4) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in (rows_to_grid $v1)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in (columns_to_grid $v1)",
+    "let $v1::list(list(color)) = (rows $inp0) in (columns_to_grid $v1)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in $v2",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v3::int = 1 in let $v4::tuple2(grid(color), t0) = (tuple2 $v2 $v3) in (tuple2_first $v4)",
+    "let $v1::int = 1 in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::tuple2(t0, grid(color)) = (tuple2 $v1 $v3) in (tuple2_second $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (collect $v2)) in let $v3 = rev($inp0 = (rows_to_grid $v3)) in let $v4 = rev($v3 = (columns $v4)) in let $v5::tuple2(t0, grid(color)) = (tuple2 $v2 $v4) in (tuple2_second $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v3 = rev($inp0 = (tuple2_first $v3)) in let $v4, $v5 = rev($v3 = (tuple2 $v4 $v5)) in let $v6::tuple2(grid(color), t0) = (tuple2 $v2 $v4) in (tuple2_first $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::list(list(color)) = (rows $v3) in let $v5::list(list(color)) = (reverse $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (rows $v3)) in let $v4::list(list(color)) = (columns $v3) in let $v5::list(list(color)) = (reverse $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::list(list(color)) = (rows $v3) in let $v5::list(list(color)) = (reverse $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in let $v5::list(list(color)) = (reverse $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (rows_to_grid $v2) in let $v4::list(list(color)) = (columns $v3) in let $v5::list(list(color)) = (reverse $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::grid(color) = (columns_to_grid $v4) in let $v6::list(list(color)) = (rows $v5) in let $v7::list(list(color)) = (reverse $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v2 = (columns_to_grid $v4)) in let $v5 = rev($v4 = (reverse $v5)) in let $v6::grid(color) = (columns_to_grid $v5) in let $v7::list(list(color)) = (rows $v6) in let $v8::list(list(color)) = (reverse $v7) in (rows_to_grid $v8)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v2 = (columns_to_grid $v4)) in let $v5 = rev($v4 = (reverse $v5)) in let $v6::grid(color) = (rows_to_grid $v5) in let $v7::list(list(color)) = (columns $v6) in let $v8::list(list(color)) = (reverse $v7) in (rows_to_grid $v8)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in let $v5::list(list(color)) = (reverse $v4) in let $v6::grid(color) = (columns_to_grid $v5) in let $v7::list(list(color)) = (rows $v6) in (columns_to_grid $v7)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v2 = (columns_to_grid $v4)) in let $v5 = rev($v4 = (reverse $v5)) in let $v6::grid(color) = (columns_to_grid $v5) in let $v7::list(list(color)) = (rows $v6) in let $v8::list(list(color)) = (reverse $v7) in let $v9::grid(color) = (columns_to_grid $v8) in let $v10::list(list(color)) = (rows $v9) in (columns_to_grid $v10)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10::int = Const(int, 6) in let $v11::list(color) = (concat $v2 $v2) in let $v12::list(color) = (concat $v11 $v7) in let $v13::list(color) = (reverse $v12) in let $v14::list(list(color)) = Const(list(list(color)), Any[]) in let $v15::list(list(color)) = (cons $v13 $v14) in let $v16::tuple2(t0, list(list(color))) = (tuple2 $v10 $v15) in let $v17::list(list(color)) = (tuple2_second $v16) in let $v18::list(list(color)) = (cons $v9 $v17) in (rows_to_grid $v18)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10::list(color) = (concat $v2 $v2) in let $v11::list(color) = (concat $v10 $v7) in let $v12::list(color) = (reverse $v11) in let $v13::list(list(color)) = Const(list(list(color)), Any[]) in let $v14::list(list(color)) = (cons $v12 $v13) in let $v15::tuple2(t0, list(list(color))) = (tuple2 $v2 $v14) in let $v16::list(list(color)) = (tuple2_second $v15) in let $v17::list(list(color)) = (cons $v9 $v16) in (rows_to_grid $v17)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7::list(color) = (reverse $v5) in let $v8::list(color) = (reverse $v7) in let $v9::list(color) = (concat $v6 $v8) in let $v10::list(color) = (concat $v2 $v2) in let $v11, $v12 = rev($v1 = (cons $v11 $v12)) in let $v13::list(color) = (concat $v10 $v11) in let $v14::list(color) = (reverse $v13) in let $v15::list(list(color)) = Const(list(list(color)), Any[]) in let $v16::list(list(color)) = (cons $v14 $v15) in let $v17::tuple2(t0, list(list(color))) = (tuple2 $v2 $v16) in let $v18::list(list(color)) = (tuple2_second $v17) in let $v19::list(list(color)) = (cons $v9 $v18) in (rows_to_grid $v19)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (tuple2_first $v10)) in let $v11, $v12 = rev($v10 = (tuple2 $v11 $v12)) in let $v13 = rev($v11 = (tuple2_second $v13)) in let $v14::list(color) = (concat $v2 $v2) in let $v15::list(color) = (concat $v14 $v7) in let $v16::list(color) = (reverse $v15) in let $v17::list(list(color)) = Const(list(list(color)), Any[]) in let $v18::list(list(color)) = (cons $v16 $v17) in let $v19::tuple2(t0, list(list(color))) = (tuple2 $v13 $v18) in let $v20::list(list(color)) = (tuple2_second $v19) in let $v21::list(list(color)) = (cons $v9 $v20) in (rows_to_grid $v21)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (rows_to_grid $v10)) in let $v11, $v12 = rev($v10 = (cons $v11 $v12)) in let $v13, $v14 = rev($v12 = (repeat $v13 $v14)) in let $v15::list(color) = (concat $v2 $v2) in let $v16::list(color) = (concat $v15 $v7) in let $v17::list(color) = (reverse $v16) in let $v18::list(list(color)) = Const(list(list(color)), Any[]) in let $v19::list(list(color)) = (cons $v17 $v18) in let $v20::tuple2(t0, list(list(color))) = (tuple2 $v13 $v19) in let $v21::list(list(color)) = (tuple2_second $v20) in let $v22::list(list(color)) = (cons $v9 $v21) in (rows_to_grid $v22)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (rows_to_grid $v10)) in let $v11, $v12 = rev($v10 = (cons $v11 $v12)) in let $v13, $v14 = rev($v12 = (repeat $v13 $v14)) in let $v15::list(color) = (concat $v2 $v2) in let $v16::list(color) = (concat $v15 $v7) in let $v17::list(color) = (reverse $v16) in let $v18::list(list(color)) = Const(list(list(color)), Any[]) in let $v19::list(list(color)) = (cons $v17 $v18) in let $v20::tuple2(t0, list(list(color))) = (tuple2 $v14 $v19) in let $v21::list(list(color)) = (tuple2_second $v20) in let $v22::list(list(color)) = (cons $v9 $v21) in (rows_to_grid $v22)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (rows_to_grid $v10)) in let $v11 = rev($v10 = (reverse $v11)) in let $v12 = rev($v11 = (tuple2_first $v12)) in let $v13 = rev($v12 = (tuple2_first $v13)) in let $v14::list(color) = (concat $v2 $v2) in let $v15::list(color) = (concat $v14 $v7) in let $v16::list(color) = (reverse $v15) in let $v17::list(list(color)) = Const(list(list(color)), Any[]) in let $v18::list(list(color)) = (cons $v16 $v17) in let $v19::tuple2(t0, list(list(color))) = (tuple2 $v13 $v18) in let $v20::list(list(color)) = (tuple2_second $v19) in let $v21::list(list(color)) = (cons $v9 $v20) in (rows_to_grid $v21)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (rows_to_grid $v10)) in let $v11 = rev($v10 = (rows $v11)) in let $v12 = rev($v11 = (rows_to_grid $v12)) in let $v13 = rev($v12 = (tuple2_first $v13)) in let $v14::list(color) = (concat $v2 $v2) in let $v15::list(color) = (concat $v14 $v7) in let $v16::list(color) = (reverse $v15) in let $v17::list(list(color)) = Const(list(list(color)), Any[]) in let $v18::list(list(color)) = (cons $v16 $v17) in let $v19::tuple2(t0, list(list(color))) = (tuple2 $v13 $v18) in let $v20::list(list(color)) = (tuple2_second $v19) in let $v21::list(list(color)) = (cons $v9 $v20) in (rows_to_grid $v21)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (rows_to_grid $v10)) in let $v11, $v12 = rev($v10 = (cons $v11 $v12)) in let $v13 = rev($v12 = (tuple2_first $v13)) in let $v14 = rev($v13 = (tuple2_first $v14)) in let $v15::list(color) = (concat $v2 $v2) in let $v16::list(color) = (concat $v15 $v7) in let $v17::list(color) = (reverse $v16) in let $v18::list(list(color)) = Const(list(list(color)), Any[]) in let $v19::list(list(color)) = (cons $v17 $v18) in let $v20::tuple2(t0, list(list(color))) = (tuple2 $v14 $v19) in let $v21::list(list(color)) = (tuple2_second $v20) in let $v22::list(list(color)) = (cons $v9 $v21) in (rows_to_grid $v22)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7, $v8 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (rows_to_grid $v10)) in let $v11 = rev($v10 = (reverse $v11)) in let $v12 = rev($v11 = (reverse $v12)) in let $v13 = rev($v12 = (tuple2_first $v13)) in let $v14, $v15 = rev($v13 = (tuple2 $v14 $v15)) in let $v16::list(color) = (concat $v2 $v2) in let $v17::list(color) = (concat $v16 $v7) in let $v18::list(color) = (reverse $v17) in let $v19::list(list(color)) = Const(list(list(color)), Any[]) in let $v20::list(list(color)) = (cons $v18 $v19) in let $v21::tuple2(t0, list(list(color))) = (tuple2 $v14 $v20) in let $v22::list(list(color)) = (tuple2_second $v21) in let $v23::list(list(color)) = (cons $v9 $v22) in (rows_to_grid $v23)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in (rows_to_grid $v2)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in (rows_to_grid $v2)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v2 = (rows_to_grid $v4)) in let $v5::list(list(color)) = (reverse $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4::list(list(color)) = (reverse $v3) in (rows_to_grid $v4)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5::list(list(color)) = (reverse $v3) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2, $v3 = rev($v1 = (cons $v2 $v3)) in let $v4::list(list(color)) = (cons $v2 $v3) in let $v5::list(list(color)) = (reverse $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v3 = rev($v1 = (reverse $v3)) in let $v4::grid(color) = (rows_to_grid $v3) in let $v5::tuple2(t0, grid(color)) = (tuple2 $v2 $v4) in (tuple2_second $v5)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v3 = rev($inp0 = (rows_to_grid $v3)) in let $v4 = rev($v3 = (reverse $v4)) in let $v5::grid(color) = (rows_to_grid $v4) in let $v6::tuple2(t0, grid(color)) = (tuple2 $v2 $v5) in (tuple2_second $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v3 = rev($inp0 = (rows_to_grid $v3)) in let $v4 = rev($v3 = (reverse $v4)) in let $v5::grid(color) = (rows_to_grid $v4) in let $v6::tuple2(t0, grid(color)) = (tuple2 $v2 $v5) in (tuple2_second $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (concat $v1 $v2) in (columns_to_grid $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3::list(list(color)) = (concat $v1 $v2) in (columns_to_grid $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::list(list(color)) = (concat $v3 $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v1) in let $v5::list(list(color)) = (concat $v3 $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in let $v5::list(list(color)) = (concat $v1 $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (tuple2_first $v2) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (concat $v3 $v5) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (columns_to_grid $v4)) in let $v5 = rev($inp0 = (columns_to_grid $v5)) in let $v6 = rev($v5 = (reverse $v6)) in let $v7::list(list(color)) = (concat $v4 $v6) in (columns_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($inp0 = (tuple2_first $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5 = rev($v3 = (columns_to_grid $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7::list(list(color)) = (concat $v1 $v6) in (columns_to_grid $v7)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (columns_to_grid $v4)) in let $v5 = rev($inp0 = (columns_to_grid $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7::list(list(color)) = (concat $v4 $v6) in (columns_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4, $v5 = rev($v3 = (tuple2 $v4 $v5)) in let $v6 = rev($v4 = (rows_to_grid $v6)) in let $v7 = rev($v1 = (reverse $v7)) in let $v8::list(list(color)) = (concat $v6 $v7) in (columns_to_grid $v8)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (concat $v1 $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3::list(list(color)) = (concat $v1 $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4::list(list(color)) = (concat $v3 $v2) in (rows_to_grid $v4)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::list(list(color)) = (concat $v1 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v1) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4::list(list(color)) = (reverse $v1) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5::list(list(color)) = (reverse $v3) in let $v6::list(list(color)) = (concat $v1 $v5) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4 = rev($v2 = (tuple2_first $v4)) in let $v5::list(list(color)) = (tuple2_first $v4) in let $v6::list(list(color)) = (concat $v3 $v5) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4, $v5 = rev($v2 = (tuple2 $v4 $v5)) in let $v6::list(list(color)) = (reverse $v4) in let $v7::list(list(color)) = (concat $v3 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::list(list(color)) = (rows $v3) in let $v5::list(list(color)) = (reverse $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (rows $v3)) in let $v4::list(list(color)) = (columns $v3) in let $v5::list(list(color)) = (reverse $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4, $v5 = rev($v3 = (tuple2 $v4 $v5)) in let $v6::grid(color) = (columns_to_grid $v4) in let $v7::list(list(color)) = (rows $v6) in let $v8::list(list(color)) = (reverse $v7) in (rows_to_grid $v8)",
+    "let $v1::int = Const(int, 3) in let $v2 = rev($inp0 = (columns_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4 = rev($v3 = (columns $v4)) in let $v5::list(list(color)) = (rows $v4) in let $v6::list(list(color)) = (reverse $v5) in let $v7::grid(color) = (columns_to_grid $v6) in let $v8::tuple2(t0, grid(color)) = (tuple2 $v1 $v7) in let $v9::grid(color) = (tuple2_second $v8) in let $v10::list(list(color)) = (rows $v9) in (columns_to_grid $v10)",
+    "let $v1::int = Const(int, 3) in let $v2 = rev($inp0 = (columns_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4 = rev($v3 = (tuple2_first $v4)) in let $v5, $v6 = rev($v4 = (tuple2 $v5 $v6)) in let $v7::grid(color) = (columns_to_grid $v5) in let $v8::list(list(color)) = (rows $v7) in let $v9::list(list(color)) = (reverse $v8) in let $v10::grid(color) = (columns_to_grid $v9) in let $v11::tuple2(t0, grid(color)) = (tuple2 $v1 $v10) in let $v12::grid(color) = (tuple2_second $v11) in let $v13::list(list(color)) = (rows $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v3 = rev($v2 = (rows_to_grid $v3)) in let $v4 = rev($v3 = (reverse $v4)) in let $v5 = rev($v1 = (reverse $v5)) in let $v6 = rev($v5 = (columns $v6)) in let $v7::list(list(color)) = (rows $v6) in let $v8::list(list(color)) = (reverse $v7) in let $v9::grid(color) = (columns_to_grid $v8) in let $v10::tuple2(t0, grid(color)) = (tuple2 $v4 $v9) in let $v11::grid(color) = (tuple2_second $v10) in let $v12::list(list(color)) = (rows $v11) in (columns_to_grid $v12)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4 = rev($v3 = (tuple2_first $v4)) in let $v5 = rev($inp0 = (columns_to_grid $v5)) in let $v6 = rev($v5 = (reverse $v6)) in let $v7 = rev($v6 = (columns $v7)) in let $v8::list(list(color)) = (rows $v7) in let $v9::list(list(color)) = (reverse $v8) in let $v10::grid(color) = (columns_to_grid $v9) in let $v11::tuple2(t0, grid(color)) = (tuple2 $v4 $v10) in let $v12::grid(color) = (tuple2_second $v11) in let $v13::list(list(color)) = (rows $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5 = rev($v3 = (columns $v5)) in let $v6 = rev($v5 = (columns_to_grid $v6)) in let $v7 = rev($v1 = (reverse $v7)) in let $v8 = rev($v7 = (columns $v8)) in let $v9::list(list(color)) = (rows $v8) in let $v10::list(list(color)) = (reverse $v9) in let $v11::grid(color) = (columns_to_grid $v10) in let $v12::tuple2(t0, grid(color)) = (tuple2 $v6 $v11) in let $v13::grid(color) = (tuple2_second $v12) in let $v14::list(list(color)) = (rows $v13) in (columns_to_grid $v14)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v3 = rev($v2 = (rows_to_grid $v3)) in let $v4 = rev($v3 = (reverse $v4)) in let $v5 = rev($v1 = (reverse $v5)) in let $v6 = rev($v5 = (tuple2_first $v6)) in let $v7, $v8 = rev($v6 = (tuple2 $v7 $v8)) in let $v9::grid(color) = (columns_to_grid $v7) in let $v10::list(list(color)) = (rows $v9) in let $v11::list(list(color)) = (reverse $v10) in let $v12::grid(color) = (columns_to_grid $v11) in let $v13::tuple2(t0, grid(color)) = (tuple2 $v4 $v12) in let $v14::grid(color) = (tuple2_second $v13) in let $v15::list(list(color)) = (rows $v14) in (columns_to_grid $v15)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4 = rev($v3 = (tuple2_first $v4)) in let $v5 = rev($inp0 = (columns_to_grid $v5)) in let $v6 = rev($v5 = (reverse $v6)) in let $v7 = rev($v6 = (tuple2_first $v7)) in let $v8, $v9 = rev($v7 = (tuple2 $v8 $v9)) in let $v10::grid(color) = (columns_to_grid $v8) in let $v11::list(list(color)) = (rows $v10) in let $v12::list(list(color)) = (reverse $v11) in let $v13::grid(color) = (columns_to_grid $v12) in let $v14::tuple2(t0, grid(color)) = (tuple2 $v4 $v13) in let $v15::grid(color) = (tuple2_second $v14) in let $v16::list(list(color)) = (rows $v15) in (columns_to_grid $v16)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (concat $v1 $v2) in (columns_to_grid $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::list(list(color)) = (concat $v1 $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::list(list(color)) = (concat $v3 $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in let $v5::list(list(color)) = (concat $v1 $v4) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (concat $v1 $v2) in let $v4::grid(color) = (columns_to_grid $v3) in let $v5::list(list(color)) = (rows $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (concat $v1 $v5) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (tuple2_first $v2) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (concat $v3 $v5) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (columns_to_grid $v4)) in let $v5 = rev($inp0 = (columns_to_grid $v5)) in let $v6 = rev($v5 = (reverse $v6)) in let $v7::list(list(color)) = (concat $v4 $v6) in (columns_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::list(list(color)) = (concat $v3 $v4) in let $v6::grid(color) = (columns_to_grid $v5) in let $v7::list(list(color)) = (rows $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (tuple2_second $v4)) in let $v5, $v6 = rev($v4 = (tuple2 $v5 $v6)) in let $v7::list(list(color)) = (reverse $v6) in let $v8::list(list(color)) = (concat $v3 $v7) in (columns_to_grid $v8)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (concat $v2 $v1) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3::list(list(color)) = (concat $v2 $v1) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v1 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::list(list(color)) = (concat $v2 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in let $v5::list(list(color)) = (concat $v4 $v1) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3 = rev($v1 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::list(list(color)) = (concat $v2 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (rows_to_grid $v4)) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (concat $v5 $v4) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in let $v5::list(list(color)) = (tuple2_first $v2) in let $v6::list(list(color)) = (concat $v4 $v5) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($inp0 = (tuple2_second $v3)) in let $v4, $v5 = rev($v3 = (tuple2 $v4 $v5)) in let $v6 = rev($v5 = (rows_to_grid $v6)) in let $v7::list(list(color)) = (concat $v2 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v1 = (columns $v3)) in let $v4::tuple2(list(list(color)), t0) = (tuple2 $v2 $v3) in let $v5::list(list(color)) = (tuple2_first $v4) in let $v6::list(list(color)) = (concat $v5 $v1) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (rows_to_grid $v4)) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (concat $v5 $v4) in let $v7::grid(color) = (columns_to_grid $v6) in let $v8::list(list(color)) = (rows $v7) in (columns_to_grid $v8)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in (columns_to_grid $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in (columns_to_grid $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::tuple2(grid(color), t0) = (tuple2 $v3 $v2) in (tuple2_first $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5 = rev($v4 = (tuple2_second $v5)) in let $v6::tuple2(grid(color), t0) = (tuple2 $v3 $v5) in (tuple2_first $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (rev_list_elements $v2 $v3)) in let $v4 = rev($v3 = (tuple2_first $v4)) in let $v5::int = (tuple2_first $v4) in let $v6::list(list(color)) = (rev_list_elements $v2 $v5) in let $v7::list(list(color)) = (reverse $v6) in (columns_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5 = rev($v4 = (rows $v5)) in let $v6::tuple2(grid(color), t0) = (tuple2 $v3 $v5) in (tuple2_first $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::tuple2(t0, list(list(color))) = (tuple2 $v3 $v4) in let $v6::list(list(color)) = (tuple2_second $v5) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($v1 = (tuple2_first $v4)) in let $v5, $v6 = rev($v4 = (tuple2 $v5 $v6)) in let $v7::tuple2(grid(color), t0) = (tuple2 $v3 $v5) in (tuple2_first $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5, $v6 = rev($v4 = (cons $v5 $v6)) in let $v7::tuple2(grid(color), t0) = (tuple2 $v3 $v5) in (tuple2_first $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5::list(list(color)) = (concat $v3 $v3) in (columns_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (concat $v1 $v1) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (tuple2_second $v4)) in let $v5::tuple2(grid(color), t0) = (tuple2 $v3 $v4) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4, $v5 = rev($v2 = (tuple2 $v4 $v5)) in let $v6::list(list(color)) = (concat $v3 $v4) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (concat $v1 $v1) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($v1 = (tuple2_first $v4)) in let $v5::tuple2(grid(color), t0) = (tuple2 $v3 $v4) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (concat $v1 $v1) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($v1 = (tuple2_second $v4)) in let $v5::tuple2(grid(color), t0) = (tuple2 $v3 $v4) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (concat $v1 $v1) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::tuple2(grid(color), t0) = (tuple2 $v3 $v4) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v2 = (tuple2_first $v4)) in let $v5, $v6 = rev($v4 = (tuple2 $v5 $v6)) in let $v7 = rev($v5 = (columns_to_grid $v7)) in let $v8::list(list(color)) = (concat $v7 $v7) in (columns_to_grid $v8)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (concat $v1 $v1) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5 = rev($v4 = (tuple2_second $v5)) in let $v6::tuple2(grid(color), t0) = (tuple2 $v3 $v5) in (tuple2_first $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2::list(list(color)) = (concat $v1 $v1) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5 = rev($v4 = (reverse $v5)) in let $v6::tuple2(grid(color), t0) = (tuple2 $v3 $v5) in (tuple2_first $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4 = rev($v1 = (tuple2_first $v4)) in let $v5, $v6 = rev($v4 = (tuple2 $v5 $v6)) in let $v7::list(list(color)) = (concat $v3 $v5) in (columns_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in (rows_to_grid $v1)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in (columns_to_grid $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (columns_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in (columns_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v3::tuple2(grid(color), t0) = (tuple2 $v2 $v2) in (tuple2_first $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v3 = rev($v1 = (rows $v3)) in let $v4::tuple2(grid(color), t0) = (tuple2 $v2 $v3) in (tuple2_first $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::grid(color) = (rows_to_grid $v3) in let $v5::tuple2(grid(color), t0) = (tuple2 $v4 $v3) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::grid(color) = (columns_to_grid $v1) in let $v3 = rev($v1 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::tuple2(grid(color), t0) = (tuple2 $v2 $v4) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::grid(color) = (columns_to_grid $v1) in let $v3 = rev($v1 = (reverse $v3)) in let $v4::list(list(color)) = (reverse $v3) in let $v5::tuple2(grid(color), t0) = (tuple2 $v2 $v4) in (tuple2_first $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8 = rev($v3 = (tuple2_first $v8)) in let $v9::int = (tuple2_first $v8) in let $v10::list(list(color)) = (repeat $v7 $v9) in (columns_to_grid $v10)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8 = rev($v3 = (tuple2_second $v8)) in let $v9::int = (tuple2_second $v8) in let $v10::list(list(color)) = (repeat $v7 $v9) in (columns_to_grid $v10)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8 = rev($v3 = (tuple2_first $v8)) in let $v9, $v10 = rev($v8 = (tuple2 $v9 $v10)) in let $v11::list(list(color)) = (repeat $v7 $v9) in (columns_to_grid $v11)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8, $v9 = rev($v1 = (cons $v8 $v9)) in let $v10, $v11 = rev($v9 = (repeat $v10 $v11)) in let $v12::int = Const(int, -1) in let $v13::int = (- $v11 $v12) in let $v14::list(list(color)) = (repeat $v7 $v13) in (columns_to_grid $v14)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8, $v9 = rev($v1 = (cons $v8 $v9)) in let $v10, $v11 = rev($v9 = (repeat $v10 $v11)) in let $v12::int = Const(int, 1) in let $v13::int = (+ $v11 $v12) in let $v14::list(list(color)) = (repeat $v7 $v13) in (columns_to_grid $v14)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8 = rev($v3 = (tuple2_second $v8)) in let $v9 = rev($v8 = (tuple2_first $v9)) in let $v10::tuple2(t0, int) = (tuple2_first $v9) in let $v11::int = (tuple2_second $v10) in let $v12::list(list(color)) = (repeat $v7 $v11) in (columns_to_grid $v12)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8 = rev($v3 = (tuple2_second $v8)) in let $v9 = rev($v8 = (tuple2_second $v9)) in let $v10::tuple2(t0, int) = (tuple2_second $v9) in let $v11::int = (tuple2_second $v10) in let $v12::list(list(color)) = (repeat $v7 $v11) in (columns_to_grid $v12)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6 = rev($v2 = (reverse $v6)) in let $v7, $v8 = rev($v6 = (rev_fix_param (concat $v7 $v8) $v7 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v9::list(color) = (concat $v4 $v8) in let $v10 = rev($v3 = (tuple2_first $v10)) in let $v11::int = (tuple2_first $v10) in let $v12::list(list(color)) = (repeat $v9 $v11) in (columns_to_grid $v12)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8 = rev($v3 = (tuple2_first $v8)) in let $v9, $v10 = rev($v8 = (tuple2 $v9 $v10)) in let $v11 = rev($v9 = (tuple2_first $v11)) in let $v12::int = (tuple2_first $v11) in let $v13::list(list(color)) = (repeat $v7 $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2, $v3 = rev($v1 = (repeat $v2 $v3)) in let $v4, $v5 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6::list(color) = (reverse $v4) in let $v7::list(color) = (concat $v4 $v6) in let $v8 = rev($v3 = (tuple2_first $v8)) in let $v9, $v10 = rev($v8 = (tuple2 $v9 $v10)) in let $v11 = rev($v9 = (tuple2_second $v11)) in let $v12::int = (tuple2_second $v11) in let $v13::list(list(color)) = (repeat $v7 $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3::list(list(color)) = (concat $v1 $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v1) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (columns $v3) in let $v5::list(list(color)) = (concat $v1 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v2 = (rows_to_grid $v4)) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (concat $v4 $v5) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5::list(list(color)) = (reverse $v3) in let $v6::list(list(color)) = (concat $v1 $v5) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2, $v3 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v2 = (rows_to_grid $v4)) in let $v5 = rev($inp0 = (rows_to_grid $v5)) in let $v6 = rev($v5 = (reverse $v6)) in let $v7::list(list(color)) = (concat $v4 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4, $v5 = rev($v2 = (tuple2 $v4 $v5)) in let $v6::list(list(color)) = (reverse $v4) in let $v7::list(list(color)) = (concat $v3 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::grid(color) = (columns_to_grid $v4) in let $v6::list(list(color)) = (columns $v5) in let $v7::list(list(color)) = (concat $v3 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v3 = rev($v2 = (rows_to_grid $v3)) in let $v4, $v5 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (cons $v4 $v5) in let $v7 = rev($v1 = (reverse $v7)) in let $v8::list(list(color)) = (concat $v6 $v7) in (rows_to_grid $v8)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3, $v4 = rev($v1 = (cons $v3 $v4)) in let $v5 = rev($v4 = (reverse $v5)) in let $v6::tuple2(list(list(color)), t0) = (tuple2 $v2 $v5) in let $v7::list(list(color)) = (tuple2_first $v6) in let $v8::list(list(color)) = (concat $v1 $v7) in (rows_to_grid $v8)"
+  ],
+  "rewritten": [
+    "let $v3, $v2, $v1 = rev($inp0 = (rev_fix_param (rev_select_grid (lam (eq? $0 $v1)) $v2 $v3) $v1 (lam Const(color, 0)))) in let $v6, $v5, $v4 = rev($v2 = (repeat_grid $v4 $v5 $v6)) in let $v9, $v8, $v7 = rev($v3 = (rev_grid_elements $v7 $v8 $v9)) in let $v10 = rev($v7 = (rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (fn_4 $0) (fn_4 $2))) 1)) (not (gt? (abs (- (fn_1 $0) (fn_1 $2))) 1)))) $0))) $1 $0))) empty_set $v10)) in let $v11 = rev($v10 = (map_set (lam (map_set (lam (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) $v11)) in let $v12 = rev($v11 = (map_set (lam (tuple2 ((lam ((lam (rev_fix_param (map_set (lam (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lam (tuple2 (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_first $0)) (collect $0)) max_int) (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_second $0)) (collect $0)) max_int))))) (fn_4 $1))) (fn_1 $0)) (tuple2_second $0))) $v12)) in let $v15, $v14, $v13 = rev($v12 = (rev_fix_param (rev_select_set (lam (eq? (fn_1 $0) $v13)) $v14 $v15) $v13 (lam Const(set(tuple2(int, int)), Set([(0, 0), (0, 2), (2, 0), (1, 1), (0, 1), (2, 2), (2, 1)]))))) in let $v16::int = Const(int, 1) in let $v17::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (map_set (lam (tuple2 (tuple2 (tuple2 (+ (tuple2_first (fn_4 $0)) $v16) (fn_1 (tuple2_first $0))) (fn_1 $0)) (tuple2_second $0))) $v14) in let $v18::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (rev_select_set (lam (eq? (fn_1 $0) $v13)) $v17 $v15) in let $v19::set(tuple2(set(tuple2(int, int)), color)) = (map_set (lam (tuple2 ((lam ((lam (rev_fix_param (map_set (lam (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lam (tuple2 (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_first $0)) (collect $0)) max_int) (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_second $0)) (collect $0)) max_int))))) (fn_4 $1))) (fn_1 $0)) (tuple2_second $0))) $v18) in let $v20::set(set(tuple2(tuple2(int, int), color))) = (map_set (lam (map_set (lam (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) $v19) in let $v21::set(tuple2(tuple2(int, int), color)) = (rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (fn_4 $0) (fn_4 $2))) 1)) (not (gt? (abs (- (fn_1 $0) (fn_1 $2))) 1)))) $0))) $1 $0))) empty_set $v20) in let $v22::grid(color) = (rev_grid_elements $v21 $v8 $v9) in let $v23::grid(color) = (repeat_grid $v4 $v5 $v6) in (rev_select_grid (lam (eq? $0 $v1)) $v23 $v22)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v3, $v4 = rev($inp0 = (fn_10 $v4 $v3)) in let $v6, $v5 = rev($v4 = (cons $v5 $v6)) in let $v7::list(list(color)) = Const(list(list(color)), Any[]) in let $v8::list(list(color)) = (cons $v5 $v7) in let $v9::list(list(color)) = (cons $v3 $v8) in (fn_10 $v9 $v1)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v3 = rev($inp0 = (fn_0 $v3)) in let $v5, $v4 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v8::list(list(color)) = (fn_5 $v4 $v6) in (fn_10 $v8 $v1)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v5, $v4 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($v2 = (columns $v7)) in let $v8 = rev($v7 = (tuple2_first $v8)) in let $v10::list(list(color)) = (fn_5 $v8 $v6) in (fn_10 $v10 $v1)",
+    "let $v1::int = Const(int, 3) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::color = (index2 $v1 $v1 $v3) in let $v5::list(color) = Const(list(color), Any[0, 0]) in let $v6::list(color) = (cons $v4 $v5) in let $v8, $v7 = rev($v2 = (cons $v7 $v8)) in let $v10, $v9 = rev($v8 = (cons $v9 $v10)) in let $v11::list(list(color)) = Const(list(list(color)), Any[]) in let $v12::list(list(color)) = (cons $v9 $v11) in let $v13::list(list(color)) = (cons $v7 $v12) in (fn_10 $v13 $v6)",
+    "let $v1::int = Const(int, 3) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (rows $v3)) in let $v4::color = (index2 $v1 $v1 $v3) in let $v5::list(color) = Const(list(color), Any[0, 0]) in let $v6::list(color) = (cons $v4 $v5) in let $v8, $v7 = rev($v2 = (cons $v7 $v8)) in let $v10, $v9 = rev($v8 = (cons $v9 $v10)) in let $v11::list(list(color)) = Const(list(list(color)), Any[]) in let $v12::list(list(color)) = (cons $v9 $v11) in let $v13::list(list(color)) = (cons $v7 $v12) in (fn_10 $v13 $v6)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v3 = rev($inp0 = (fn_0 $v3)) in let $v5, $v4 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v8 = rev($inp0 = (fn_1 $v8)) in let $v10, $v9 = rev($v8 = (tuple2 $v9 $v10)) in let $v12::list(list(color)) = (fn_5 $v9 $v6) in (fn_10 $v12 $v1)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v3 = rev($inp0 = (fn_0 $v3)) in let $v5, $v4 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($inp0 = (columns_to_grid $v7)) in let $v8 = rev($v7 = (columns $v8)) in let $v9 = rev($v8 = (tuple2_first $v9)) in let $v11::list(list(color)) = (fn_5 $v9 $v6) in (fn_10 $v11 $v1)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v3 = rev($inp0 = (fn_0 $v3)) in let $v5, $v4 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7 = rev($inp0 = (columns_to_grid $v7)) in let $v8 = rev($v7 = (columns $v8)) in let $v9 = rev($v8 = (rows_to_grid $v9)) in let $v11::list(list(color)) = (fn_5 $v9 $v6) in (fn_10 $v11 $v1)",
+    "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v3 = rev($inp0 = (fn_0 $v3)) in let $v5, $v4 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v8 = rev($inp0 = (fn_2 $v8)) in let $v10, $v9 = rev($v8 = (cons $v9 $v10)) in let $v12::list(list(color)) = (fn_5 $v9 $v6) in (fn_10 $v12 $v1)",
+    "let $v1::color = Const(color, 0) in let $v2::list(color) = empty in let $v3::list(color) = (cons $v1 $v2) in let $v4::color = (car $v3) in let $v5::list(color) = Const(list(color), Any[0, 0]) in let $v6::list(color) = (cons $v4 $v5) in let $v8, $v9 = rev($inp0 = (fn_10 $v9 $v8)) in let $v11, $v10 = rev($v9 = (cons $v10 $v11)) in let $v12::list(list(color)) = Const(list(list(color)), Any[]) in let $v13::list(list(color)) = (cons $v10 $v12) in let $v14::list(list(color)) = (cons $v8 $v13) in (fn_10 $v14 $v6)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in (rows_to_grid $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in (fn_0 $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (fn_0 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v3::list(list(color)) = (tuple2_second $v2) in (fn_0 $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (columns $v3) in (rows_to_grid $v4)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::grid(color) = (fn_2 $v1) in let $v4::list(list(color)) = (rows $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::grid(color) = (fn_0 $v1) in let $v4::list(list(color)) = (columns $v3) in (columns_to_grid $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v4 = rev($v1 = (fn_5 $v4 $v3)) in (fn_0 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (rows_to_grid $v2) in let $v4 = rev($v1 = (tuple2_second $v4)) in (fn_5 $v4 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in (rows_to_grid $v1)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in (columns_to_grid $v1)",
+    "let $v1::list(list(color)) = (rows $inp0) in (columns_to_grid $v1)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in $v2",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (rows_to_grid $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in (fn_0 $v2)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v3::int = 1 in (fn_5 $v3 $v2)",
+    "let $v1::int = 1 in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::tuple2(t0, grid(color)) = (tuple2 $v1 $v3) in (tuple2_second $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (collect $v2)) in let $v3 = rev($inp0 = (rows_to_grid $v3)) in let $v4 = rev($v3 = (columns $v4)) in let $v5::tuple2(t0, grid(color)) = (tuple2 $v2 $v4) in (tuple2_second $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v4, $v5 = rev($inp0 = (fn_5 $v5 $v4)) in (fn_5 $v4 $v2)",
+    "let $v3 = rev($inp0 = (fn_8 $v3)) in (fn_7 $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3 = rev($v2 = (rows $v3)) in let $v4::list(list(color)) = (columns $v3) in (fn_0 $v4)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3 = rev($v2 = (columns $v3)) in let $v4::list(list(color)) = (rows $v3) in (fn_2 $v4)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in (fn_7 $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (rows_to_grid $v2) in let $v4::list(list(color)) = (columns $v3) in (fn_0 $v4)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::grid(color) = (columns_to_grid $v4) in (fn_7 $v5)",
+    "let $v2, $v3 = rev($inp0 = (fn_5 $v3 $v2)) in let $v5 = rev($v2 = (fn_2 $v5)) in let $v6::grid(color) = (columns_to_grid $v5) in (fn_7 $v6)",
+    "let $v2, $v3 = rev($inp0 = (fn_5 $v3 $v2)) in let $v5 = rev($v2 = (fn_2 $v5)) in let $v6::grid(color) = (rows_to_grid $v5) in let $v7::list(list(color)) = (columns $v6) in (fn_0 $v7)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in let $v6::grid(color) = (fn_2 $v4) in let $v7::list(list(color)) = (rows $v6) in (columns_to_grid $v7)",
+    "let $v2, $v3 = rev($inp0 = (fn_5 $v3 $v2)) in let $v5 = rev($v2 = (fn_2 $v5)) in let $v6::grid(color) = (columns_to_grid $v5) in let $v7::list(list(color)) = (rows $v6) in let $v9::grid(color) = (fn_2 $v7) in let $v10::list(list(color)) = (rows $v9) in (columns_to_grid $v10)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10::int = Const(int, 6) in let $v11::list(color) = (concat $v2 $v2) in let $v12::list(color) = (concat $v11 $v7) in let $v13::list(color) = (reverse $v12) in let $v14::list(list(color)) = Const(list(list(color)), Any[]) in let $v15::list(list(color)) = (cons $v13 $v14) in let $v16::tuple2(t0, list(list(color))) = (tuple2 $v10 $v15) in let $v17::list(list(color)) = (tuple2_second $v16) in (fn_10 $v17 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10::list(color) = (concat $v2 $v2) in let $v11::list(color) = (concat $v10 $v7) in let $v12::list(color) = (reverse $v11) in let $v13::list(list(color)) = Const(list(list(color)), Any[]) in let $v14::list(list(color)) = (cons $v12 $v13) in let $v15::tuple2(t0, list(list(color))) = (tuple2 $v2 $v14) in let $v16::list(list(color)) = (tuple2_second $v15) in (fn_10 $v16 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v7::list(color) = (reverse $v5) in let $v8::list(color) = (reverse $v7) in let $v9::list(color) = (concat $v6 $v8) in let $v10::list(color) = (concat $v2 $v2) in let $v12, $v11 = rev($v1 = (cons $v11 $v12)) in let $v13::list(color) = (concat $v10 $v11) in let $v14::list(color) = (reverse $v13) in let $v15::list(list(color)) = Const(list(list(color)), Any[]) in let $v16::list(list(color)) = (cons $v14 $v15) in let $v17::tuple2(t0, list(list(color))) = (tuple2 $v2 $v16) in let $v18::list(list(color)) = (tuple2_second $v17) in (fn_10 $v18 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v11, $v12 = rev($inp0 = (fn_5 $v12 $v11)) in let $v13 = rev($v11 = (tuple2_second $v13)) in let $v14::list(color) = (concat $v2 $v2) in let $v15::list(color) = (concat $v14 $v7) in let $v16::list(color) = (reverse $v15) in let $v17::list(list(color)) = Const(list(list(color)), Any[]) in let $v18::list(list(color)) = (cons $v16 $v17) in let $v19::tuple2(t0, list(list(color))) = (tuple2 $v13 $v18) in let $v20::list(list(color)) = (tuple2_second $v19) in (fn_10 $v20 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v11, $v12 = rev($inp0 = (fn_10 $v12 $v11)) in let $v14, $v13 = rev($v12 = (repeat $v13 $v14)) in let $v15::list(color) = (concat $v2 $v2) in let $v16::list(color) = (concat $v15 $v7) in let $v17::list(color) = (reverse $v16) in let $v18::list(list(color)) = Const(list(list(color)), Any[]) in let $v19::list(list(color)) = (cons $v17 $v18) in let $v20::tuple2(t0, list(list(color))) = (tuple2 $v13 $v19) in let $v21::list(list(color)) = (tuple2_second $v20) in (fn_10 $v21 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v11, $v12 = rev($inp0 = (fn_10 $v12 $v11)) in let $v14, $v13 = rev($v12 = (repeat $v13 $v14)) in let $v15::list(color) = (concat $v2 $v2) in let $v16::list(color) = (concat $v15 $v7) in let $v17::list(color) = (reverse $v16) in let $v18::list(list(color)) = Const(list(list(color)), Any[]) in let $v19::list(list(color)) = (cons $v17 $v18) in let $v20::tuple2(t0, list(list(color))) = (tuple2 $v14 $v19) in let $v21::list(list(color)) = (tuple2_second $v20) in (fn_10 $v21 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v11 = rev($inp0 = (fn_0 $v11)) in let $v13 = rev($v11 = (fn_4 $v13)) in let $v14::list(color) = (concat $v2 $v2) in let $v15::list(color) = (concat $v14 $v7) in let $v16::list(color) = (reverse $v15) in let $v17::list(list(color)) = Const(list(list(color)), Any[]) in let $v18::list(list(color)) = (cons $v16 $v17) in let $v19::tuple2(t0, list(list(color))) = (tuple2 $v13 $v18) in let $v20::list(list(color)) = (tuple2_second $v19) in (fn_10 $v20 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v10 = rev($inp0 = (rows_to_grid $v10)) in let $v11 = rev($v10 = (rows $v11)) in let $v12 = rev($v11 = (rows_to_grid $v12)) in let $v13 = rev($v12 = (tuple2_first $v13)) in let $v14::list(color) = (concat $v2 $v2) in let $v15::list(color) = (concat $v14 $v7) in let $v16::list(color) = (reverse $v15) in let $v17::list(list(color)) = Const(list(list(color)), Any[]) in let $v18::list(list(color)) = (cons $v16 $v17) in let $v19::tuple2(t0, list(list(color))) = (tuple2 $v13 $v18) in let $v20::list(list(color)) = (tuple2_second $v19) in (fn_10 $v20 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v11, $v12 = rev($inp0 = (fn_10 $v12 $v11)) in let $v14 = rev($v12 = (fn_4 $v14)) in let $v15::list(color) = (concat $v2 $v2) in let $v16::list(color) = (concat $v15 $v7) in let $v17::list(color) = (reverse $v16) in let $v18::list(list(color)) = Const(list(list(color)), Any[]) in let $v19::list(list(color)) = (cons $v17 $v18) in let $v20::tuple2(t0, list(list(color))) = (tuple2 $v14 $v19) in let $v21::list(list(color)) = (tuple2_second $v20) in (fn_10 $v21 $v9)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v4::list(color) = (reverse $v2) in let $v5::list(color) = (reverse $v4) in let $v6::list(color) = (concat $v5 $v5) in let $v8, $v7 = rev($v1 = (cons $v7 $v8)) in let $v9::list(color) = (concat $v6 $v7) in let $v11 = rev($inp0 = (fn_0 $v11)) in let $v12 = rev($v11 = (reverse $v12)) in let $v14, $v15 = rev($v12 = (fn_5 $v15 $v14)) in let $v16::list(color) = (concat $v2 $v2) in let $v17::list(color) = (concat $v16 $v7) in let $v18::list(color) = (reverse $v17) in let $v19::list(list(color)) = Const(list(list(color)), Any[]) in let $v20::list(list(color)) = (cons $v18 $v19) in let $v21::tuple2(t0, list(list(color))) = (tuple2 $v14 $v20) in let $v22::list(list(color)) = (tuple2_second $v21) in (fn_10 $v22 $v9)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in (rows_to_grid $v2)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in (fn_0 $v1)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (rows $v3) in (columns_to_grid $v4)",
+    "let $v2, $v3 = rev($inp0 = (fn_5 $v3 $v2)) in let $v4 = rev($v2 = (rows_to_grid $v4)) in (fn_0 $v4)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::list(list(color)) = (reverse $v2) in (fn_0 $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v3, $v4 = rev($v1 = (fn_5 $v4 $v3)) in (fn_0 $v3)",
+    "let $v2, $v3 = rev($inp0 = (fn_10 $v3 $v2)) in let $v4::list(list(color)) = (cons $v2 $v3) in (fn_0 $v4)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v3 = rev($v1 = (reverse $v3)) in let $v4::grid(color) = (rows_to_grid $v3) in let $v5::tuple2(t0, grid(color)) = (tuple2 $v2 $v4) in (tuple2_second $v5)",
+    "let $v1 = rev($inp0 = (tuple2_first $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v4 = rev($inp0 = (fn_0 $v4)) in let $v5::grid(color) = (rows_to_grid $v4) in let $v6::tuple2(t0, grid(color)) = (tuple2 $v2 $v5) in (tuple2_second $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v4 = rev($inp0 = (fn_0 $v4)) in let $v5::grid(color) = (rows_to_grid $v4) in let $v6::tuple2(t0, grid(color)) = (tuple2 $v2 $v5) in (tuple2_second $v6)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in (fn_6 $v2 $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::list(list(color)) = (fn_3 $v1) in (columns_to_grid $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in (fn_6 $v4 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v1) in (fn_6 $v4 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in (fn_6 $v4 $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v4::list(list(color)) = (tuple2_first $v2) in let $v6::list(list(color)) = (fn_3 $v4) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v3, $v2 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (columns_to_grid $v4)) in let $v6 = rev($inp0 = (fn_2 $v6)) in (fn_6 $v6 $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v4 = rev($inp0 = (fn_5 $v4 $v3)) in let $v5 = rev($v3 = (columns_to_grid $v5)) in let $v6::list(list(color)) = (reverse $v5) in (fn_6 $v6 $v1)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v3, $v2 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (columns_to_grid $v4)) in let $v5 = rev($inp0 = (columns_to_grid $v5)) in let $v6::list(list(color)) = (reverse $v5) in (fn_6 $v6 $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v4, $v5 = rev($v2 = (fn_5 $v5 $v4)) in let $v6 = rev($v4 = (rows_to_grid $v6)) in let $v7 = rev($v1 = (reverse $v7)) in (fn_6 $v7 $v6)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::list(list(color)) = (concat $v1 $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in (fn_9 $v1)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4::list(list(color)) = (concat $v3 $v2) in (rows_to_grid $v4)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::list(list(color)) = (concat $v1 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v1) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4::list(list(color)) = (reverse $v1) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v3, $v4 = rev($v1 = (fn_5 $v4 $v3)) in let $v5::list(list(color)) = (reverse $v3) in let $v6::list(list(color)) = (concat $v1 $v5) in (rows_to_grid $v6)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v4 = rev($v2 = (tuple2_first $v4)) in let $v5::list(list(color)) = (tuple2_first $v4) in let $v6::list(list(color)) = (concat $v3 $v5) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v4, $v5 = rev($v1 = (fn_5 $v5 $v4)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v6::list(list(color)) = (reverse $v4) in let $v7::list(list(color)) = (concat $v3 $v6) in (rows_to_grid $v7)",
+    "let $v3 = rev($inp0 = (fn_8 $v3)) in (fn_7 $v3)",
+    "let $v3 = rev($inp0 = (fn_7 $v3)) in (fn_8 $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v4, $v5 = rev($v2 = (fn_5 $v5 $v4)) in let $v6::grid(color) = (columns_to_grid $v4) in (fn_7 $v6)",
+    "let $v1::int = Const(int, 3) in let $v4 = rev($inp0 = (fn_8 $v4)) in let $v5::list(list(color)) = (rows $v4) in let $v7::grid(color) = (fn_2 $v5) in let $v8::tuple2(t0, grid(color)) = (tuple2 $v1 $v7) in let $v9::grid(color) = (tuple2_second $v8) in let $v10::list(list(color)) = (rows $v9) in (columns_to_grid $v10)",
+    "let $v1::int = Const(int, 3) in let $v3 = rev($inp0 = (fn_2 $v3)) in let $v5, $v6 = rev($v3 = (fn_5 $v6 $v5)) in let $v7::grid(color) = (columns_to_grid $v5) in let $v8::list(list(color)) = (rows $v7) in let $v10::grid(color) = (fn_2 $v8) in let $v11::tuple2(t0, grid(color)) = (tuple2 $v1 $v10) in let $v12::grid(color) = (tuple2_second $v11) in let $v13::list(list(color)) = (rows $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v4 = rev($v2 = (fn_0 $v4)) in let $v5 = rev($v1 = (reverse $v5)) in let $v6 = rev($v5 = (columns $v6)) in let $v7::list(list(color)) = (rows $v6) in let $v9::grid(color) = (fn_2 $v7) in let $v10::tuple2(t0, grid(color)) = (tuple2 $v4 $v9) in let $v11::grid(color) = (tuple2_second $v10) in let $v12::list(list(color)) = (rows $v11) in (columns_to_grid $v12)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4 = rev($v3 = (tuple2_first $v4)) in let $v7 = rev($inp0 = (fn_8 $v7)) in let $v8::list(list(color)) = (rows $v7) in let $v10::grid(color) = (fn_2 $v8) in let $v11::tuple2(t0, grid(color)) = (tuple2 $v4 $v10) in let $v12::grid(color) = (tuple2_second $v11) in let $v13::list(list(color)) = (rows $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v4 = rev($v1 = (fn_5 $v4 $v3)) in let $v5 = rev($v3 = (columns $v5)) in let $v6 = rev($v5 = (columns_to_grid $v6)) in let $v7 = rev($v1 = (reverse $v7)) in let $v8 = rev($v7 = (columns $v8)) in let $v9::list(list(color)) = (rows $v8) in let $v11::grid(color) = (fn_2 $v9) in let $v12::tuple2(t0, grid(color)) = (tuple2 $v6 $v11) in let $v13::grid(color) = (tuple2_second $v12) in let $v14::list(list(color)) = (rows $v13) in (columns_to_grid $v14)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v4 = rev($v2 = (fn_0 $v4)) in let $v5 = rev($v1 = (reverse $v5)) in let $v7, $v8 = rev($v5 = (fn_5 $v8 $v7)) in let $v9::grid(color) = (columns_to_grid $v7) in let $v10::list(list(color)) = (rows $v9) in let $v12::grid(color) = (fn_2 $v10) in let $v13::tuple2(t0, grid(color)) = (tuple2 $v4 $v12) in let $v14::grid(color) = (tuple2_second $v13) in let $v15::list(list(color)) = (rows $v14) in (columns_to_grid $v15)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3 = rev($v2 = (reverse $v3)) in let $v4 = rev($v3 = (tuple2_first $v4)) in let $v6 = rev($inp0 = (fn_2 $v6)) in let $v8, $v9 = rev($v6 = (fn_5 $v9 $v8)) in let $v10::grid(color) = (columns_to_grid $v8) in let $v11::list(list(color)) = (rows $v10) in let $v13::grid(color) = (fn_2 $v11) in let $v14::tuple2(t0, grid(color)) = (tuple2 $v4 $v13) in let $v15::grid(color) = (tuple2_second $v14) in let $v16::list(list(color)) = (rows $v15) in (columns_to_grid $v16)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in (fn_6 $v2 $v1)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3 = rev($v2 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in (fn_6 $v4 $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in (fn_6 $v4 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in (fn_6 $v4 $v1)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v4::grid(color) = (fn_6 $v2 $v1) in let $v5::list(list(color)) = (rows $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_second $v2)) in let $v4, $v3 = rev($v2 = (tuple2 $v3 $v4)) in let $v5::list(list(color)) = (reverse $v4) in (fn_6 $v5 $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v4::list(list(color)) = (tuple2_first $v2) in let $v6::list(list(color)) = (fn_3 $v4) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v3, $v2 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (columns_to_grid $v4)) in let $v6 = rev($inp0 = (fn_2 $v6)) in (fn_6 $v6 $v4)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v6::grid(color) = (fn_6 $v4 $v3) in let $v7::list(list(color)) = (rows $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (tuple2_second $v4)) in let $v6, $v5 = rev($v4 = (tuple2 $v5 $v6)) in let $v7::list(list(color)) = (reverse $v6) in (fn_6 $v7 $v3)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::list(list(color)) = (concat $v2 $v1) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3::list(list(color)) = (concat $v2 $v1) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v1 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::list(list(color)) = (concat $v2 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in let $v5::list(list(color)) = (concat $v4 $v1) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::list(list(color)) = (reverse $v1) in let $v3 = rev($v1 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in let $v5::list(list(color)) = (concat $v2 $v4) in (rows_to_grid $v5)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v3, $v2 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (rows_to_grid $v4)) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (concat $v5 $v4) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v3) in let $v5::list(list(color)) = (tuple2_first $v2) in let $v6::list(list(color)) = (concat $v4 $v5) in (rows_to_grid $v6)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3 = rev($inp0 = (tuple2_second $v3)) in let $v5, $v4 = rev($v3 = (tuple2 $v4 $v5)) in let $v6 = rev($v5 = (rows_to_grid $v6)) in let $v7::list(list(color)) = (concat $v2 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3 = rev($v1 = (columns $v3)) in let $v5::list(list(color)) = (fn_5 $v3 $v2) in let $v6::list(list(color)) = (concat $v5 $v1) in (rows_to_grid $v6)",
+    "let $v1 = rev($inp0 = (tuple2_second $v1)) in let $v3, $v2 = rev($v1 = (tuple2 $v2 $v3)) in let $v4 = rev($v3 = (rows_to_grid $v4)) in let $v5::list(list(color)) = (reverse $v4) in let $v7::grid(color) = (fn_6 $v4 $v5) in let $v8::list(list(color)) = (rows $v7) in (columns_to_grid $v8)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in (columns_to_grid $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in (fn_2 $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (fn_2 $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in (fn_5 $v2 $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5 = rev($v4 = (tuple2_second $v5)) in (fn_5 $v5 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (rev_list_elements $v2 $v3)) in let $v4 = rev($v3 = (tuple2_first $v4)) in let $v5::int = (tuple2_first $v4) in let $v6::list(list(color)) = (rev_list_elements $v2 $v5) in (fn_2 $v6)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5 = rev($v4 = (rows $v5)) in (fn_5 $v5 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::tuple2(t0, list(list(color))) = (tuple2 $v3 $v4) in let $v6::list(list(color)) = (tuple2_second $v5) in (columns_to_grid $v6)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v5, $v6 = rev($v1 = (fn_5 $v6 $v5)) in (fn_5 $v5 $v3)",
+    "let $v2 = rev($inp0 = (fn_2 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v5, $v6 = rev($inp0 = (fn_10 $v6 $v5)) in (fn_5 $v5 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v4 = rev($v1 = (fn_5 $v4 $v3)) in (fn_6 $v3 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::grid(color) = (fn_6 $v1 $v1) in let $v4 = rev($inp0 = (tuple2_second $v4)) in (fn_5 $v4 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v4, $v5 = rev($v1 = (fn_5 $v5 $v4)) in let $v3::list(list(color)) = (tuple2_first $v2) in (fn_6 $v4 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::grid(color) = (fn_6 $v1 $v1) in let $v4 = rev($v1 = (tuple2_first $v4)) in (fn_5 $v4 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::grid(color) = (fn_6 $v1 $v1) in let $v4 = rev($v1 = (tuple2_second $v4)) in (fn_5 $v4 $v3)",
+    "let $v4 = rev($inp0 = (fn_2 $v4)) in let $v3::grid(color) = (fn_6 $v1 $v1) in (fn_5 $v4 $v3)",
+    "let $v2, $v3 = rev($inp0 = (fn_5 $v3 $v2)) in let $v5, $v6 = rev($v2 = (fn_5 $v6 $v5)) in let $v7 = rev($v5 = (columns_to_grid $v7)) in (fn_6 $v7 $v7)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::grid(color) = (fn_6 $v1 $v1) in let $v4 = rev($inp0 = (rows_to_grid $v4)) in let $v5 = rev($v4 = (tuple2_second $v5)) in (fn_5 $v5 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3::grid(color) = (fn_6 $v1 $v1) in let $v5 = rev($inp0 = (fn_0 $v5)) in (fn_5 $v5 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (reverse $v2)) in let $v3::list(list(color)) = (reverse $v2) in let $v5, $v6 = rev($v1 = (fn_5 $v6 $v5)) in (fn_6 $v5 $v3)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in (rows_to_grid $v1)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in (columns_to_grid $v1)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (rows_to_grid $v3)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in (columns_to_grid $v3)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in (fn_2 $v2)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in (fn_5 $v2 $v2)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (columns $v2)) in let $v3 = rev($v1 = (rows $v3)) in (fn_5 $v3 $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::grid(color) = (rows_to_grid $v3) in (fn_5 $v3 $v4)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2::grid(color) = (columns_to_grid $v1) in let $v3 = rev($v1 = (tuple2_first $v3)) in let $v4::list(list(color)) = (tuple2_first $v3) in (fn_5 $v4 $v2)",
+    "let $v3 = rev($inp0 = (fn_0 $v3)) in let $v2::grid(color) = (columns_to_grid $v1) in let $v4::list(list(color)) = (reverse $v3) in (fn_5 $v4 $v2)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v8 = rev($v3 = (tuple2_first $v8)) in let $v9::int = (tuple2_first $v8) in let $v10::list(list(color)) = (repeat $v7 $v9) in (columns_to_grid $v10)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v8 = rev($v3 = (tuple2_second $v8)) in let $v9::int = (tuple2_second $v8) in let $v10::list(list(color)) = (repeat $v7 $v9) in (columns_to_grid $v10)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v9, $v10 = rev($v3 = (fn_5 $v10 $v9)) in let $v11::list(list(color)) = (repeat $v7 $v9) in (columns_to_grid $v11)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v9, $v8 = rev($v1 = (cons $v8 $v9)) in let $v11, $v10 = rev($v9 = (repeat $v10 $v11)) in let $v12::int = Const(int, -1) in let $v13::int = (- $v11 $v12) in let $v14::list(list(color)) = (repeat $v7 $v13) in (columns_to_grid $v14)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v9, $v8 = rev($v1 = (cons $v8 $v9)) in let $v11, $v10 = rev($v9 = (repeat $v10 $v11)) in let $v12::int = Const(int, 1) in let $v13::int = (+ $v11 $v12) in let $v14::list(list(color)) = (repeat $v7 $v13) in (columns_to_grid $v14)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v9 = rev($v3 = (fn_1 $v9)) in let $v11::int = (fn_1 $v9) in let $v12::list(list(color)) = (repeat $v7 $v11) in (columns_to_grid $v12)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v8 = rev($v3 = (tuple2_second $v8)) in let $v9 = rev($v8 = (tuple2_second $v9)) in let $v10::tuple2(t0, int) = (tuple2_second $v9) in let $v11::int = (tuple2_second $v10) in let $v12::list(list(color)) = (repeat $v7 $v11) in (columns_to_grid $v12)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v6 = rev($v2 = (reverse $v6)) in let $v8, $v7 = rev($v6 = (rev_fix_param (concat $v7 $v8) $v7 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v9::list(color) = (concat $v4 $v8) in let $v10 = rev($v3 = (tuple2_first $v10)) in let $v11::int = (tuple2_first $v10) in let $v12::list(list(color)) = (repeat $v9 $v11) in (columns_to_grid $v12)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v9, $v10 = rev($v3 = (fn_5 $v10 $v9)) in let $v11 = rev($v9 = (tuple2_first $v11)) in let $v12::int = (tuple2_first $v11) in let $v13::list(list(color)) = (repeat $v7 $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (columns_to_grid $v1)) in let $v3, $v2 = rev($v1 = (repeat $v2 $v3)) in let $v5, $v4 = rev($v2 = (rev_fix_param (concat $v4 $v5) $v5 (lam Const(list(color), Any[0, 0, 0, 0, 0])))) in let $v7::list(color) = (fn_3 $v4) in let $v9, $v10 = rev($v3 = (fn_5 $v10 $v9)) in let $v11 = rev($v9 = (tuple2_second $v11)) in let $v12::int = (tuple2_second $v11) in let $v13::list(list(color)) = (repeat $v7 $v12) in (columns_to_grid $v13)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in (fn_9 $v1)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4::list(list(color)) = (reverse $v1) in let $v5::list(list(color)) = (concat $v3 $v4) in (rows_to_grid $v5)",
+    "let $v2 = rev($inp0 = (fn_0 $v2)) in let $v3::grid(color) = (columns_to_grid $v2) in let $v4::list(list(color)) = (columns $v3) in let $v5::list(list(color)) = (concat $v1 $v4) in (rows_to_grid $v5)",
+    "let $v2, $v3 = rev($inp0 = (fn_5 $v3 $v2)) in let $v4 = rev($v2 = (rows_to_grid $v4)) in (fn_9 $v4)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v3, $v4 = rev($v1 = (fn_5 $v4 $v3)) in let $v5::list(list(color)) = (reverse $v3) in let $v6::list(list(color)) = (concat $v1 $v5) in (rows_to_grid $v6)",
+    "let $v2, $v3 = rev($inp0 = (fn_5 $v3 $v2)) in let $v4 = rev($v2 = (rows_to_grid $v4)) in let $v6 = rev($inp0 = (fn_0 $v6)) in let $v7::list(list(color)) = (concat $v4 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v4, $v5 = rev($v1 = (fn_5 $v5 $v4)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v6::list(list(color)) = (reverse $v4) in let $v7::list(list(color)) = (concat $v3 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (tuple2_first $v2)) in let $v3::list(list(color)) = (tuple2_first $v2) in let $v4 = rev($v1 = (reverse $v4)) in let $v5::grid(color) = (columns_to_grid $v4) in let $v6::list(list(color)) = (columns $v5) in let $v7::list(list(color)) = (concat $v3 $v6) in (rows_to_grid $v7)",
+    "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($v1 = (rows $v2)) in let $v4, $v5 = rev($v2 = (fn_10 $v5 $v4)) in let $v6::list(list(color)) = (cons $v4 $v5) in let $v7 = rev($v1 = (reverse $v7)) in let $v8::list(list(color)) = (concat $v6 $v7) in (rows_to_grid $v8)",
+    "let $v3, $v4 = rev($inp0 = (fn_10 $v4 $v3)) in let $v2::list(list(color)) = (reverse $v1) in let $v5 = rev($v4 = (reverse $v5)) in let $v7::list(list(color)) = (fn_5 $v5 $v2) in let $v8::list(list(color)) = (concat $v1 $v7) in (rows_to_grid $v8)"
+  ],
+  "rewritten_dreamcoder": null,
+  "abstractions": [
+    {
+      "body": "(rows_to_grid (reverse #0))",
+      "dreamcoder": "#(lambda (rows_to_grid (reverse $0)))",
+      "arity": 1,
+      "name": "fn_0",
+      "utility": 1212,
+      "final_cost": 43962,
+      "compression_ratio": 1.0321641417587917,
+      "cumulative_compression_ratio": 1.0321641417587917,
+      "num_uses": 50,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_0 $v2": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_0 $v2": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_0 $v2": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_0 $v2": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_0 $v2": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_0 $v2": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_0 $v3": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_0 $v11": "(rows_to_grid $v10)"
+        },
+        {
+          "fn_0 $v11": "(rows_to_grid $v10)"
+        },
+        {
+          "fn_0 $v1": "(rows_to_grid $v2)"
+        },
+        {
+          "fn_0 $v3": "(rows_to_grid $v2)"
+        },
+        {
+          "fn_0 $v2": "(rows_to_grid $v3)"
+        },
+        {
+          "fn_0 $v4": "(rows_to_grid $v3)"
+        },
+        {
+          "fn_0 $v3": "(rows_to_grid $v4)"
+        },
+        {
+          "fn_0 $v3": "(rows_to_grid $v4)"
+        },
+        {
+          "fn_0 $v3": "(rows_to_grid $v4)"
+        },
+        {
+          "fn_0 $v5": "(rows_to_grid $v4)"
+        },
+        {
+          "fn_0 $v3": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v4": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v4": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v4": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v4": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v4": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v4": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v6": "(rows_to_grid $v5)"
+        },
+        {
+          "fn_0 $v6": "(rows_to_grid $v7)"
+        },
+        {
+          "fn_0 $v7": "(rows_to_grid $v8)"
+        },
+        {
+          "fn_0 $v7": "(rows_to_grid $v8)"
+        },
+        {
+          "fn_0 $v7": "(rows_to_grid $v8)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(tuple2_second (tuple2_first #0))",
+      "dreamcoder": "#(lambda (tuple2_second (tuple2_first $0)))",
+      "arity": 1,
+      "name": "fn_1",
+      "utility": 808,
+      "final_cost": 42952,
+      "compression_ratio": 1.023514620972248,
+      "cumulative_compression_ratio": 1.0564350903333954,
+      "num_uses": 13,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_1 $v9": "(tuple2_second $v10)"
+        },
+        {
+          "fn_1 $v8": "(tuple2_second $v7)"
+        },
+        {
+          "fn_1 $v9": "(tuple2_second $v8)"
+        },
+        {
+          "fn_1 $0": "(tuple2_second (tuple2_first $0))"
+        },
+        {
+          "fn_1 $2": "(tuple2_second (tuple2_first $2))"
+        },
+        {
+          "fn_1 (tuple2_first $0)": "(tuple2_second (tuple2_first (tuple2_first $0)))"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(columns_to_grid (reverse #0))",
+      "dreamcoder": "#(lambda (columns_to_grid (reverse $0)))",
+      "arity": 1,
+      "name": "fn_2",
+      "utility": 808,
+      "final_cost": 41942,
+      "compression_ratio": 1.0240808735873348,
+      "cumulative_compression_ratio": 1.0818749701969386,
+      "num_uses": 48,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_2 $v2": "(columns_to_grid $v1)"
+        },
+        {
+          "fn_2 $v2": "(columns_to_grid $v1)"
+        },
+        {
+          "fn_2 $v2": "(columns_to_grid $v1)"
+        },
+        {
+          "fn_2 $v2": "(columns_to_grid $v1)"
+        },
+        {
+          "fn_2 $v2": "(columns_to_grid $v1)"
+        },
+        {
+          "fn_2 $v4": "(columns_to_grid $v1)"
+        },
+        {
+          "fn_2 $v9": "(columns_to_grid $v10)"
+        },
+        {
+          "fn_2 $v10": "(columns_to_grid $v11)"
+        },
+        {
+          "fn_2 $v11": "(columns_to_grid $v12)"
+        },
+        {
+          "fn_2 $v1": "(columns_to_grid $v2)"
+        },
+        {
+          "fn_2 $v3": "(columns_to_grid $v2)"
+        },
+        {
+          "fn_2 $v3": "(columns_to_grid $v2)"
+        },
+        {
+          "fn_2 $v2": "(columns_to_grid $v3)"
+        },
+        {
+          "fn_2 $v3": "(columns_to_grid $v4)"
+        },
+        {
+          "fn_2 $v5": "(columns_to_grid $v4)"
+        },
+        {
+          "fn_2 $v4": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_2 $v4": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_2 $v4": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_2 $v6": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_2 $v6": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_2 $v6": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_2 $v5": "(columns_to_grid $v6)"
+        },
+        {
+          "fn_2 $v6": "(columns_to_grid $v7)"
+        },
+        {
+          "fn_2 $v8": "(columns_to_grid $v7)"
+        },
+        {
+          "fn_2 $v7": "(columns_to_grid $v8)"
+        },
+        {
+          "fn_2 $v7": "(columns_to_grid $v8)"
+        },
+        {
+          "fn_2 $v8": "(columns_to_grid $v9)"
+        },
+        {
+          "fn_2 $v8": "(columns_to_grid $v9)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(concat #0 (reverse #0))",
+      "dreamcoder": "#(lambda (concat $0 (reverse $0)))",
+      "arity": 1,
+      "name": "fn_3",
+      "utility": 605,
+      "final_cost": 41134,
+      "compression_ratio": 1.0196431176155978,
+      "cumulative_compression_ratio": 1.1031263674818885,
+      "num_uses": 15,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_3 $v1": "(concat $v1 $v2)"
+        },
+        {
+          "fn_3 $v4": "(concat $v3 $v5)"
+        },
+        {
+          "fn_3 $v4": "(concat $v4 $v5)"
+        },
+        {
+          "fn_3 $v4": "(concat $v4 $v6)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(tuple2_first (tuple2_first #0))",
+      "dreamcoder": "#(lambda (tuple2_first (tuple2_first $0)))",
+      "arity": 1,
+      "name": "fn_4",
+      "utility": 505,
+      "final_cost": 40427,
+      "compression_ratio": 1.0174883122665546,
+      "cumulative_compression_ratio": 1.1224181858658817,
+      "num_uses": 10,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_4 $v13": "(tuple2_first $v12)"
+        },
+        {
+          "fn_4 $v14": "(tuple2_first $v13)"
+        },
+        {
+          "fn_4 $0": "(tuple2_first (tuple2_first $0))"
+        },
+        {
+          "fn_4 $1": "(tuple2_first (tuple2_first $1))"
+        },
+        {
+          "fn_4 $2": "(tuple2_first (tuple2_first $2))"
+        },
+        {
+          "fn_4 (tuple2_first $0)": "(tuple2_first (tuple2_first (tuple2_first $0)))"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(tuple2_first (tuple2 #1 #0))",
+      "dreamcoder": "#(lambda (lambda (tuple2_first (tuple2 $0 $1))))",
+      "arity": 2,
+      "name": "fn_5",
+      "utility": 302,
+      "final_cost": 39922,
+      "compression_ratio": 1.0126496668503582,
+      "cumulative_compression_ratio": 1.1366164019838685,
+      "num_uses": 58,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_5 $v3 $v2": "(tuple2_first $v1)"
+        },
+        {
+          "fn_5 $v3 $v2": "(tuple2_first $v1)"
+        },
+        {
+          "fn_5 $v3 $v2": "(tuple2_first $v1)"
+        },
+        {
+          "fn_5 $v12 $v11": "(tuple2_first $v10)"
+        },
+        {
+          "fn_5 $v9 $v6": "(tuple2_first $v10)"
+        },
+        {
+          "fn_5 $v9 $v6": "(tuple2_first $v11)"
+        },
+        {
+          "fn_5 $v15 $v14": "(tuple2_first $v13)"
+        },
+        {
+          "fn_5 $v4 $v3": "(tuple2_first $v2)"
+        },
+        {
+          "fn_5 $v4 $v3": "(tuple2_first $v2)"
+        },
+        {
+          "fn_5 $v4 $v3": "(tuple2_first $v2)"
+        },
+        {
+          "fn_5 $v5 $v4": "(tuple2_first $v2)"
+        },
+        {
+          "fn_5 $v2 $v2": "(tuple2_first $v3)"
+        },
+        {
+          "fn_5 $v5 $v4": "(tuple2_first $v3)"
+        },
+        {
+          "fn_5 $v5 $v4": "(tuple2_first $v3)"
+        },
+        {
+          "fn_5 $v2 $v3": "(tuple2_first $v4)"
+        },
+        {
+          "fn_5 $v3 $v2": "(tuple2_first $v4)"
+        },
+        {
+          "fn_5 $v3 $v2": "(tuple2_first $v4)"
+        },
+        {
+          "fn_5 $v6 $v5": "(tuple2_first $v4)"
+        },
+        {
+          "fn_5 $v6 $v5": "(tuple2_first $v4)"
+        },
+        {
+          "fn_5 $v3 $v4": "(tuple2_first $v5)"
+        },
+        {
+          "fn_5 $v4 $v2": "(tuple2_first $v5)"
+        },
+        {
+          "fn_5 $v4 $v2": "(tuple2_first $v5)"
+        },
+        {
+          "fn_5 $v4 $v3": "(tuple2_first $v5)"
+        },
+        {
+          "fn_5 $v4 $v3": "(tuple2_first $v5)"
+        },
+        {
+          "fn_5 $v4 $v2": "(tuple2_first $v6)"
+        },
+        {
+          "fn_5 $v5 $v2": "(tuple2_first $v6)"
+        },
+        {
+          "fn_5 $v5 $v3": "(tuple2_first $v6)"
+        },
+        {
+          "fn_5 $v5 $v3": "(tuple2_first $v6)"
+        },
+        {
+          "fn_5 $v8 $v7": "(tuple2_first $v6)"
+        },
+        {
+          "fn_5 $v4 $v6": "(tuple2_first $v7)"
+        },
+        {
+          "fn_5 $v5 $v3": "(tuple2_first $v7)"
+        },
+        {
+          "fn_5 $v9 $v8": "(tuple2_first $v7)"
+        },
+        {
+          "fn_5 $v10 $v9": "(tuple2_first $v8)"
+        },
+        {
+          "fn_5 $v10 $v9": "(tuple2_first $v8)"
+        },
+        {
+          "fn_5 $v10 $v9": "(tuple2_first $v8)"
+        },
+        {
+          "fn_5 $v8 $v6": "(tuple2_first $v9)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(columns_to_grid (concat #1 #0))",
+      "dreamcoder": "#(lambda (lambda (columns_to_grid (concat $0 $1))))",
+      "arity": 2,
+      "name": "fn_6",
+      "utility": 302,
+      "final_cost": 39417,
+      "compression_ratio": 1.0128117309790192,
+      "cumulative_compression_ratio": 1.1511784255524267,
+      "num_uses": 28,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_6 $v1 $v1": "(columns_to_grid $v2)"
+        },
+        {
+          "fn_6 $v2 $v1": "(columns_to_grid $v3)"
+        },
+        {
+          "fn_6 $v3 $v3": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_6 $v4 $v1": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_6 $v4 $v1": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_6 $v4 $v3": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_6 $v4 $v3": "(columns_to_grid $v5)"
+        },
+        {
+          "fn_6 $v4 $v3": "(columns_to_grid $v6)"
+        },
+        {
+          "fn_6 $v4 $v5": "(columns_to_grid $v6)"
+        },
+        {
+          "fn_6 $v5 $v1": "(columns_to_grid $v6)"
+        },
+        {
+          "fn_6 $v5 $v3": "(columns_to_grid $v7)"
+        },
+        {
+          "fn_6 $v6 $v1": "(columns_to_grid $v7)"
+        },
+        {
+          "fn_6 $v6 $v4": "(columns_to_grid $v7)"
+        },
+        {
+          "fn_6 $v6 $v4": "(columns_to_grid $v7)"
+        },
+        {
+          "fn_6 $v7 $v3": "(columns_to_grid $v8)"
+        },
+        {
+          "fn_6 $v7 $v6": "(columns_to_grid $v8)"
+        },
+        {
+          "fn_6 $v7 $v7": "(columns_to_grid $v8)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(fn_0 (rows #0))",
+      "dreamcoder": "#(lambda (#(lambda (rows_to_grid (reverse $0))) (rows $0)))",
+      "arity": 1,
+      "name": "fn_7",
+      "utility": 202,
+      "final_cost": 39013,
+      "compression_ratio": 1.0103555225181349,
+      "cumulative_compression_ratio": 1.163099479660626,
+      "num_uses": 7,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_7 $v3": "(fn_0 $v2)"
+        },
+        {
+          "fn_7 $v3": "(fn_0 $v4)"
+        },
+        {
+          "fn_7 $v3": "(fn_0 $v4)"
+        },
+        {
+          "fn_7 $v5": "(fn_0 $v6)"
+        },
+        {
+          "fn_7 $v6": "(fn_0 $v7)"
+        },
+        {
+          "fn_7 $v6": "(fn_0 $v7)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(fn_2 (columns #0))",
+      "dreamcoder": "#(lambda (#(lambda (columns_to_grid (reverse $0))) (columns $0)))",
+      "arity": 1,
+      "name": "fn_8",
+      "utility": 202,
+      "final_cost": 38609,
+      "compression_ratio": 1.0104638814784117,
+      "cumulative_compression_ratio": 1.1752700147633972,
+      "num_uses": 5,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_8 $v3": "(fn_2 $v2)"
+        },
+        {
+          "fn_8 $v4": "(fn_2 $v3)"
+        },
+        {
+          "fn_8 $v3": "(fn_2 $v4)"
+        },
+        {
+          "fn_8 $v7": "(fn_2 $v6)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(rows_to_grid (fn_3 #0))",
+      "dreamcoder": "#(lambda (rows_to_grid (#(lambda (concat $0 (reverse $0))) $0)))",
+      "arity": 1,
+      "name": "fn_9",
+      "utility": 202,
+      "final_cost": 38205,
+      "compression_ratio": 1.0105745321293025,
+      "cumulative_compression_ratio": 1.1876979452951184,
+      "num_uses": 3,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_9 $v1": "(rows_to_grid $v3)"
+        },
+        {
+          "fn_9 $v4": "(rows_to_grid $v6)"
+        }
+      ],
+      "dc_comparison_millis": null
+    },
+    {
+      "body": "(rows_to_grid (cons #1 #0))",
+      "dreamcoder": "#(lambda (lambda (rows_to_grid (cons $0 $1))))",
+      "arity": 2,
+      "name": "fn_10",
+      "utility": 201,
+      "final_cost": 37801,
+      "compression_ratio": 1.010687547948467,
+      "cumulative_compression_ratio": 1.2003915240337557,
+      "num_uses": 29,
+      "rewritten": null,
+      "rewritten_dreamcoder": null,
+      "uses": [
+        {
+          "fn_10 $v3 $v2": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_10 $v4 $v3": "(rows_to_grid $v1)"
+        },
+        {
+          "fn_10 $v12 $v11": "(rows_to_grid $v10)"
+        },
+        {
+          "fn_10 $v12 $v11": "(rows_to_grid $v10)"
+        },
+        {
+          "fn_10 $v9 $v1": "(rows_to_grid $v10)"
+        },
+        {
+          "fn_10 $v10 $v1": "(rows_to_grid $v11)"
+        },
+        {
+          "fn_10 $v11 $v1": "(rows_to_grid $v12)"
+        },
+        {
+          "fn_10 $v12 $v1": "(rows_to_grid $v13)"
+        },
+        {
+          "fn_10 $v13 $v6": "(rows_to_grid $v14)"
+        },
+        {
+          "fn_10 $v14 $v6": "(rows_to_grid $v15)"
+        },
+        {
+          "fn_10 $v16 $v9": "(rows_to_grid $v17)"
+        },
+        {
+          "fn_10 $v17 $v9": "(rows_to_grid $v18)"
+        },
+        {
+          "fn_10 $v18 $v9": "(rows_to_grid $v19)"
+        },
+        {
+          "fn_10 $v4 $v3": "(rows_to_grid $v2)"
+        },
+        {
+          "fn_10 $v20 $v9": "(rows_to_grid $v21)"
+        },
+        {
+          "fn_10 $v21 $v9": "(rows_to_grid $v22)"
+        },
+        {
+          "fn_10 $v21 $v9": "(rows_to_grid $v22)"
+        },
+        {
+          "fn_10 $v22 $v9": "(rows_to_grid $v23)"
+        },
+        {
+          "fn_10 $v5 $v4": "(rows_to_grid $v3)"
+        },
+        {
+          "fn_10 $v6 $v5": "(rows_to_grid $v4)"
+        },
+        {
+          "fn_10 $v9 $v8": "(rows_to_grid $v7)"
+        },
+        {
+          "fn_10 $v8 $v1": "(rows_to_grid $v9)"
+        }
+      ],
+      "dc_comparison_millis": null
+    }
+  ]
+}
