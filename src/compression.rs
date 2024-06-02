@@ -435,6 +435,8 @@ impl Pattern {
                 "eta long form requires utility_by_rewrite or no_mismatch_check"
             );
 
+            let rev_fix_param_symbol = Symbol::from("rev_fix_param");
+
             for node in match_locations_before.iter() {
                 if let Node::App(f, _) = &set[*node] {
                     // this for eta long form / dreamcoder compatability: no appzipper bodies can be rooted to the left of an App
@@ -455,7 +457,7 @@ impl Pattern {
                             }
                         }
                         if let Node::Prim(n) = &set[b] {
-                            if *n != Symbol::from("rev_fix_param") {
+                            if *n != rev_fix_param_symbol {
                                 panic!("corpus was not in beta-normal form")
                             }
                         } else {
