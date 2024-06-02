@@ -272,7 +272,7 @@ pub fn rewrite_fast(
                 body: unshifted_body,
             } => {
                 if unused_vars.contains(inp_var) {
-                    helper(
+                    let body = helper(
                         owned_set,
                         new_vars_mapping,
                         used_vars,
@@ -284,7 +284,11 @@ pub fn rewrite_fast(
                         shift_rules,
                         inv_name,
                         should_skip,
-                    )
+                    );
+                    for var in def_vars.iter() {
+                        unused_vars.insert(var.clone());
+                    }
+                    body
                 } else {
                     let body = helper(
                         owned_set,

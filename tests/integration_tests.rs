@@ -563,6 +563,26 @@ fn arc_1() {
 }
 
 #[test]
+fn arc_2() {
+    compare_out_jsons(
+        "data/dc/arc_2.json",
+        "data/expected_outputs/arc_2-a3-i0.json",
+        "-i0 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::Dreamcoder,
+    );
+}
+
+#[test]
+fn arc_3() {
+    compare_out_jsons(
+        "data/dc/arc_3.json",
+        "data/expected_outputs/arc_3-a3-i0.json",
+        "-i0 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::Dreamcoder,
+    );
+}
+
+#[test]
 fn neurosym_match_at_tag() {
     compare_out_jsons(
         "data/neurosym/match_at_tag.json",
