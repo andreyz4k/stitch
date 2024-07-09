@@ -158,8 +158,8 @@
     "let $v1 = rev($inp0 = (rows_to_grid $v1)) in let $v2 = rev($inp0 = (tuple2_second $v2)) in let $v3, $v4 = rev($v2 = (tuple2 $v3 $v4)) in let $v5 = rev($v4 = (rows_to_grid $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7::list(list(color)) = (concat $v1 $v6) in (rows_to_grid $v7)"
   ],
   "rewritten": [
-    "let $v3, $v2, $v1 = rev($inp0 = (fn_13 $v1 $v2 $v3)) in let $v6, $v5, $v4 = rev($v2 = (repeat_grid $v4 $v5 $v6)) in let $v9, $v8, $v7 = rev($v3 = (rev_grid_elements $v7 $v8 $v9)) in let $v12 = rev($v7 = (fn_0 $v12 (lam (lam (any_set (lam (fn_4 (+ (fn_8 $0 $2) (fn_9 $0 $2)))) $0))))) in let $v14, $v15, $v13 = rev($v12 = (fn_6 $v13 $v15 $v14)) in let $v18::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (fn_1 $v15 $v14 $v13) in let $v21::set(tuple2(tuple2(int, int), color)) = (fn_0 $v18 (lam (lam (any_set (lam (fn_4 (+ (fn_8 $0 $2) (fn_9 $0 $2)))) $0)))) in let $v22::grid(color) = (rev_grid_elements $v21 $v8 $v9) in let $v23::grid(color) = (repeat_grid $v4 $v5 $v6) in (fn_10 $v22 $v23 $v1)",
-    "let $v3, $v2, $v1 = rev($inp0 = (fn_13 $v1 $v2 $v3)) in let $v6, $v5, $v4 = rev($v2 = (repeat_grid $v4 $v5 $v6)) in let $v9, $v8, $v7 = rev($v3 = (rev_grid_elements $v7 $v8 $v9)) in let $v12 = rev($v7 = (fn_0 $v12 (lam (lam (any_set (lam (and (fn_4 (fn_8 $0 $2)) (fn_4 (fn_9 $0 $2)))) $0))))) in let $v14, $v15, $v13 = rev($v12 = (fn_6 $v13 $v15 $v14)) in let $v18::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (fn_1 $v15 $v14 $v13) in let $v21::set(tuple2(tuple2(int, int), color)) = (fn_0 $v18 (lam (lam (any_set (lam (and (fn_4 (fn_8 $0 $2)) (fn_4 (fn_9 $0 $2)))) $0)))) in let $v22::grid(color) = (rev_grid_elements $v21 $v8 $v9) in let $v23::grid(color) = (repeat_grid $v4 $v5 $v6) in (fn_10 $v22 $v23 $v1)",
+    "let $v3, $v2, $v1 = rev($inp0 = (fn_13 $v1 $v2 $v3)) in let $v6, $v5, $v4 = rev($v2 = (repeat_grid $v4 $v5 $v6)) in let $v9, $v8, $v7 = rev($v3 = (rev_grid_elements $v7 $v8 $v9)) in let $v12 = rev($v7 = (fn_0 (lam (lam (any_set (lam (fn_4 (+ (fn_9 $0 $2) (fn_8 $0 $2)))) $0))) $v12)) in let $v14, $v15, $v13 = rev($v12 = (fn_6 $v13 $v15 $v14)) in let $v18::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (fn_1 $v15 $v14 $v13) in let $v21::set(tuple2(tuple2(int, int), color)) = (fn_0 (lam (lam (any_set (lam (fn_4 (+ (fn_9 $0 $2) (fn_8 $0 $2)))) $0))) $v18) in let $v22::grid(color) = (rev_grid_elements $v21 $v8 $v9) in let $v23::grid(color) = (repeat_grid $v4 $v5 $v6) in (fn_10 $v22 $v23 $v1)",
+    "let $v3, $v2, $v1 = rev($inp0 = (fn_13 $v1 $v2 $v3)) in let $v6, $v5, $v4 = rev($v2 = (repeat_grid $v4 $v5 $v6)) in let $v9, $v8, $v7 = rev($v3 = (rev_grid_elements $v7 $v8 $v9)) in let $v12 = rev($v7 = (fn_0 (lam (lam (any_set (lam (and (fn_4 (fn_9 $0 $2)) (fn_4 (fn_8 $0 $2)))) $0))) $v12)) in let $v14, $v15, $v13 = rev($v12 = (fn_6 $v13 $v15 $v14)) in let $v18::set(tuple2(tuple2(tuple2(int, int), set(tuple2(int, int))), color)) = (fn_1 $v15 $v14 $v13) in let $v21::set(tuple2(tuple2(int, int), color)) = (fn_0 (lam (lam (any_set (lam (and (fn_4 (fn_9 $0 $2)) (fn_4 (fn_8 $0 $2)))) $0))) $v18) in let $v22::grid(color) = (rev_grid_elements $v21 $v8 $v9) in let $v23::grid(color) = (repeat_grid $v4 $v5 $v6) in (fn_10 $v22 $v23 $v1)",
     "let $v2 = rev($inp0 = (fn_3 $v2)) in let $v4, $v3 = rev($v2 = (cons $v3 $v4)) in let $v5::list(list(color)) = (reverse $v4) in let $v6::list(list(color)) = (cons $v3 $v5) in (rows_to_grid $v6)",
     "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v3 = rev($inp0 = (fn_3 $v3)) in let $v5, $v4 = rev($v3 = (cons $v4 $v5)) in let $v6::list(list(color)) = (reverse $v5) in let $v7::list(list(color)) = (cons $v1 $v6) in (rows_to_grid $v7)",
     "let $v1::list(color) = Const(list(color), Any[0, 0, 0]) in let $v2 = rev($inp0 = (rows_to_grid $v2)) in let $v4, $v3 = rev($v2 = (rev_fix_param (concat $v3 $v4) $v4 (lam Const(list(list(color)), Vector{Any}[[0, 0, 0]])))) in let $v5::list(list(color)) = (reverse $v3) in let $v6::list(list(color)) = (reverse $v5) in let $v7::list(list(color)) = (cons $v1 $v6) in (rows_to_grid $v7)",
@@ -314,8 +314,8 @@
   "rewritten_dreamcoder": null,
   "abstractions": [
     {
-      "body": "(rev_fold_set (lam (lam (rev_greedy_cluster #1 $1 $0))) empty_set (map_set (lam (map_set (lam (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) (map_set (lam (tuple2 ((lam ((lam (rev_fix_param (map_set (lam (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lam (tuple2 (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_first $0)) (collect $0)) max_int) (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_second $0)) (collect $0)) max_int))))) (tuple2_first (tuple2_first $1)))) (tuple2_second (tuple2_first $0))) (tuple2_second $0))) #0)))",
-      "dreamcoder": "#(lambda (lambda (rev_fold_set (lambda (lambda (rev_greedy_cluster $2 $1 $0))) empty_set (map_set (lambda (map_set (lambda (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) (map_set (lambda (tuple2 ((lambda ((lambda (rev_fix_param (map_set (lambda (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lambda (tuple2 (fold (lambda (lambda (if (gt? $0 $1) $1 $0))) (map (lambda (tuple2_first $0)) (collect $0)) max_int) (fold (lambda (lambda (if (gt? $0 $1) $1 $0))) (map (lambda (tuple2_second $0)) (collect $0)) max_int))))) (tuple2_first (tuple2_first $1)))) (tuple2_second (tuple2_first $0))) (tuple2_second $0))) $1)))))",
+      "body": "(rev_fold_set (lam (lam (rev_greedy_cluster #0 $1 $0))) empty_set (map_set (lam (map_set (lam (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) (map_set (lam (tuple2 ((lam ((lam (rev_fix_param (map_set (lam (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lam (tuple2 (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_first $0)) (collect $0)) max_int) (fold (lam (lam (if (gt? $0 $1) $1 $0))) (map (lam (tuple2_second $0)) (collect $0)) max_int))))) (tuple2_first (tuple2_first $1)))) (tuple2_second (tuple2_first $0))) (tuple2_second $0))) #1)))",
+      "dreamcoder": "#(lambda (lambda (rev_fold_set (lambda (lambda (rev_greedy_cluster $3 $1 $0))) empty_set (map_set (lambda (map_set (lambda (tuple2 $0 (tuple2_second $1))) (tuple2_first $0))) (map_set (lambda (tuple2 ((lambda ((lambda (rev_fix_param (map_set (lambda (tuple2 (+ (tuple2_first $0) (tuple2_first $1)) (+ (tuple2_second $0) (tuple2_second $1)))) $1) $0 (lambda (tuple2 (fold (lambda (lambda (if (gt? $0 $1) $1 $0))) (map (lambda (tuple2_first $0)) (collect $0)) max_int) (fold (lambda (lambda (if (gt? $0 $1) $1 $0))) (map (lambda (tuple2_second $0)) (collect $0)) max_int))))) (tuple2_first (tuple2_first $1)))) (tuple2_second (tuple2_first $0))) (tuple2_second $0))) $0)))))",
       "arity": 2,
       "name": "fn_0",
       "utility": 20143,
@@ -327,16 +327,16 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_0 $v12 (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0)))": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $1 $0))) empty_set $v10)"
+          "fn_0 (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $v12": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $1 $0))) empty_set $v10)"
         },
         {
-          "fn_0 $v18 (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0)))": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $1 $0))) empty_set $v20)"
+          "fn_0 (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $v18": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (and (not (gt? (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) 1)) (not (gt? (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2)))) 1)))) $0))) $1 $0))) empty_set $v20)"
         },
         {
-          "fn_0 $v12 (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0)))": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0))) $1 $0))) empty_set $v10)"
+          "fn_0 (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0))) $v12": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0))) $1 $0))) empty_set $v10)"
         },
         {
-          "fn_0 $v18 (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0)))": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0))) $1 $0))) empty_set $v20)"
+          "fn_0 (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0))) $v18": "(rev_fold_set (lam (lam (rev_greedy_cluster (lam (lam (any_set (lam (not (gt? (+ (abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2)))) (abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))) 1))) $0))) $1 $0))) empty_set $v20)"
         }
       ],
       "dc_comparison_millis": null
@@ -361,8 +361,8 @@
       "dc_comparison_millis": null
     },
     {
-      "body": "(abs (- (#1 (tuple2_first #2)) (#1 (tuple2_first #0))))",
-      "dreamcoder": "#(lambda (lambda (lambda (abs (- ($1 (tuple2_first $0)) ($1 (tuple2_first $2)))))))",
+      "body": "(abs (- (#0 (tuple2_first #2)) (#0 (tuple2_first #1))))",
+      "dreamcoder": "#(lambda (lambda (lambda (abs (- ($2 (tuple2_first $0)) ($2 (tuple2_first $1)))))))",
       "arity": 3,
       "name": "fn_2",
       "utility": 2009,
@@ -374,10 +374,10 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_2 $2 tuple2_first $0": "(abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2))))"
+          "fn_2 tuple2_first $2 $0": "(abs (- (tuple2_first (tuple2_first $0)) (tuple2_first (tuple2_first $2))))"
         },
         {
-          "fn_2 $2 tuple2_second $0": "(abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))"
+          "fn_2 tuple2_second $2 $0": "(abs (- (tuple2_second (tuple2_first $0)) (tuple2_second (tuple2_first $2))))"
         }
       ],
       "dc_comparison_millis": null
@@ -505,13 +505,13 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_4 (+ (fn_2 $2 (lam (tuple2_first $0)) $0) (fn_2 $2 (lam (tuple2_second $0)) $0))": "(not (gt? (+ (fn_2 $2 (lam (tuple2_first $0)) $0) (fn_2 $2 (lam (tuple2_second $0)) $0)) 1))"
+          "fn_4 (+ (fn_2 (lam (tuple2_first $0)) $2 $0) (fn_2 (lam (tuple2_second $0)) $2 $0))": "(not (gt? (+ (fn_2 (lam (tuple2_first $0)) $2 $0) (fn_2 (lam (tuple2_second $0)) $2 $0)) 1))"
         },
         {
-          "fn_4 (fn_2 $2 (lam (tuple2_first $0)) $0)": "(not (gt? (fn_2 $2 (lam (tuple2_first $0)) $0) 1))"
+          "fn_4 (fn_2 (lam (tuple2_first $0)) $2 $0)": "(not (gt? (fn_2 (lam (tuple2_first $0)) $2 $0) 1))"
         },
         {
-          "fn_4 (fn_2 $2 (lam (tuple2_second $0)) $0)": "(not (gt? (fn_2 $2 (lam (tuple2_second $0)) $0) 1))"
+          "fn_4 (fn_2 (lam (tuple2_second $0)) $2 $0)": "(not (gt? (fn_2 (lam (tuple2_second $0)) $2 $0) 1))"
         }
       ],
       "dc_comparison_millis": null
@@ -745,8 +745,8 @@
       "dc_comparison_millis": null
     },
     {
-      "body": "(fn_2 #1 (lam (tuple2_first $0)) #0)",
-      "dreamcoder": "#(lambda (lambda (#(lambda (lambda (lambda (abs (- ($1 (tuple2_first $0)) ($1 (tuple2_first $2))))))) $0 (lambda (tuple2_first $0)) $1)))",
+      "body": "(fn_2 (lam (tuple2_second $0)) #1 #0)",
+      "dreamcoder": "#(lambda (lambda (#(lambda (lambda (lambda (abs (- ($2 (tuple2_first $0)) ($2 (tuple2_first $1))))))) (lambda (tuple2_second $0)) $0 $1)))",
       "arity": 2,
       "name": "fn_8",
       "utility": 507,
@@ -758,14 +758,14 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_8 $0 $2": "(fn_2 $2 (lam (tuple2_first $0)) $0)"
+          "fn_8 $0 $2": "(fn_2 (lam (tuple2_second $0)) $2 $0)"
         }
       ],
       "dc_comparison_millis": null
     },
     {
-      "body": "(fn_2 #1 (lam (tuple2_second $0)) #0)",
-      "dreamcoder": "#(lambda (lambda (#(lambda (lambda (lambda (abs (- ($1 (tuple2_first $0)) ($1 (tuple2_first $2))))))) $0 (lambda (tuple2_second $0)) $1)))",
+      "body": "(fn_2 (lam (tuple2_first $0)) #1 #0)",
+      "dreamcoder": "#(lambda (lambda (#(lambda (lambda (lambda (abs (- ($2 (tuple2_first $0)) ($2 (tuple2_first $1))))))) (lambda (tuple2_first $0)) $0 $1)))",
       "arity": 2,
       "name": "fn_9",
       "utility": 507,
@@ -777,7 +777,7 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_9 $0 $2": "(fn_2 $2 (lam (tuple2_second $0)) $0)"
+          "fn_9 $0 $2": "(fn_2 (lam (tuple2_first $0)) $2 $0)"
         }
       ],
       "dc_comparison_millis": null

@@ -852,7 +852,7 @@ impl CriticalMultithreadData {
             donelist,
             worklist,
             // we allow negative utilities in follow_prune case
-            utility_pruning_cutoff: if !cfg.follow_prune { 0 } else { std::i32::MIN },
+            utility_pruning_cutoff: if !cfg.follow_prune { 0 } else { i32::MIN },
             active_threads: FxHashSet::default(),
         };
         res.update(cfg);
@@ -870,7 +870,7 @@ impl CriticalMultithreadData {
         self.donelist.truncate(cfg.inv_candidates);
         // the cutoff is the lowest utility
         // we allow negative utilities in follow_prune case
-        let default_bound = if !cfg.follow_prune { 0 } else { std::i32::MIN };
+        let default_bound = if !cfg.follow_prune { 0 } else { i32::MIN };
         self.utility_pruning_cutoff = if cfg.no_opt_upper_bound {
             default_bound
         } else {
@@ -1671,6 +1671,57 @@ impl FinishedPattern {
     //#[inline(never)]
     fn new(pattern: Pattern, shared: &SharedData) -> Self {
         let arity = pattern.first_zid_of_ivar.len();
+        let mut ivar_lambdas = vec![false; arity];
+        for argchoice in pattern.arg_choices.iter() {
+            if ivar_lambdas[argchoice.ivar] {
+                continue;
+            }
+            let zip = &shared.zip_of_zid[argchoice.zid];
+            if zip.last() == Some(&ZNode::Func) {
+                ivar_lambdas[argchoice.ivar] = true;
+                continue;
+            }
+            for loc in pattern.match_locations.iter() {
+                if let ExpandsTo::Lam(_) = shared.arg_of_zid_node[argchoice.zid][&loc.0].expands_to
+                {
+                    ivar_lambdas[argchoice.ivar] = true;
+                    break;
+                }
+            }
+        }
+        let mut ivar_remappings = vec![0; arity];
+        let mut remapped_first_zid_of_ivar: Vec<ZId> = vec![0; arity];
+        let mut next_ivar = 0;
+        for i in 0..arity {
+            if ivar_lambdas[i] {
+                ivar_remappings[i] = next_ivar;
+                remapped_first_zid_of_ivar[next_ivar] = pattern.first_zid_of_ivar[i];
+                next_ivar += 1;
+            }
+        }
+        for i in 0..arity {
+            if !ivar_lambdas[i] {
+                ivar_remappings[i] = next_ivar;
+                remapped_first_zid_of_ivar[next_ivar] = pattern.first_zid_of_ivar[i];
+                next_ivar += 1;
+            }
+        }
+        let remapped_arg_choices: Vec<LabelledZId> = pattern
+            .arg_choices
+            .iter()
+            .map(|argchoice| LabelledZId::new(argchoice.zid, ivar_remappings[argchoice.ivar]))
+            .collect();
+
+        let pattern = Pattern {
+            holes: pattern.holes.clone(),
+            arg_choices: remapped_arg_choices,
+            first_zid_of_ivar: remapped_first_zid_of_ivar,
+            match_locations: pattern.match_locations.clone(),
+            utility_upper_bound: pattern.utility_upper_bound,
+            body_utility: pattern.body_utility,
+            tracked: pattern.tracked,
+        };
+
         let usages = pattern
             .match_locations
             .iter()
@@ -2868,8 +2919,8 @@ pub fn multistep_compression_internal(
         if !res.is_empty() {
             // rewrite with the invention
             let res: CompressionStepResult = res[0].clone();
-            rewritten = res.rewritten.clone();
-            name_mapping = res.name_mapping.clone();
+            rewritten.clone_from(&res.rewritten);
+            name_mapping.clone_from(&res.name_mapping);
             if !cfg.step.quiet {
                 println!("Chose Invention {}: {}", res.inv.name, res)
             }

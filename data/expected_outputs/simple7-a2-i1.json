@@ -8,14 +8,14 @@
     "let $v2::int = 0 in (b $v2 $v2 $v2)"
   ],
   "rewritten": [
-    "let $v1::int = 1 in (fn_0 $v1 a)",
-    "let $v2::int = 0 in (fn_0 $v2 b)"
+    "let $v1::int = 1 in (fn_0 a $v1)",
+    "let $v2::int = 0 in (fn_0 b $v2)"
   ],
   "rewritten_dreamcoder": null,
   "abstractions": [
     {
-      "body": "(#1 #0 #0 #0)",
-      "dreamcoder": "#(lambda (lambda ($0 $1 $1 $1)))",
+      "body": "(#0 #1 #1 #1)",
+      "dreamcoder": "#(lambda (lambda ($1 $0 $0 $0)))",
       "arity": 2,
       "name": "fn_0",
       "utility": 199,
@@ -27,10 +27,10 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_0 $v1 a": "(a $v1 $v1 $v1)"
+          "fn_0 a $v1": "(a $v1 $v1 $v1)"
         },
         {
-          "fn_0 $v2 b": "(b $v2 $v2 $v2)"
+          "fn_0 b $v2": "(b $v2 $v2 $v2)"
         }
       ],
       "dc_comparison_millis": null

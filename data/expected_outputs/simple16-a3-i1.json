@@ -8,14 +8,14 @@
     "let $v1::int = Const(int, 1) in let $v2::int = (- $v1 $inp0) in let $v3::int = (- $inp0 $v2) in let $v4::int = (+ $v2 $v3) in $v4"
   ],
   "rewritten": [
-    "let $v1::int = Const(int, 0) in let $v4::int = (fn_0 $inp0 (- $v1)) in (range $v4)",
-    "let $v1::int = Const(int, 1) in let $v4::int = (fn_0 $inp0 (- $v1)) in $v4"
+    "let $v1::int = Const(int, 0) in let $v4::int = (fn_0 (- $v1) $inp0) in (range $v4)",
+    "let $v1::int = Const(int, 1) in let $v4::int = (fn_0 (- $v1) $inp0) in $v4"
   ],
   "rewritten_dreamcoder": null,
   "abstractions": [
     {
-      "body": "(+ (#1 #0) (- #0 (#1 #0)))",
-      "dreamcoder": "#(lambda (lambda (+ ($0 $1) (- $1 ($0 $1)))))",
+      "body": "(+ (#0 #1) (- #1 (#0 #1)))",
+      "dreamcoder": "#(lambda (lambda (+ ($1 $0) (- $0 ($1 $0)))))",
       "arity": 2,
       "name": "fn_0",
       "utility": 804,
@@ -27,10 +27,10 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_0 $inp0 (- $v1)": "(+ $v2 $v3)"
+          "fn_0 (- $v1) $inp0": "(+ $v2 $v3)"
         },
         {
-          "fn_0 $inp0 (- $v1)": "(+ $v2 $v3)"
+          "fn_0 (- $v1) $inp0": "(+ $v2 $v3)"
         }
       ],
       "dc_comparison_millis": null
