@@ -24,7 +24,7 @@ pub fn rewrite_fast(
     fn helper(
         owned_set: &mut ExprSet,
         new_vars_mapping: &mut FxHashMap<Symbol, Idx>,
-        used_vars: &mut FxHashSet<Symbol>,
+        used_vars: &mut Vec<Symbol>,
         unused_vars: &mut FxHashSet<Symbol>,
         pattern: &FinishedPattern,
         shared: &SharedData,
@@ -193,11 +193,15 @@ pub fn rewrite_fast(
                 unreachable!()
             }
             Node::NVar(name) => {
-                used_vars.insert(name.clone());
+                if !used_vars.contains(name) {
+                    used_vars.push(name.clone());
+                }
                 owned_set.add(Node::NVar(name.clone()))
             }
             Node::NLinkVar(name, _link) => {
-                used_vars.insert(name.clone());
+                if !used_vars.contains(name) {
+                    used_vars.push(name.clone());
+                }
                 let new_link = new_vars_mapping.get(name).unwrap();
                 owned_set.add(Node::NLinkVar(name.clone(), *new_link))
             }
@@ -303,7 +307,7 @@ pub fn rewrite_fast(
                         inv_name,
                         should_skip,
                     );
-                    let mut def_used_vars: FxHashSet<Symbol> = FxHashSet::default();
+                    let mut def_used_vars: Vec<Symbol> = vec![];
                     let def = helper(
                         owned_set,
                         new_vars_mapping,
@@ -328,13 +332,13 @@ pub fn rewrite_fast(
                             unused_vars.remove(var);
                         }
                     }
-                    let mut new_def_vars: Vec<Symbol> = def_used_vars.iter().cloned().collect();
-                    new_def_vars.reverse();
-                    used_vars.insert(inp_var.clone());
+                    if !used_vars.contains(inp_var) {
+                        used_vars.push(inp_var.clone());
+                    }
                     new_vars_mapping.insert(inp_var.clone(), def);
                     owned_set.add(Node::RevLet {
                         inp_var: inp_var.clone(),
-                        def_vars: new_def_vars,
+                        def_vars: def_used_vars,
                         def,
                         body,
                     })
@@ -356,7 +360,7 @@ pub fn rewrite_fast(
             // println!("ROOT");
             let mut owned_set = ExprSet::empty(Order::ChildFirst, false, false); // need struct hash off for cost_span later
             let mut new_vars_mapping: FxHashMap<Symbol, Idx> = FxHashMap::default();
-            let mut used_vars: FxHashSet<Symbol> = FxHashSet::default();
+            let mut used_vars: Vec<Symbol> = vec![];
             let mut unused_vars: FxHashSet<Symbol> = FxHashSet::default();
             let mut unused_count = 0;
             let mut idx = helper(
@@ -375,7 +379,7 @@ pub fn rewrite_fast(
             while unused_vars.len() != unused_count {
                 unused_count = unused_vars.len();
                 owned_set = ExprSet::empty(Order::ChildFirst, false, false);
-                used_vars = FxHashSet::default();
+                used_vars = vec![];
                 new_vars_mapping = FxHashMap::default();
                 idx = helper(
                     &mut owned_set,

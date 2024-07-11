@@ -8,8 +8,8 @@
     "let $v2, $v1 = rev($inp0 = (cons $v1 $v2)) in let $v16, $v15, $v9, $v3, $v5 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in let $v7::int = (- $v5 $v1) in let $v8::int = (+ $v7 $v1) in let $v11::int = (- $v5 $v9) in let $v12::int = (- $v8 $v11) in let $v13::int = (+ $v12 $v1) in (- $v13 $v1)"
   ],
   "rewritten": [
-    "let $v2, $v1 = rev($inp0 = (cons $v1 $v2)) in let $v16, $v15, $v9, $v3, $v5 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in let $v7::int = (- $v5 $v1) in let $v8::int = (+ $v7 $v1) in let $v14::int = (fn_0 (- $v5) $v1 $v9) in let $v17::list(int) = Const(list(int), Any[]) in let $v19::list(int) = (fn_0 $v17 $v15 $v14) in (cons $v8 $v19)",
-    "let $v2, $v1 = rev($inp0 = (cons $v1 $v2)) in let $v16, $v15, $v9, $v3, $v5 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in (fn_0 (- $v5) $v1 $v9)"
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v9, $v15, $v16, $v5, $v3 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in let $v7::int = (- $v5 $v1) in let $v8::int = (+ $v7 $v1) in let $v14::int = (fn_0 (- $v5) $v1 $v9) in let $v17::list(int) = Const(list(int), Any[]) in let $v19::list(int) = (fn_0 $v17 $v15 $v14) in (cons $v8 $v19)",
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v9, $v15, $v16, $v5, $v3 = rev($v2 = (fn_1 $v9 $v15 $v16 $v5 $v3)) in (fn_0 (- $v5) $v1 $v9)"
   ],
   "rewritten_dreamcoder": null,
   "abstractions": [

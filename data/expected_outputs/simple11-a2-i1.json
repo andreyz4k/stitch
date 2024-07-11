@@ -8,8 +8,8 @@
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3 = rev($v2 = (reverse $v3)) in $v3"
   ],
   "rewritten": [
-    "let $v1, $v3 = rev($inp0 = (fn_0 $v3 $v1)) in (cons $v1 $v3)",
-    "let $v1, $v3 = rev($inp0 = (fn_0 $v3 $v1)) in $v3"
+    "let $v3, $v1 = rev($inp0 = (fn_0 $v3 $v1)) in (cons $v1 $v3)",
+    "let $v3, $v1 = rev($inp0 = (fn_0 $v3 $v1)) in $v3"
   ],
   "rewritten_dreamcoder": null,
   "abstractions": [
