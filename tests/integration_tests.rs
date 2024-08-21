@@ -106,6 +106,13 @@ fn compare_out_jsons(file: &str, expected_out_file: &str, args: &str, input_form
         &output,
         expected_out_file,
     );
+    check_eq(
+        &output["rewritten_dreamcoder"],
+        &expected_output["rewritten_dreamcoder"],
+        vec!["rewritten_dreamcoder".into()],
+        &output,
+        expected_out_file,
+    );
 }
 
 //todo add write_json_for_diff calls and also make it add a random suffix too
@@ -577,7 +584,7 @@ fn arc_3() {
     compare_out_jsons(
         "data/dc/arc_3.json",
         "data/expected_outputs/arc_3-a3-i0.json",
-        "-i0 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        "-i0 -a3 --rewrite-check --eta-long --utility-by-rewrite --rewritten-dreamcoder",
         InputFormat::Dreamcoder,
     );
 }
