@@ -2858,7 +2858,7 @@ pub fn multistep_compression_internal(
     train_programs: &[ExprOwned],
     tasks: Option<Vec<String>>,
     weights: Option<Vec<f32>>,
-    name_mapping: Option<Vec<(String, String)>>,
+    name_mapping: &mut Vec<(String, String)>,
     follow: Option<Vec<Invention>>,
     cfg: &MultistepCompressionConfig,
 ) -> Vec<CompressionStepResult> {
@@ -2887,8 +2887,6 @@ pub fn multistep_compression_internal(
 
     let weights: Vec<f32> = weights.unwrap_or_else(|| vec![1.0; train_programs.len()]);
 
-    let mut name_mapping = name_mapping.unwrap_or_default();
-
     let mut i = 0;
     while (i < cfg.iterations) || cfg.iterations == 0 {
         if !cfg.step.quiet {
@@ -2913,14 +2911,14 @@ pub fn multistep_compression_internal(
             &tasks,
             &weights,
             very_first_cost,
-            &name_mapping,
+            name_mapping,
         );
 
         if !res.is_empty() {
             // rewrite with the invention
             let res: CompressionStepResult = res[0].clone();
             rewritten.clone_from(&res.rewritten);
-            name_mapping.clone_from(&res.name_mapping);
+            *name_mapping = res.name_mapping.clone();
             if !cfg.step.quiet {
                 println!("Chose Invention {}: {}", res.inv.name, res)
             }
@@ -3594,11 +3592,13 @@ pub fn multistep_compression(
         programs_info(&train_programs, &cost_fn);
     }
 
+    let mut name_mapping = name_mapping.unwrap_or_default();
+
     let step_results = multistep_compression_internal(
         &train_programs,
         tasks.clone(),
         weights.clone(),
-        name_mapping,
+        &mut name_mapping,
         follow,
         &cfg,
     );
@@ -3610,6 +3610,7 @@ pub fn multistep_compression(
         weights,
         tasks,
         &cost_fn,
+        name_mapping,
         &cfg,
     );
 
@@ -3622,6 +3623,7 @@ pub fn json_of_step_results(
     weights: Option<Vec<f32>>,
     tasks: Option<Vec<String>>,
     cost_fn: &ExprCost,
+    name_mapping: Vec<(String, String)>,
     cfg: &MultistepCompressionConfig,
 ) -> serde_json::Value {
     let rewritten: &Vec<ExprOwned> = step_results
@@ -3650,8 +3652,11 @@ pub fn json_of_step_results(
                 train_programs
                     .iter()
                     .map(|p| {
-                        p.to_string()
-                            .replace("(lam ", "(lambda ")
+                        let mut res = p.to_string();
+                        for (name, anonymous) in &name_mapping {
+                            res = replace_prim_with(&res, name, anonymous);
+                        }
+                        res.replace("(lam ", "(lambda ")
                             .replace("(lam_", "(lambda_")
                     })
                     .collect::<Vec<String>>()
