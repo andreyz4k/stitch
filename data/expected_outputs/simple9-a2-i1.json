@@ -4,12 +4,12 @@
   "compression_ratio": 1.501240694789082,
   "num_abstractions": 1,
   "original": [
-    "let $v1::int = 1 in let $v2::int = (+ $v1 $v1) in (a $v2)",
-    "let $v1::int = 0 in let $v2::int = (+ $v1 $v1) in (b $v2)"
+    "let $v1 = 1 in let $v2 = (+ $v1 $v1) in (a $v2)",
+    "let $v1 = 0 in let $v2 = (+ $v1 $v1) in (b $v2)"
   ],
   "rewritten": [
-    "let $v1::int = 1 in (fn_0 a $v1)",
-    "let $v1::int = 0 in (fn_0 b $v1)"
+    "let $v1 = 1 in (fn_0 a $v1)",
+    "let $v1 = 0 in (fn_0 b $v1)"
   ],
   "rewritten_dreamcoder": null,
   "abstractions": [

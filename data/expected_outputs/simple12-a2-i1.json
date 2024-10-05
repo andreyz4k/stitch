@@ -4,8 +4,8 @@
   "compression_ratio": 1.6677685950413224,
   "num_abstractions": 1,
   "original": [
-    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3::int = Const(int, 1) in let $v4::list(int) = (repeat $v1 $v3) in (concat $inp0 $v4)",
-    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3::int = Const(int, 1) in let $v4::list(int) = (repeat $v1 $v3) in (concat $inp0 $v4)"
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3 = Const(int, 1) in let $v4 = (repeat $v1 $v3) in (concat $inp0 $v4)",
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3 = Const(int, 1) in let $v4 = (repeat $v1 $v3) in (concat $inp0 $v4)"
   ],
   "rewritten": [
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in (fn_0 $v1 $inp0)",

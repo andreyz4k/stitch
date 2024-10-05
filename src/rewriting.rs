@@ -207,7 +207,6 @@ pub fn rewrite_fast(
             }
             Node::Let {
                 var,
-                type_str,
                 def: unshifted_def,
                 body: unshifted_body,
             } => {
@@ -263,7 +262,6 @@ pub fn rewrite_fast(
                     }
                     owned_set.add(Node::Let {
                         var: var.clone(),
-                        type_str: type_str.clone(),
                         def,
                         body,
                     })

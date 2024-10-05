@@ -4,8 +4,8 @@
   "compression_ratio": 7.532338308457711,
   "num_abstractions": 1,
   "original": [
-    "let $v1::int = Const(int, 1) in let $v2::int = 1 in let $v3::int = (+ $v1 $v2) in let $v4::int = Const(int, -1) in let $v5::int = (+ $v3 $v4) in let $v6::list(int) = (repeat $v5 $v1) in (concat $inp0 $v6)",
-    "let $v1::int = Const(int, 1) in let $v2::int = 1 in let $v3::int = (+ $v1 $v2) in let $v4::int = Const(int, -1) in let $v5::int = (+ $v3 $v4) in let $v6::list(int) = (repeat $v5 $v1) in (concat $inp0 $v6)"
+    "let $v1 = Const(int, 1) in let $v2 = 1 in let $v3 = (+ $v1 $v2) in let $v4 = Const(int, -1) in let $v5 = (+ $v3 $v4) in let $v6 = (repeat $v5 $v1) in (concat $inp0 $v6)",
+    "let $v1 = Const(int, 1) in let $v2 = 1 in let $v3 = (+ $v1 $v2) in let $v4 = Const(int, -1) in let $v5 = (+ $v3 $v4) in let $v6 = (repeat $v5 $v1) in (concat $inp0 $v6)"
   ],
   "rewritten": [
     "(fn_0 $inp0)",

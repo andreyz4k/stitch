@@ -4,8 +4,8 @@
   "compression_ratio": 2.5074626865671643,
   "num_abstractions": 1,
   "original": [
-    "let $v1::int = 1 in (a $v1 $v1 $v1)",
-    "let $v2::int = 1 in (b $v2 $v2 $v2)"
+    "let $v1 = 1 in (a $v1 $v1 $v1)",
+    "let $v2 = 1 in (b $v2 $v2 $v2)"
   ],
   "rewritten": [
     "(fn_0 a)",
