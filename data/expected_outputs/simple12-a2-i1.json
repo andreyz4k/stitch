@@ -8,14 +8,14 @@
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3 = Const(int, 1) in let $v4 = (repeat $v1 $v3) in (concat $inp0 $v4)"
   ],
   "rewritten": [
-    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in (fn_0 $v1 $inp0)",
-    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in (fn_0 $v1 $inp0)"
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in (fn_0 $inp0 $v1)",
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in (fn_0 $inp0 $v1)"
   ],
   "rewritten_dreamcoder": null,
   "abstractions": [
     {
-      "body": "(concat #1 (repeat #0 Const(int, 1)))",
-      "dreamcoder": "#(lambda (lambda (concat $0 (repeat $1 Const(int, 1)))))",
+      "body": "(concat #0 (repeat #1 Const(int, 1)))",
+      "dreamcoder": "#(lambda (lambda (concat $1 (repeat $0 Const(int, 1)))))",
       "arity": 2,
       "name": "fn_0",
       "utility": 504,
@@ -27,7 +27,7 @@
       "rewritten_dreamcoder": null,
       "uses": [
         {
-          "fn_0 $v1 $inp0": "(concat $inp0 $v4)"
+          "fn_0 $inp0 $v1": "(concat $inp0 $v4)"
         }
       ],
       "dc_comparison_millis": null

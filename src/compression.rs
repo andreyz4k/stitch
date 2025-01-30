@@ -1671,41 +1671,30 @@ impl FinishedPattern {
     //#[inline(never)]
     fn new(pattern: Pattern, shared: &SharedData) -> Self {
         let arity = pattern.first_zid_of_ivar.len();
-        let mut ivar_lambdas = vec![false; arity];
-        for argchoice in pattern.arg_choices.iter() {
-            if ivar_lambdas[argchoice.ivar] {
-                continue;
-            }
-            let zip = &shared.zip_of_zid[argchoice.zid];
-            if zip.last() == Some(&ZNode::Func) {
-                ivar_lambdas[argchoice.ivar] = true;
-                continue;
-            }
-            for loc in pattern.match_locations.iter() {
-                if let ExpandsTo::Lam(_) = shared.arg_of_zid_node[argchoice.zid][&loc.0].expands_to
-                {
-                    ivar_lambdas[argchoice.ivar] = true;
-                    break;
-                }
-            }
-        }
+        let mut ivar_zips = pattern
+            .arg_choices
+            .iter()
+            .map(|argchoice| (argchoice.ivar, shared.zip_of_zid[argchoice.zid].clone()))
+            .collect::<Vec<_>>();
+        ivar_zips.sort_by(|a, b| a.1.cmp(&b.1));
+
         let mut ivar_remappings = vec![0; arity];
         let mut remapped_first_zid_of_ivar: Vec<ZId> = vec![0; arity];
         let mut next_ivar = 0;
-        for i in 0..arity {
-            if ivar_lambdas[i] {
-                ivar_remappings[i] = next_ivar;
-                remapped_first_zid_of_ivar[next_ivar] = pattern.first_zid_of_ivar[i];
-                next_ivar += 1;
+        let mut ivar_seen = vec![false; arity];
+        for (ivar, _) in ivar_zips.iter() {
+            if ivar_seen[*ivar] {
+                continue;
+            }
+            ivar_remappings[*ivar] = next_ivar;
+            remapped_first_zid_of_ivar[next_ivar] = pattern.first_zid_of_ivar[*ivar];
+            next_ivar += 1;
+            ivar_seen[*ivar] = true;
+            if next_ivar == arity {
+                break;
             }
         }
-        for i in 0..arity {
-            if !ivar_lambdas[i] {
-                ivar_remappings[i] = next_ivar;
-                remapped_first_zid_of_ivar[next_ivar] = pattern.first_zid_of_ivar[i];
-                next_ivar += 1;
-            }
-        }
+
         let remapped_arg_choices: Vec<LabelledZId> = pattern
             .arg_choices
             .iter()
