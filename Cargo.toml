@@ -20,7 +20,7 @@ rustc-hash = "1.1.0"
 serde = "1"
 serde_json = {version = "1.0", features = ["preserve_order"]}
 # lambdas = "0.2.0"
-lambdas = {git = "https://github.com/andreyz4k/lambdas", branch = "main"}
+lambdas = {git = "https://github.com/andreyz4k/lambdas", commit = "a9896a005b7d2ea577b09868ff9b217c4b043c62"}
 # lambdas = {path = "../lambdas"}
 
 # [patch.crates-io]

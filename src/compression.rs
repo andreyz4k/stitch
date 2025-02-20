@@ -585,6 +585,99 @@ impl Pattern {
         ExprOwned { set, idx }
     }
 
+    fn check_rev_fixer_compression(&self, shared: &SharedData) -> bool {
+        fn has_var(set: &ExprSet, fix_func: usize, fixer_var: usize) -> bool {
+            if fix_func == fixer_var {
+                return true;
+            }
+            match &set[fix_func] {
+                Node::App(f, x) => has_var(set, *f, fixer_var) || has_var(set, *x, fixer_var),
+                Node::Lam(b, _) => has_var(set, *b, fixer_var),
+                Node::IVar(v) => {
+                    if let Node::IVar(v2) = set[fixer_var] {
+                        return *v == v2;
+                    } else {
+                        return false;
+                    }
+                }
+                Node::Var(v, _) => {
+                    if let Node::Var(v2, _) = set[fixer_var] {
+                        return *v == v2;
+                    } else {
+                        return false;
+                    }
+                }
+                _ => false,
+            }
+        }
+        fn helper(curr_node: &Idx, set: &ExprSet) -> (bool, i32, usize) {
+            let rev_fix_param_symbol = Symbol::from("rev_fix_param");
+            // println!("{:?}", set[*curr_node]);
+            match &set[*curr_node] {
+                Node::Prim(p) => {
+                    if *p == rev_fix_param_symbol {
+                        (true, 0, 0)
+                    } else {
+                        (true, -1, 0)
+                    }
+                }
+                Node::Var(_v, _) => (true, -1, 0),
+                Node::IVar(_) => (true, -1, 0),
+                Node::App(f, x) => {
+                    let (is_valid, is_rev_fixer, fix_func) = helper(f, set);
+                    if !is_valid {
+                        return (false, -1, 0);
+                    }
+                    if is_rev_fixer == -1 {
+                        let (is_x_valid, is_x_rev_fixer, _fix_func) = helper(x, set);
+                        (is_x_valid && is_x_rev_fixer == -1, -1, 0)
+                    } else if is_rev_fixer == 0 {
+                        let (is_x_valid, is_x_rev_fixer, _fix_func) = helper(x, set);
+                        if !is_x_valid || is_x_rev_fixer != -1 {
+                            return (false, -1, 0);
+                        }
+                        (true, 1, *x)
+                    } else if is_rev_fixer == 1 {
+                        let fixer_var = *x;
+                        if match &set[fixer_var] {
+                            Node::Var(_v, _) => true,
+                            Node::IVar(_v) => true,
+                            _ => false,
+                        } {
+                            if has_var(set, fix_func, fixer_var) {
+                                (true, -1, 0)
+                            } else {
+                                (false, -1, 0)
+                            }
+                        } else {
+                            (false, -1, 0)
+                        }
+                    } else {
+                        unreachable!()
+                    }
+                }
+                Node::Lam(b, _) => {
+                    let (is_b_valid, is_b_rev_fixer, _fix_func) = helper(b, set);
+                    if !is_b_valid || is_b_rev_fixer != -1 {
+                        (false, -1, 0)
+                    } else {
+                        (true, -1, 0)
+                    }
+                }
+                _ => unreachable!(),
+            }
+        }
+        let expr = self.to_expr(shared);
+        // println!("{:?}", expr);
+        // println!("{:?}", expr.to_string());
+        // let expr_str = expr.to_string();
+        let (is_valid, is_rev_fixer, fix_func) = helper(&expr.idx, &expr.set);
+        // println!("{} {} {}", is_valid, is_rev_fixer, fix_func);
+        let res = is_valid && is_rev_fixer == -1 && fix_func == 0;
+        // println!("{}", res);
+        res
+    }
+
     /// convert pattern to an Expr then with `hole_zid` highlighted in color with what we would expect it to expand to
     fn show_track_expansion(&self, hole_zid: ZId, shared: &SharedData) -> String {
         let mut expr = self.to_expr(shared);
@@ -1508,6 +1601,10 @@ fn stitch_search(shared: Arc<SharedData>) {
                 if new_pattern.holes.is_empty() {
                     // it's a finished pattern
 
+                    if !new_pattern.check_rev_fixer_compression(&shared) {
+                        continue 'expansion;
+                    }
+
                     let mut finished_pattern = FinishedPattern::new(new_pattern, &shared);
 
                     if !shared.cfg.no_stats {
@@ -1670,6 +1767,7 @@ pub struct FinishedPattern {
 impl FinishedPattern {
     //#[inline(never)]
     fn new(pattern: Pattern, shared: &SharedData) -> Self {
+        // println!("pattern: {:?}", pattern);
         let arity = pattern.first_zid_of_ivar.len();
         let mut ivar_zips = pattern
             .arg_choices
@@ -1757,6 +1855,8 @@ impl FinishedPattern {
             res.util_calc.util = res.compressive_utility;
             res.utility = res.compressive_utility + noncompressive_utility;
         }
+        // println!("res: {:?}", res.to_expr(shared).to_string());
+        // println!("{:?}", res.to_expr(shared));
         res
     }
     // convert finished invention to an Expr
@@ -1839,7 +1939,7 @@ fn get_zippers(
                 expands_to: expands_to_of_node(&node),
             },
         );
-        // let expands_str = format!("{}", expands_to_of_node(&node));
+        // let expands_str = format!("{:?}", expands_to_of_node(&node));
 
         match node {
             Node::IVar(_) => {
@@ -3113,6 +3213,22 @@ pub fn compression_step(
         &mut analyzed_free_vars,
     );
 
+    // println!("zip_of_zid");
+    // for (i, zip) in zip_of_zid.iter().enumerate() {
+    //     println!("{} {:?}", i, zip);
+    // }
+    // println!("arg_of_zid_node");
+    // for (i, arg) in arg_of_zid_node.iter().enumerate() {
+    //     println!("{} {:?}", i, arg);
+    // }
+    // println!("zids_of_node");
+    // for (i, zids) in zids_of_node.iter().enumerate() {
+    //     println!("{} {:?}", i, zids);
+    // }
+    // println!("extensions_of_zid");
+    // for (i, ext) in extensions_of_zid.iter().enumerate() {
+    //     println!("{} {:?}", i, ext);
+    // }
     if !cfg.quiet {
         println!("get_zippers(): {:?}ms", tstart.elapsed().as_millis())
     }

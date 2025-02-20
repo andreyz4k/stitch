@@ -406,7 +406,27 @@ fn simple18_a3_i1() {
     compare_out_jsons(
         "data/basic/simple18.json",
         "data/expected_outputs/simple18-a3-i1.json",
-        "-i1 -a3 --rewrite-check",
+        "-i1 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple19_a3_i1() {
+    compare_out_jsons(
+        "data/basic/simple19.json",
+        "data/expected_outputs/simple19-a3-i1.json",
+        "-i1 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
+fn simple20_a3_i1() {
+    compare_out_jsons(
+        "data/basic/simple20.json",
+        "data/expected_outputs/simple20-a3-i1.json",
+        "-i1 -a3 --rewrite-check --eta-long --utility-by-rewrite",
         InputFormat::ProgramsList,
     );
 }

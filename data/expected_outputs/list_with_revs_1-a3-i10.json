@@ -679,8 +679,8 @@
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v5, $v6 = rev($v2 = (fn_0 $v3 $v5 $v6)) in let $v8 = (fn_2 $v3 $v5) in (fn_9 $inp0 $v8)",
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v5, $v6 = rev($v2 = (fn_0 $v3 $v5 $v6)) in let $v7 = Const(int, 1) in let $v10 = (fn_3 (repeat $v5) $v3 $v7) in (concat $inp0 $v10)",
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v5, $v6 = rev($v2 = (fn_0 $v3 $v5 $v6)) in let $v7 = Const(int, 1) in let $v8 = (- $v7 $v3) in let $v9 = (+ $v8 $v3) in let $v10 = (repeat $v5 $v9) in (concat $inp0 $v10)",
-    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v5, $v6 = rev($v2 = (fn_0 $v3 $v5 $v6)) in let $v9 = (fn_9 $v4 $v5) in (fn_0 $v1 $v3 $v9)",
-    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v5, $v6 = rev($v2 = (fn_0 $v3 $v5 $v6)) in let $v8 = (fn_4 $v5) in let $v9 = (concat $v4 $v8) in (fn_0 $v1 $v3 $v9)",
+    "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v6 = rev($v4 = (cons $v5 $v6)) in let $v9 = (fn_9 $v4 $v5) in (fn_0 $v1 $v3 $v9)",
+    "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v6 = rev($v4 = (cons $v5 $v6)) in let $v8 = (fn_4 $v5) in let $v9 = (concat $v4 $v8) in (fn_0 $v1 $v3 $v9)",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in let $v10 = (fn_6 $v1 $v7 $v1) in (fn_9 $inp0 $v10)",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in let $v10 = (fn_6 $v7 $v1 $v1) in (fn_9 $inp0 $v10)",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in (fn_3 (fn_9 $inp0) $v1 $v7)",
@@ -777,7 +777,7 @@
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v4 = rev($v1 = (rev_fix_param (- $v3 $v4) $v3 (lam (- $0 $0)))) in (cdr (concat (repeat $v1 $v3) $v2))",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v6 = rev($v3 = (rev_fix_param (- $v5 $v6) $v6 (lam 1))) in (cdr (concat (repeat $v1 $v6) $v4))",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v6 = rev($v3 = (rev_fix_param (- $v5 $v6) $v6 (lam 1))) in (cdr (concat (repeat $v3 $v6) $v4))",
-    "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v6 = rev($v1 = (rev_fix_param (- $v5 $v6) $v5 (lam (- $0 $0)))) in (cdr (concat (repeat $v3 $v5) $v2))",
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v4 = rev($v2 = (cons $v3 $v4)) in let $v5, $v6 = rev($v1 = (rev_fix_param (- $v5 $v6) $v5 (lam (- $0 $0)))) in (cdr (concat (repeat $v3 $v5) $v2))",
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v4 = rev($v1 = (rev_fix_param (- $v3 $v4) $v4 (lam 1))) in let $v5, $v6 = rev($v1 = (rev_fix_param (- $v5 $v6) $v5 (lam (- $0 $0)))) in (cdr (concat (repeat $v3 $v5) $v2))",
     "let $v1, $v5, $v6 = rev($inp0 = (fn_0 $v1 $v5 $v6)) in let $v3, $v4 = rev($v1 = (rev_fix_param (- $v3 $v4) $v4 (lam 1))) in let $v7, $v8 = rev($v5 = (rev_fix_param (- $v7 $v8) $v8 (lam 1))) in (cdr (concat (repeat $v3 $v8) $v6))",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v6 = rev($v3 = (rev_fix_param (- $v5 $v6) $v5 (lam 1))) in let $v7, $v8 = rev($v3 = (rev_fix_param (- $v7 $v8) $v8 (lam 1))) in (cdr (concat (repeat $v6 $v8) $v4))",
@@ -910,7 +910,7 @@
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v5, $v6 = rev($v2 = (fn_0 $v3 $v5 $v6)) in (fn_3 cons $v3 $v5 $inp0)",
     "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v5, $v6 = rev($v2 = (fn_0 $v3 $v5 $v6)) in let $v8 = (fn_6 $v1 $v5 $v1) in (fn_0 $v8 $v1 $v2)",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in (cons $v7 $inp0)",
-    "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in (fn_0 $v7 $v1 $v2)",
+    "let $v1, $v2 = rev($inp0 = (cons $v1 $v2)) in let $v3, $v4 = rev($v2 = (cons $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in (fn_0 $v7 $v1 $v2)",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in let $v10 = (fn_2 $v1 $v7) in (cons $v10 $inp0)",
     "let $v1, $v3, $v4 = rev($inp0 = (fn_0 $v1 $v3 $v4)) in let $v5, $v7, $v8 = rev($v4 = (fn_0 $v5 $v7 $v8)) in let $v9 = (- $v7 $v3) in let $v10 = (+ $v9 $v3) in (cons $v10 $inp0)",
     "let $v1, $v4, $v5 = rev($inp0 = (fn_0 $v1 $v4 $v5)) in let $v3 = Const(int, 0) in let $v6, $v8, $v9 = rev($v5 = (fn_0 $v6 $v8 $v9)) in let $v10 = (- $v3 $v8) in let $v11 = (+ $v1 $v10) in let $v12 = (- $v1 $v11) in (cons $v12 $inp0)",
@@ -1308,7 +1308,7 @@
       "final_cost": 75884,
       "compression_ratio": 1.2182805334457856,
       "cumulative_compression_ratio": 1.2182805334457856,
-      "num_uses": 1304,
+      "num_uses": 1293,
       "rewritten": null,
       "rewritten_dreamcoder": null,
       "uses": [
@@ -1514,18 +1514,6 @@
           "fn_0 $v1 $v3 $v4": "(cons $v1 $v2)"
         },
         {
-          "fn_0 $v1 $v3 $v4": "(cons $v1 $v2)"
-        },
-        {
-          "fn_0 $v1 $v3 $v4": "(cons $v1 $v2)"
-        },
-        {
-          "fn_0 $v1 $v3 $v4": "(cons $v1 $v2)"
-        },
-        {
-          "fn_0 $v1 $v3 $v4": "(cons $v1 $v2)"
-        },
-        {
           "fn_0 $v1 $v4 $v5": "(cons $v1 $v2)"
         },
         {
@@ -1536,6 +1524,9 @@
         },
         {
           "fn_0 $v1 $v4 $v5": "(cons $v1 $v2)"
+        },
+        {
+          "fn_0 $v1 $v5 $v6": "(cons $v1 $v2)"
         },
         {
           "fn_0 $v1 $v5 $v6": "(cons $v1 $v2)"
