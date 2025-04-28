@@ -1,0 +1,7 @@
+[
+    "let $v1, $v2 = rev($inp0 = (rev_fix_param (rows_to_grid (concat $v1 $v2)) $v2 (lambda Const(list(list(color)), Vector{Any}[])))) in $v1",
+    "let $v1, $v2 = rev($inp0 = (rev_fix_param (rows_to_grid (concat $v1 $v2)) $v2 (lambda Const(list(list(color)), Vector{Any}[])))) in $v1",
+    "let $v1, $v2 = rev($inp0 = (rev_fix_param (rows_to_grid (concat $v1 $v2)) $v2 (lambda empty))) in $v1",
+    "let $v1, $v2 = rev($inp0 = (rev_fix_param (rows_to_grid (concat $v1 $v2)) $v2 (lambda empty2))) in $v1",
+    "let $v1, $v2 = rev($inp0 = (rev_fix_param (rows_to_grid (concat $v1 $v2)) $v2 (lambda empty_list))) in $v1"
+]

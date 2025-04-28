@@ -645,12 +645,25 @@ impl Pattern {
                             _ => false,
                         } {
                             if has_var(set, fix_func, fixer_var) {
-                                (true, -1, 0)
+                                (true, 2, 0)
                             } else {
                                 (false, -1, 0)
                             }
                         } else {
                             (false, -1, 0)
+                        }
+                    } else if is_rev_fixer == 2 {
+                        let fixer_body = *x;
+                        match &set[fixer_body] {
+                            Node::IVar(_) => (false, -1, 0),
+                            Node::Lam(b, _) => {
+                                if let Node::IVar(_) = &set[*b] {
+                                    (false, -1, 0)
+                                } else {
+                                    helper(x, set)
+                                }
+                            }
+                            _ => unreachable!(),
                         }
                     } else {
                         unreachable!()

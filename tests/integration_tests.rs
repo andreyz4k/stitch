@@ -432,6 +432,16 @@ fn simple20_a3_i1() {
 }
 
 #[test]
+fn simple21_a3_i2() {
+    compare_out_jsons(
+        "data/basic/simple21.json",
+        "data/expected_outputs/simple21-a3-i2.json",
+        "-i2 -a3 --rewrite-check --eta-long --utility-by-rewrite",
+        InputFormat::ProgramsList,
+    );
+}
+
+#[test]
 fn nuts_bolts_a3_i10() {
     compare_out_jsons(
         "data/cogsci/nuts-bolts.json",
